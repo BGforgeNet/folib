@@ -216,7 +216,7 @@ export declare function len_array(arrayID: any[]): number;
  * - returns array ID or zero (0) if none found.
  * 
  */
-export declare function load_array(key: any): any[];
+export declare function load_array(key: any): any[] | 0;
 
 /**
  * Changes array size. - applicable to maps too, but only to reduce elements. - there are number of special negative values of "size" which perform various operations on the array, use macros `sort_array`, `sort_array_reverse`, `reverse_array`, `shuffle_array` from **sfall.h** header.

@@ -88,25 +88,27 @@ const CHAR_PERCENT = 37;
  * Example: parse_str_2("Hello, %2%. I have $%1%.", 100, "World") -> "Hello, World. I have $100."
  */
 export function parse_str_2(str: string, x1: any, x2: any): string {
-    let token: string;
-    let line: string;
+    let token: string | 0;
+    let line: string | 0;
     let result: string;
     let n: number;
 
     line = tokenize(str, 0, CHAR_PERCENT);
-    result = line;
+    // Cast: tokenize returns string|0, first call always returns string (the prefix before first %)
+    result = line as string;
     while (line != str) {
         token = tokenize(str, line, CHAR_PERCENT);
         line += "%" + token;
         if (token == "") {
             result += "%";
         } else {
-            n = base_atoi(token);
+            // Cast: in else branch, token is non-empty string (checked token == "" above)
+            n = base_atoi(token as string);
             if (n == 1) result += x1;
             else if (n == 2) result += x2;
         }
         const rest = tokenize(str, line, CHAR_PERCENT);
-        if (rest as any != 0) {
+        if (rest != 0) {
             line += "%" + rest;
             result += rest;
         }

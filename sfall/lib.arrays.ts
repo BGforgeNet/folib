@@ -267,7 +267,7 @@ export function array_concat(arr1: any[], arr2: any[]): any[] {
 /** Load saved array, create if doesn't exist */
 export function load_create_array(name: string, size: number): any[] {
     let arr = load_array(name);
-    if (arr == 0 as any) {
+    if (arr == 0) {
         arr = temp_array(size, 0);
         fix_array(arr);
         save_array(name, arr);

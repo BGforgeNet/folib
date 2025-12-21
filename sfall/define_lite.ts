@@ -5,7 +5,7 @@ import {
   create_object_sid, has_skill, critter_state, critter_injure, critter_inven_obj,
   attack_complex, wield_obj_critter, has_trait, inven_cmds, self_obj
 } from "../base.d";
-import { ObjectPtr } from "../index";
+import { ObjectPtr, CritterPtr, ItemPtr } from "../index";
 
 export const no_proc = 0;
 export const start_proc = 1;
@@ -809,28 +809,29 @@ export function create_object(pid: number, tile: number, elev: number): ObjectPt
 }
 
 /** @inline */
-export function critter_skill_level(who: ObjectPtr, skill: number): number {
+export function critter_skill_level(who: CritterPtr, skill: number): number {
   return has_skill(who, skill);
 }
 
 /** Check if critter is dead @inline */
-export function is_critter_dead(who: ObjectPtr): boolean {
+export function is_critter_dead(who: CritterPtr): boolean {
   return (critter_state(who) & CRITTER_IS_DEAD) != 0;
 }
 
 /** Remove injuries from critter @inline */
-export function critter_uninjure(who: ObjectPtr, flags: number): number {
+export function critter_uninjure(who: CritterPtr, flags: number): number {
   return critter_injure(who, flags | DAM_PERFORM_REVERSE);
 }
 
 /** @inline */
-export function attack(who: ObjectPtr): void {
+export function attack(who: CritterPtr): void {
   attack_complex(who, 0, 1, 0, 0, 30000, 0, 0);
 }
 
 /** @inline */
-export function wield_obj(item: ObjectPtr): void {
-  wield_obj_critter(self_obj, item);
+export function wield_obj(item: ItemPtr): void {
+  // Cast: self_obj is ObjectPtr but wield_obj is only called from critter scripts
+  wield_obj_critter(self_obj as CritterPtr, item);
 }
 
 /** @inline */
@@ -839,7 +840,7 @@ export function obj_is_visible_flag(who: ObjectPtr): number {
 }
 
 /** @inline */
-export function inven_count(who: ObjectPtr): ObjectPtr {
+export function inven_count(who: CritterPtr): ItemPtr {
   return critter_inven_obj(who, INVEN_TYPE_INV_COUNT);
 }
 
@@ -855,6 +856,7 @@ export function town_known(areaId: number): number {
 
 /** @inline */
 export function drug_influence(who: ObjectPtr): number {
+  // Cast: SSL objects are integers at runtime, metarule expects number
   return metarule(METARULE_WHO_ON_DRUGS, who as unknown as number);
 }
 
@@ -875,11 +877,13 @@ export function is_skill_tagged(skill: number): number {
 
 /** @inline */
 export function obj_drop_everything(who: ObjectPtr): void {
+  // Cast: SSL objects are integers at runtime, metarule expects number
   metarule(METARULE_DROP_ALL_INVEN, who as unknown as number);
 }
 
 /** @inline */
 export function inven_unwield(who: ObjectPtr): void {
+  // Cast: SSL objects are integers at runtime, metarule expects number
   metarule(METARULE_INVEN_UNWIELD_WHO, who as unknown as number);
 }
 
@@ -889,6 +893,6 @@ export function rm_fixed_timer_event(who: ObjectPtr, fixedVal: number): void {
 }
 
 /** @inline */
-export function inven_ptr(who: ObjectPtr, where: number): ObjectPtr {
-  return inven_cmds(who, INVEN_CMD_INDEX_PTR, where);
+export function inven_ptr(who: ObjectPtr, where: number): ItemPtr {
+  return inven_cmds(who, INVEN_CMD_INDEX_PTR, where) as ItemPtr;
 }

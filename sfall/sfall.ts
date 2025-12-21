@@ -2,7 +2,7 @@
  * Sfall scripting extensions for Fallout 2
  * Converted from headers/sfall/sfall.h
  */
-import type { ObjectPtr } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr } from "../index";
 export * from "./define_extra";
 
 // Import engine functions for wrappers
@@ -469,8 +469,9 @@ export function set_explosion_max_targets(maxTargets: number): void {
  * @returns Object in slot
  * @inline
  */
-export function critter_inven_obj2(critter: number, slot: number): ObjectPtr {
-    return sfall_func2("critter_inven_obj2", critter, slot) as ObjectPtr;
+export function critter_inven_obj2(critter: number, slot: number): ItemPtr {
+    // Cast: sfall_func2 returns any, we know this returns an item pointer
+    return sfall_func2("critter_inven_obj2", critter, slot) as ItemPtr;
 }
 
 /**
@@ -1632,8 +1633,9 @@ export function unset_array(array: any[], key: any): void {
 }
 
 /** Get list of party member critters (returns array for iteration) */
-export function party_member_list_critters(): ObjectPtr[] {
-    return party_member_list(0) as unknown as ObjectPtr[];
+export function party_member_list_critters(): CritterPtr[] {
+    // Cast: party_member_list returns temp array, we know elements are critter pointers
+    return party_member_list(0) as unknown as CritterPtr[];
 }
 
 /** Get list of all party members */
