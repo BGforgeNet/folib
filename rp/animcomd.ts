@@ -1,6 +1,16 @@
 import type { ObjectPtr } from "../index";
 import { reg_anim_func } from "../base.d";
 
+// Animation mode constants
+export const ANIMATE_WALK = 0;
+export const ANIMATE_RUN = 1;
+export const ANIMATE_INTERRUPT = 16;
+export const ANIMATE_FORWARD = 0;
+export const ANIMATE_REVERSE = 1;
+export const ANIMATE_ROTATION = 1000;
+export const ANIMATE_SET_FRAME = 1010;
+export const MAX_ROTATIONS = 6;
+
 // Animation registration command constants
 export const REG_ANIM_BEGIN = 1;
 
