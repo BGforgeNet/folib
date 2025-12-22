@@ -495,13 +495,13 @@ export declare function animate_rotation(direction: number): void;
 export declare function animate_set_frame(frame: number): void;
 
 /** Run self_obj's stand animation */
-export declare const animate_stand: void;
+export declare function animate_stand(): void;
 
 /** Run an object's stand animation */
 export declare function animate_stand_obj(obj: ObjectPtr): void;
 
 /** Run self_obj's stand animation in reverse */
-export declare const animate_stand_reverse: void;
+export declare function animate_stand_reverse(): void;
 
 /** Run an object's stand animation in reverse */
 export declare function animate_stand_reverse_obj(obj: ObjectPtr): void;
@@ -514,7 +514,7 @@ export declare function animate_stand_reverse_obj(obj: ObjectPtr): void;
 export declare function reg_anim_func(cmd: number, arg: number | ObjectPtr): void;
 
 /** Activate the animation sequence */
-export declare const reg_anim_end: void;
+export declare function reg_anim_end(): void;
 
 /**
  * Adds a single, in-place animation on an object to an animation sequence-list,
@@ -646,7 +646,7 @@ export declare function party_member_obj(pid: number): CritterPtr;
 // =============================================================================
 
 /** Request the talk system for this object */
-export declare const dialogue_system_enter: void;
+export declare function dialogue_system_enter(): void;
 
 /**
  * Start the dialogue system focusing on a critter and in a given mood.
@@ -665,10 +665,10 @@ export declare const dialogue_system_enter: void;
 export declare function start_gdialog(msgFileNum: number, who: CritterPtr, mood: number, headNum: number, bgIdx: number): void;
 
 /** End the dialogue system */
-export declare const end_dialogue: void;
+export declare function end_dialogue(): void;
 
 /** Start a dialog sequence */
-export declare const gSay_Start: void;
+export declare function gSay_Start(): void;
 
 /** End a dialog sequence */
 export declare function gSay_End(varIndex: number): void;
@@ -767,10 +767,10 @@ export declare function tokenize(str: string, offset: number | string, delim: nu
 export declare function load_map(mapName: string, startLocation: number): void;
 
 /** Brings up the World Map screen */
-export declare const world_map: void;
+export declare function world_map(): void;
 
 /** Brings up the Town Map screen (Fallout 1 only) */
-export declare const town_map: void;
+export declare function town_map(): void;
 
 /** Sets the World Map coordinates for a town */
 export declare function wm_area_set_pos(areaIdx: number, x: number, y: number): void;
@@ -797,10 +797,10 @@ export declare function set_exit_grids(markElev: number, mapID: number, elev: nu
 // =============================================================================
 
 /** Disables game UI input (must re-enable!) */
-export declare const game_ui_disable: void;
+export declare function game_ui_disable(): void;
 
 /** Re-enables game UI input */
-export declare const game_ui_enable: void;
+export declare function game_ui_enable(): void;
 
 /**
  * Does a palette fade to black. The time parameter is currently not actually used.
@@ -842,10 +842,10 @@ export declare function play_sfx(sfxFileName: string): void;
 export declare function play_gmovie(movieNum: number): void;
 
 /** Plays the endgame movie */
-export declare const endgame_movie: void;
+export declare function endgame_movie(): void;
 
 /** Plays the endgame slideshow */
-export declare const endgame_slideshow: void;
+export declare function endgame_slideshow(): void;
 
 // =============================================================================
 // Lock Functions
@@ -862,7 +862,7 @@ export declare function jam_lock(obj: DoorPtr | ContainerPtr): number;
 // =============================================================================
 
 /** Sets the return value for C-engine node */
-export declare const scr_return: void;
+export declare function scr_return(): void;
 
 /**
  * Tells the C-engine that the script will override default behavior for the object.
@@ -870,7 +870,7 @@ export declare const scr_return: void;
  * Commonly used for player actions on objects: looking at them, using them (opening doors),
  * or using items ON them (using a picklock or key on a door lock).
  */
-export declare const script_overrides: void;
+export declare function script_overrides(): void;
 
 // =============================================================================
 // Utility Functions
