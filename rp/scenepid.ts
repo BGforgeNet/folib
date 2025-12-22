@@ -1,5 +1,6 @@
 // Scenery PIDs from scenepid.h
 import { tile_contains_obj_pid } from "../base.d";
+import type { Elevation } from "../index";
 
 export const PID_BLOCKING_HEX = 33554499;
 export const PID_BLOWN_ARROYO_CAVE_DOOR = 33555365;
@@ -164,6 +165,6 @@ export const SC_TYPE_ELEVATOR = 2;
 export const SC_TYPE_LADDER_TOP = 3;
 export const SC_TYPE_LADDER_BOTTOM = 4;
 
-export function tile_is_blocked(tile: number, elev: number): boolean {
+export function tile_is_blocked(tile: number, elev: Elevation): boolean {
     return tile_contains_obj_pid(tile, elev, PID_BLOCKING_HEX);
 }

@@ -137,7 +137,7 @@ export declare function obj_set_light_level(obj: ObjectPtr, intensity: number, d
  * Creates a new object of prototype (pid) at a given tile and elevation (0-2).
  * If sid is not -1, it overrides the default script with the specified script #.
  */
-export declare function create_object_sid(pid: number, tile: number, elev: number, sid: number): ObjectPtr;
+export declare function create_object_sid(pid: number, tile: number, elev: Elevation, sid: number): ObjectPtr;
 
 /**
  * Destroys an object, which will call its script in the destroy_proc section
@@ -157,13 +157,13 @@ export declare function destroy_mult_objs(item: ItemPtr, count: number): number;
  * Using this to change elevations during loading an in-combat save will lead to a crash.
  * If called in `map_enter_p_proc`, wrap in `not_is_loading_game` to avoid the crash.
  */
-export declare function move_to(obj: ObjectPtr, tile: number, elev: number): number;
+export declare function move_to(obj: ObjectPtr, tile: number, elev: Elevation): number;
 
 /**
  * Attempts to place a critter at a given destination hex & elevation (0-2).
  * If it fails, it tries to find a nearby hex as near as possible to the start hex.
  */
-export declare function critter_attempt_placement(who: CritterPtr, hex: number, elev: number): number;
+export declare function critter_attempt_placement(who: CritterPtr, hex: number, elev: Elevation): number;
 
 // =============================================================================
 // Object Perception
@@ -216,10 +216,10 @@ export declare function critter_stop_attacking(who: CritterPtr): number;
  * Possible traits under the SPECIAL system are limited to Perks, Traits,
  * Object-instance information (such as team #'s, ai-packet #'s, etc.)
  */
-export declare function critter_add_trait(who: CritterPtr, traitType: number, trait: number, amount: number): number;
+export declare function critter_add_trait(who: CritterPtr, traitType: TraitType, trait: number, amount: number): number;
 
 /** Removes a trait from a critter */
-export declare function critter_rm_trait(who: CritterPtr, traitType: number, trait: number, amount: number): number;
+export declare function critter_rm_trait(who: CritterPtr, traitType: TraitType, trait: number, amount: number): number;
 
 /**
  * Returns the value of a critter's trait of a given trait_type (see define.h).
@@ -369,16 +369,16 @@ export declare function tile_distance_objs(obj1: ObjectPtr, obj2: ObjectPtr): nu
  * Returns the tile number of a tile offset from a starting tile in a given direction
  * (0-5, the next tile in that direction).
  */
-export declare function tile_num_in_direction(tile: number, direction: number, distance: number): number;
+export declare function tile_num_in_direction(tile: number, direction: Direction, distance: number): number;
 
 /** Returns true if a tile is currently visible on-screen */
 export declare function tile_is_visible(tile: number): boolean;
 
 /** Returns true if a tile contains an object with matching pid */
-export declare function tile_contains_obj_pid(tile: number, elev: number, pid: number): boolean;
+export declare function tile_contains_obj_pid(tile: number, elev: Elevation, pid: number): boolean;
 
 /** Returns the first object matching pid on a tile */
-export declare function tile_contains_pid_obj(tile: number, elev: number, pid: number): ObjectPtr;
+export declare function tile_contains_pid_obj(tile: number, elev: Elevation, pid: number): ObjectPtr;
 
 /**
  * Returns the rotation (0-5) to face a particular tile (destTile) from srcTile.
@@ -468,7 +468,7 @@ export declare function how_much(val: number): number;
 /**
  * Sets up a single-frame animation for the object that runs in the given direction.
  */
-export declare function anim(who: ObjectPtr, anim: number, direction: number): void;
+export declare function anim(who: ObjectPtr, anim: number, direction: Direction): void;
 
 /** Returns the action frame of an art frame */
 export declare function anim_action_frame(who: ObjectPtr, frame: number): number;
@@ -489,7 +489,7 @@ export declare function animate_move_obj_to_tile(who: CritterPtr, tile: number, 
 export declare function animate_run_to_tile(tile: number): void;
 
 /** Change self_obj's facing direction (0-5) */
-export declare function animate_rotation(direction: number): void;
+export declare function animate_rotation(direction: Direction): void;
 
 /** Change self_obj's animation frame */
 export declare function animate_set_frame(frame: number): void;
@@ -778,19 +778,19 @@ export declare function wm_area_set_pos(areaIdx: number, x: number, y: number): 
 /**
  * Sets the start location & rotation (0-5) for the next time this map is entered (loaded & run).
  */
-export declare function set_map_start(x: number, y: number, elev: number, rot: number): void;
+export declare function set_map_start(x: number, y: number, elev: Elevation, rot: Direction): void;
 
 /**
  * Used when loading a new map, forces the player to start at a particular
  * location (x/y), elevation (0-2) and rotation (0-5) when first coming up.
  */
-export declare function override_map_start(x: number, y: number, elev: number, rot: number): void;
+export declare function override_map_start(x: number, y: number, elev: Elevation, rot: Direction): void;
 
 /**
  * Sets all exit grids on a given elevation (markElev) to point to a destination
  * mapID (may be -1 to stay on this map), elevation, tileNum, and rotation.
  */
-export declare function set_exit_grids(markElev: number, mapID: number, elev: number, tile: number, rot: number): void;
+export declare function set_exit_grids(markElev: Elevation, mapID: number, elev: Elevation, tile: number, rot: Direction): void;
 
 // =============================================================================
 // UI Functions

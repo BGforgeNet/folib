@@ -1,10 +1,19 @@
-// Re-export types
+// Re-export types from declaration file
 export type {
     ObjectPtr, CritterPtr, ItemPtr, ContainerPtr, DoorPtr, SceneryPtr,
     ArrayID, SkillID, HookID, IfaceTag, GameMode,
     ObjType, BodyPart, WeaponType, InvenSlot, DamageType, FloatMsgColor,
     StatID, PerkID, TraitID, TraitType,
-    PcStatID, RollResult, AttackType, AttackMode, Gender, Difficulty, CritterState
+    PcStatID, RollResult, AttackType, AttackMode, Gender, CritterState,
+    Hand, Difficulty, Elevation, Direction
+} from './types.d';
+
+// Re-export constants from runtime file
+export {
+    LEFT_HAND, RIGHT_HAND,
+    DIFFICULTY_EASY, DIFFICULTY_NORMAL, DIFFICULTY_HARD,
+    ELEVATION_0, ELEVATION_1, ELEVATION_2, ELEVATION_ALL,
+    DIRECTION_NE, DIRECTION_E, DIRECTION_SE, DIRECTION_SW, DIRECTION_W, DIRECTION_NW
 } from './types';
 
 /** Float constant 1.0 - use to force float division: FLOAT1 * a / b */

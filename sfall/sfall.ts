@@ -2431,12 +2431,12 @@ export function unset_array(array: any[], key: any): void {
 /** Get list of party member critters (returns array for iteration) */
 export function party_member_list_critters(): CritterPtr[] {
     // Cast: party_member_list returns temp array, we know elements are critter pointers
-    return party_member_list(0) as unknown as CritterPtr[];
+    return party_member_list(false) as unknown as CritterPtr[];
 }
 
 /** Get list of all party members */
-export function party_member_list_all(): any[] {
-    return party_member_list(1);
+export function party_member_list_all(): ObjectPtr[] {
+    return party_member_list(true);
 }
 
 /**

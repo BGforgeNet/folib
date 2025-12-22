@@ -90,33 +90,17 @@ export type AttackMode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 /** Gender (0=male, 1=female) */
 export type Gender = 0 | 1;
 
-/** Active hand */
-export const LEFT_HAND = 0;
-export const RIGHT_HAND = 1;
-export type Hand = typeof LEFT_HAND | typeof RIGHT_HAND;
+/** Active hand (0=left, 1=right) */
+export type Hand = 0 | 1;
 
-/** Difficulty level */
-export const DIFFICULTY_EASY = 0;
-export const DIFFICULTY_NORMAL = 1;
-export const DIFFICULTY_HARD = 2;
-export type Difficulty = typeof DIFFICULTY_EASY | typeof DIFFICULTY_NORMAL | typeof DIFFICULTY_HARD;
+/** Difficulty level (0=easy, 1=normal, 2=hard) */
+export type Difficulty = 0 | 1 | 2;
 
 /** Elevation level (0-2) */
-export const ELEVATION_0 = 0;
-export const ELEVATION_1 = 1;
-export const ELEVATION_2 = 2;
-export type Elevation = typeof ELEVATION_0 | typeof ELEVATION_1 | typeof ELEVATION_2;
-/** Special value for set_can_rest_on_map to apply to all elevations */
-export const ELEVATION_ALL = -1;
+export type Elevation = 0 | 1 | 2;
 
 /** Direction on hex grid (0-5, clockwise from NE) */
-export const DIRECTION_NE = 0;
-export const DIRECTION_E = 1;
-export const DIRECTION_SE = 2;
-export const DIRECTION_SW = 3;
-export const DIRECTION_W = 4;
-export const DIRECTION_NW = 5;
-export type Direction = typeof DIRECTION_NE | typeof DIRECTION_E | typeof DIRECTION_SE | typeof DIRECTION_SW | typeof DIRECTION_W | typeof DIRECTION_NW;
+export type Direction = 0 | 1 | 2 | 3 | 4 | 5;
 
 /** Critter state bitmask from critter_state() */
 export type CritterState = number & { __brand: 'CritterState' };

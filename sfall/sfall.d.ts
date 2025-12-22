@@ -1,7 +1,7 @@
 // Sfall scripting extensions for Fallout 2
 // Auto-generated from fallout-ssl-sfall.yml
 
-import type { ObjectPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand, BodyPart, Elevation, Direction, StatID } from "../index";
 
 // =============================================================================
 // =============================================================================
@@ -17,44 +17,44 @@ export declare function metarule3(func: number, arg1: number, arg2: number, arg3
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_npc_stat_max(stat: number, value: number): void;
+export declare function set_npc_stat_max(stat: StatID, value: number): void;
 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_npc_stat_min(stat: number, value: number): void;
+export declare function set_npc_stat_min(stat: StatID, value: number): void;
 
 
 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_stat_max(stat: number, value: number): void;
+export declare function set_stat_max(stat: StatID, value: number): void;
 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_stat_min(stat: number, value: number): void;
+export declare function set_stat_min(stat: StatID, value: number): void;
 
 /**
  * Set PC stat maximum. Only affects the player.
  */
-export declare function set_pc_stat_max(stat: number, value: number): void;
+export declare function set_pc_stat_max(stat: StatID, value: number): void;
 
 /**
  * Set PC stat minimum. Only affects the player.
  */
-export declare function set_pc_stat_min(stat: number, value: number): void;
+export declare function set_pc_stat_min(stat: StatID, value: number): void;
 
 /**
  * Get PC extra stat value (bonus stats). Equivalent to calling get_critter_extra_stat with dude_obj.
  */
-export declare function get_pc_extra_stat(stat: number): number;
+export declare function get_pc_extra_stat(stat: StatID): number;
 
 /**
  * Set PC extra stat value (bonus stats). Equivalent to calling set_critter_extra_stat with dude_obj.
  */
-export declare function set_pc_extra_stat(stat: number, value: number): void;
+export declare function set_pc_extra_stat(stat: StatID, value: number): void;
 
 export declare function set_perk_stat(perkID: number, value: number): void;
 
@@ -63,49 +63,49 @@ export declare function set_perk_stat_mag(perkID: number, value: number): void;
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_critter_base_stat(CritterPtr: any, StatID: number): number;
+export declare function get_critter_base_stat(critter: ObjectPtr, stat: StatID): number;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_critter_extra_stat(CritterPtr: any, StatID: number): number;
+export declare function get_critter_extra_stat(critter: ObjectPtr, stat: StatID): number;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_pc_base_stat(StatID: number): number;
+export declare function get_pc_base_stat(stat: StatID): number;
 
 
 /**
  * - Returns the maximum set value of the specified stat (see `set_stat_max` functions)
  * - who: 0 (`False`) or omitting the argument - returns the value of the player, 1 (`True`) - returns the value set for other critters
- * 
+ *
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_stat_max(stat: number, False: boolean): void;
+export declare function get_stat_max(stat: StatID, who: boolean): void;
 
 /**
  * - Returns the minimum set value of the specified stat (see `set_stat_min` functions)
  * - who: 0 (`False`) or omitting the argument - returns the value of the player, 1 (`True`) - returns the value set for other critters
- * 
+ *
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_stat_min(stat: number, False: boolean): void;
+export declare function get_stat_min(stat: StatID, who: boolean): void;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function set_critter_base_stat(CritterPtr: any, StatID: number, value: number): void;
+export declare function set_critter_base_stat(critter: ObjectPtr, stat: StatID, value: number): void;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function set_critter_extra_stat(CritterPtr: any, StatID: number, value: number): void;
+export declare function set_critter_extra_stat(critter: ObjectPtr, stat: StatID, value: number): void;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function set_pc_base_stat(StatID: number, value: number): void;
+export declare function set_pc_base_stat(stat: StatID, value: number): void;
 
 
 // =============================================================================
@@ -137,7 +137,7 @@ export declare function reg_anim_combat_check(enable: number): void;
 /**
  * Given object is destroyed at the end of current animation set.
  */
-export declare function reg_anim_destroy(ObjectPtr: any): void;
+export declare function reg_anim_destroy(obj: ObjectPtr): void;
 
 /**
  * Change light of any object. Light argument is a light radius (0-8), but you can use highest 2 bytes to pass light intensity as well (example: 0xFFFF0008 - intensity 65535 and radius 8). If highest 2 bytes are 0, intensity will not be changed. Intensity range is from 0 to 65535 (0xFFFF)
@@ -147,12 +147,12 @@ export declare function reg_anim_light(ObjectPtr: any, light: number, delay: num
 /**
  * Plays "take out weapon" animation for given `holdFrameID`. It is not required to have such weapon in critter's inventory.
  */
-export declare function reg_anim_take_out(ObjectPtr: any, holdFrameID: any, delay: any): void;
+export declare function reg_anim_take_out(obj: ObjectPtr, holdFrameID: number, delay: number): void;
 
 /**
  * Makes object change its direction to face given tile number or target object.
  */
-export declare function reg_anim_turn_towards(ObjectPtr: any, tiletarget: number, delay: any): void;
+export declare function reg_anim_turn_towards(obj: ObjectPtr, tileTarget: number, delay: number): void;
 
 // =============================================================================
 // Arrays
@@ -281,12 +281,12 @@ export declare function refresh_pc_art(): void;
 /**
  * Gets the hit percentage modifiers for aiming at specific bodyparts. Valid bodypart id's are from 0 to 8.
  */
-export declare function get_bodypart_hit_modifier(bodypart: number): number;
+export declare function get_bodypart_hit_modifier(bodypart: BodyPart): number;
 
 /**
  * Alters the hit percentage modifiers for aiming at specific bodyparts. Valid bodypart id's are from 0 to 8. Changes are not saved, and will reset to the defaults (or to the values specified in ddraw.ini if they exist) at each reload.
  */
-export declare function set_bodypart_hit_modifier(bodypart: number, value: number): void;
+export declare function set_bodypart_hit_modifier(bodypart: BodyPart, value: number): void;
 
 
 /**
@@ -360,12 +360,12 @@ export declare function set_critter_current_ap(critter: ObjectPtr, ap: number): 
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
  */
-export declare function remove_attacker_knockback(CritterPtr: any): void;
+export declare function remove_attacker_knockback(critter: CritterPtr): void;
 
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
  */
-export declare function remove_weapon_knockback(WeaponPtr: any): void;
+export declare function remove_weapon_knockback(weapon: ItemPtr): void;
 
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
@@ -683,18 +683,18 @@ export declare function set_map_time_multi(multi: number): void;
 /**
  * Returns first object blocking given tile using given blocking function or 0 if tile is clear.
  */
-export declare function obj_blocking_tile(tileNum: number, elevation: number, blockingType: number): ObjectPtr;
+export declare function obj_blocking_tile(tileNum: number, elevation: Elevation, blockingType: number): ObjectPtr;
 
 
 /**
  * Returns an array of all objects at given tile. It will include any hidden, dead or system objects (like cursor), so make sure to check properly when iterating.
  */
-export declare function tile_get_objs(tileNum: number, elevation: number): any[];
+export declare function tile_get_objs(tileNum: number, elevation: Elevation): ObjectPtr[];
 
 /**
  * Returns light intensity at the given tile in range from 0 to 65535.
  */
-export declare function tile_light(elevation: number, tileNum: number): number;
+export declare function tile_light(elevation: Elevation, tileNum: number): number;
 
 export declare function tile_under_cursor(): number;
 
@@ -771,7 +771,7 @@ export declare function obj_blocking_line(objFrom: ObjectPtr, tileTo: number, bl
  * Returns an array of all current party members (0 - only critters that are alive and visible will be returned, 1 - all objects, including the car trunk, etc.)
  * The `list_xxx` functions can be used to loop over all items on a map. `list_begin` takes an argument telling sfall what you want to list (defined in **sfall.h**). It returns a list pointer, which you iterate through with `list_next`. Finally, when you've finished with the list use `list_end` on it. Not calling `list_end` will result in a memory leak. Alternatively, use `list_as_array` to get the whole list at once as a temp array variable, which can be looped over using `len_array` and which you don't need to remember to free afterwards.
  */
-export declare function party_member_list(includeHidden: number): any[];
+export declare function party_member_list(includeHidden: boolean): ObjectPtr[];
 
 // =============================================================================
 // Perks
@@ -979,7 +979,7 @@ export declare function string_replace(str: string, search: string, replace: str
 /**
  * Takes a string and a seperator, searches the string for all instances of the seperator, and returns a temp array filled with the pieces of the string split at each instance. If you give an empty string as the seperator, the string is split into individual characters. You can use this to search for a substring in a string like this: `strlen(get_array(string_split(haystack, needle), 0))`
  */
-export declare function string_split(text: string, split: any): any[];
+export declare function string_split(text: string, split: string): string[];
 
 /**
  * Converts all letters in the given string to the specified case.
@@ -1078,7 +1078,7 @@ export declare function force_aimed_shots(pid: number): void;
 /**
  * Gets current critical table. For details see [critical hit tables](http://falloutmods.wikia.com/wiki/Critical_hit_tables). Requires `OverrideCriticalTable` to be enabled in `ddraw.ini` (already enabled by default).
  */
-export declare function get_critical_table(crittertype: number, bodypart: number, level: number, valuetype: number): number;
+export declare function get_critical_table(crittertype: number, bodypart: BodyPart, level: number, valuetype: number): number;
 
 /**
  * Will return the last critter to be deliberately attacked. Outside of combat always returns 0.
@@ -1088,12 +1088,12 @@ export declare function get_last_target(critter: ObjectPtr): ObjectPtr;
 /**
  * Resets the critical table to default (or to the contents of `CriticalOverrides.ini`, if it exists). For details see 'http://falloutmods.wikia.com/wiki/Critical_hit_tables'. Requires `OverrideCriticalTable` to be set to 1 in `ddraw.ini`. (Disabled by default, because it noticably increases loading times.)
  */
-export declare function reset_critical_table(crittertype: number, bodypart: number, level: number, valuetype: number): void;
+export declare function reset_critical_table(crittertype: number, bodypart: BodyPart, level: number, valuetype: number): void;
 
 /**
  * Used for modifying the critical table. For details see [critical hit tables](http://falloutmods.wikia.com/wiki/Critical_hit_tables). Changes are not saved, and will reset to the defaults (or to the contents of `CriticalOverrides.ini`, if it exists) at each game reload. Requires `OverrideCriticalTable` to be enabled in `ddraw.ini` (already enabled by default).
  */
-export declare function set_critical_table(crittertype: number, bodypart: number, level: number, valuetype: number, value: number): void;
+export declare function set_critical_table(crittertype: number, bodypart: BodyPart, level: number, valuetype: number, value: number): void;
 
 
 
@@ -1101,17 +1101,17 @@ export declare function set_critical_table(crittertype: number, bodypart: number
 /**
  * These functions require an __EXACTLY 8 characters long__, case sensitive string for the variable name. The variables behave the same as normal Fallout globals, except that they don't have to be declared beforehand in `vault13.gam`. Trying to get a variable which hasn't been set will always return 0. The functions are intended for use when a patch to a mod requires the addition of a new global variable, a case which would otherwise require the player to start a new game.
  */
-export declare function get_sfall_global_float(varname: any): number;
+export declare function get_sfall_global_float(varname: string): number;
 
 /**
  * These functions require an __EXACTLY 8 characters long__, case sensitive string for the variable name. The variables behave the same as normal Fallout globals, except that they don't have to be declared beforehand in `vault13.gam`. Trying to get a variable which hasn't been set will always return 0. The functions are intended for use when a patch to a mod requires the addition of a new global variable, a case which would otherwise require the player to start a new game.
  */
-export declare function get_sfall_global_int(varname: any): number;
+export declare function get_sfall_global_int(varname: string): number;
 
 /**
  * These functions require an __EXACTLY 8 characters long__, case sensitive string for the variable name. The variables behave the same as normal Fallout globals, except that they don't have to be declared beforehand in `vault13.gam`. Trying to get a variable which hasn't been set will always return 0. The functions are intended for use when a patch to a mod requires the addition of a new global variable, a case which would otherwise require the player to start a new game.
  */
-export declare function set_sfall_global(varname: any, value: any): void;
+export declare function set_sfall_global(varname: string, value: number): void;
 
 /**
  * The graphics functions are only available if the user is using graphics mode 4 or 5. Use `graphics_funcs_available` to check; it returns 1 if you can use them or 0 if you can't. Calling graphics functions when `graphics_funcs_available` returns 0 will do nothing.
@@ -1151,7 +1151,7 @@ export declare function get_mouse_y(): number;
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
  */
-export declare function remove_target_knockback(CritterPtr: any): void;
+export declare function remove_target_knockback(critter: CritterPtr): void;
 
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
@@ -1252,7 +1252,7 @@ export declare function add_g_timer_event(time: number, fixedParam: number): voi
 /**
  * Creates new spatial script with given SID, at given tile, and radius.
  */
-export declare function create_spatial(scriptID: number, tile: number, elevation: number, radius: number): ObjectPtr;
+export declare function create_spatial(scriptID: number, tile: number, elevation: Elevation, radius: number): ObjectPtr;
 
 /**
  * Returns 1 the first time it is called after a new game or game load, and 0 any time after. It works on an individual basis for each script, so one script wont interfere with others. Its primary use is for global scripts, so that they know when to call `set_global_script_repeat`, but it can be called from normal scripts too.
@@ -1427,7 +1427,7 @@ export declare function substr(text: string, start: number, length: number): str
 /**
  * Returns the shortest path to a given tile using given blocking function as an array of tile directions (0..5) to move on each step. Array length equals to a number of steps. Empty array means that specified target cannot be reached.
  */
-export declare function path_find_to(objFrom: ObjectPtr, tileTo: number, blockingType: number): any[];
+export declare function path_find_to(objFrom: ObjectPtr, tileTo: number, blockingType: number): Direction[];
 
 export declare function atof(text: string): number;
 

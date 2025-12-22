@@ -3,8 +3,9 @@ import { len_array } from "../sfall/sfall.d";
 import { party_member_list_critters } from "../sfall/sfall";
 import { STAT_ch } from "../sfall/define_lite";
 import { GVAR_PLAYER_GOT_CAR } from "./global";
+import type { Elevation } from "../index";
 
-export function dude_elevation(): number {
+export function dude_elevation(): Elevation {
     return elevation(dude_obj);
 }
 

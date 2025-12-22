@@ -355,7 +355,7 @@ export const DEN_SLAVE_RUN_SUCCESS = 10;
 // Map Utility Functions (converted from macros)
 // =============================================================================
 
-import { ObjectPtr } from "../index";
+import type { ObjectPtr, Elevation, Direction } from "../index";
 import { override_map_start, anim, rotation_to_tile, tile_num } from "../base.d";
 import { ANIMATE_ROTATION } from "./animcomd";
 
@@ -364,7 +364,7 @@ import { ANIMATE_ROTATION } from "./animcomd";
  * Converts hex to x,y coordinates
  * @inline
  */
-export function override_map_start_hex(hex: number, elev: number, rot: number): void {
+export function override_map_start_hex(hex: number, elev: Elevation, rot: Direction): void {
     override_map_start(hex % 200, hex / 200, elev, rot);
 }
 

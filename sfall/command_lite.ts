@@ -1,6 +1,6 @@
 // Command macros from command_lite.h
 
-import { ObjectPtr } from "../index";
+import type { ObjectPtr, Elevation } from "../index";
 import { dude_obj, self_obj, tile_num, elevation, obj_name } from "../base.d";
 
 /** @inline */
@@ -9,7 +9,7 @@ export function dude_tile(): number {
 }
 
 /** @inline */
-export function dude_elevation(): number {
+export function dude_elevation(): Elevation {
     return elevation(dude_obj);
 }
 
