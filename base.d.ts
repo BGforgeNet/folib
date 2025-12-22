@@ -1,6 +1,6 @@
 // Fallout 2 engine builtins (external - not bundled into output)
 
-import type { ObjectPtr, CritterPtr, ItemPtr, DoorPtr, ContainerPtr } from "./index";
+import type { ObjectPtr, CritterPtr, ItemPtr, DoorPtr, ContainerPtr, SkillID, ObjType, StatID, InvenSlot, TraitType, FloatMsgColor, PerkID, TraitID, PcStatID, CritterState } from "./index";
 
 // =============================================================================
 // Runtime Globals
@@ -77,7 +77,7 @@ export declare const running_burning_guy: number;
 export declare function obj_item_subtype(obj: ItemPtr): number;
 
 /** Returns the type of an object (Item, Wall, Scenery, Critter, etc.) */
-export declare function obj_type(obj: ObjectPtr): number;
+export declare function obj_type(obj: ObjectPtr): ObjType;
 
 /** Returns the prototype id # (pid) of an object */
 export declare function obj_pid(obj: ObjectPtr): number;
@@ -183,7 +183,7 @@ export declare function obj_can_hear_obj(src: ObjectPtr, dst: ObjectPtr): boolea
 // =============================================================================
 
 /** Returns the state of a critter (dead, unconscious, etc.) */
-export declare function critter_state(who: CritterPtr): number;
+export declare function critter_state(who: CritterPtr): CritterState;
 
 /**
  * @deprecated Use `critter_inven_obj2` instead.
@@ -191,16 +191,16 @@ export declare function critter_state(who: CritterPtr): number;
  * The appropriate values for where are: `INVEN_TYPE_WORN`, `INVEN_TYPE_RIGHT_HAND`,
  * and `INVEN_TYPE_LEFT_HAND`.
  */
-export declare function critter_inven_obj(who: CritterPtr, slot: number): ItemPtr;
+export declare function critter_inven_obj(who: CritterPtr, slot: InvenSlot): ItemPtr;
 
 /** Returns a critter stat value */
-export declare function get_critter_stat(who: CritterPtr, stat: number): number;
+export declare function get_critter_stat(who: CritterPtr, stat: StatID): number;
 
 /**
  * DOES NOT SET THE STAT.
  * Modifies attribute `stat` in critter `who` by value `mod`.
  */
-export declare function set_critter_stat(who: CritterPtr, stat: number, mod: number): number;
+export declare function set_critter_stat(who: CritterPtr, stat: StatID, mod: number): number;
 
 /** Returns true if the critter has its FLEE flag set */
 export declare function critter_is_fleeing(who: CritterPtr): boolean;
@@ -227,14 +227,14 @@ export declare function critter_rm_trait(who: CritterPtr, traitType: number, tra
  * current rotation, or Trait (finesse, bruiser, etc.)
  * Also works with TRAIT_OBJECT for any object.
  */
-export declare function has_trait(traitType: number, who: ObjectPtr, trait: number): number;
+export declare function has_trait(traitType: TraitType, who: ObjectPtr, trait: number): number;
 
 /**
  * Modifies a given skill in a critter by a given amount.
  * Note: Only works on dude_obj! Will not work on other critters.
  * For tagged skills, the amount will be rounded down to the closest even number.
  */
-export declare function critter_mod_skill(who: CritterPtr, skill: number, amount: number): number;
+export declare function critter_mod_skill(who: CritterPtr, skill: SkillID, amount: number): number;
 
 /** Returns the critter's poison level */
 export declare function get_poison(who: CritterPtr): number;
@@ -430,10 +430,10 @@ export declare function terminate_combat(): void;
  * Returns the level of the skill (0-17) of the target critter.
  * Returns 0-200 for Fallout 1, 0-300 for Fallout 2.
  */
-export declare function has_skill(who: CritterPtr, skill: number): number;
+export declare function has_skill(who: CritterPtr, skill: SkillID): number;
 
 /** Returns a pc-only stat value (PCSTAT_*) */
-export declare function get_pc_stat(stat: number): number;
+export declare function get_pc_stat(stat: PcStatID): number;
 
 /**
  * Performs a check/test-roll versus one of the basic traits (strength, perception, etc.).
@@ -447,10 +447,10 @@ export declare function do_check(who: CritterPtr, check: number, modifier: numbe
  * is_success and is_critical to determine states, and how_much can be used to
  * determine the difference succeeded or failed by.
  */
-export declare function roll_vs_skill(who: CritterPtr, skill: number, modifier: number): number;
+export declare function roll_vs_skill(who: CritterPtr, skill: SkillID, modifier: number): number;
 
 /** Returns the value of a completed skill vs skill contest */
-export declare function skill_contest(skill: number): number;
+export declare function skill_contest(skill: SkillID): number;
 
 /** Returns true if the roll result is a success (including critical) */
 export declare function is_success(rollResult: number): boolean;
@@ -726,7 +726,7 @@ export declare function display_msg(message: string): void;
  * (such as for end-of-quest notifications), and SEQUENTIAL will cycle through the colors
  * to give critters different-colored messages to differentiate them.
  */
-export declare function float_msg(who: ObjectPtr, message: string, type: number): void;
+export declare function float_msg(who: ObjectPtr, message: string, color: FloatMsgColor): void;
 
 /**
  * Prints a string to the debug monitor.
@@ -908,7 +908,7 @@ export declare function use_obj(obj: ObjectPtr): void;
 export declare function use_obj_on_obj(item: ObjectPtr, target: ObjectPtr): ObjectPtr;
 
 /** Returns true if an active skill is being used */
-export declare function using_skill(who: CritterPtr, skill: number): boolean;
+export declare function using_skill(who: CritterPtr, skill: SkillID): boolean;
 
 // =============================================================================
 // Named Events (sfall)

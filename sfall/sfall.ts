@@ -2,7 +2,7 @@
  * Sfall scripting extensions for Fallout 2
  * Converted from headers/sfall/sfall.h
  */
-import type { ObjectPtr, CritterPtr, ItemPtr } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, IfaceTag, GameMode } from "../index";
 export * from "./define_extra";
 
 // Import engine functions for wrappers
@@ -14,110 +14,906 @@ import { OBJ_DATA_CUR_ACTION_POINT } from "./define_extra";
 import { DMG_fire } from "./define_lite";
 
 // ============================================================================
+// Interface Tag Constants (for show_iface_tag, hide_iface_tag, is_iface_tag_active)
+// ============================================================================
+
+/** Sneak interface tag - shows when sneaking is active */
+export const IFACE_TAG_SNEAK = 0 as IfaceTag;
+/** Poisoned status tag - only for is_iface_tag_active check */
+export const IFACE_TAG_POISONED = 1 as IfaceTag;
+/** Radiated status tag - only for is_iface_tag_active check */
+export const IFACE_TAG_RADIATED = 2 as IfaceTag;
+/** Level up available interface tag */
+export const IFACE_TAG_LEVEL = 3 as IfaceTag;
+/** Addict status interface tag */
+export const IFACE_TAG_ADDICT = 4 as IfaceTag;
+
+// ============================================================================
 // Game Modes (for set_shader_mode and get_game_mode)
 // ============================================================================
 
 /** World map mode */
-export const WORLDMAP = 0x1;
+export const WORLDMAP = 0x1 as GameMode;
 /** Local map mode (always 1 when scripts run) */
-export const LOCALMAP = 0x2;
+export const LOCALMAP = 0x2 as GameMode;
 /** Dialog mode */
-export const DIALOG = 0x4;
+export const DIALOG = 0x4 as GameMode;
 /** Escape menu mode */
-export const ESCMENU = 0x8;
+export const ESCMENU = 0x8 as GameMode;
 /** Save game mode */
-export const SAVEGAME = 0x10;
+export const SAVEGAME = 0x10 as GameMode;
 /** Load game mode */
-export const LOADGAME = 0x20;
+export const LOADGAME = 0x20 as GameMode;
 /** Combat mode */
-export const COMBAT = 0x40;
+export const COMBAT = 0x40 as GameMode;
 /** Options menu mode */
-export const OPTIONS = 0x80;
+export const OPTIONS = 0x80 as GameMode;
 /** Help screen mode */
-export const HELP = 0x100;
+export const HELP = 0x100 as GameMode;
 /** Character screen mode */
-export const CHARSCREEN = 0x200;
+export const CHARSCREEN = 0x200 as GameMode;
 /** Pipboy mode */
-export const PIPBOY = 0x400;
+export const PIPBOY = 0x400 as GameMode;
 /** Player combat mode */
-export const PCOMBAT = 0x800;
+export const PCOMBAT = 0x800 as GameMode;
 /** Inventory mode */
-export const INVENTORY = 0x1000;
+export const INVENTORY = 0x1000 as GameMode;
 /** Automap mode */
-export const AUTOMAP = 0x2000;
+export const AUTOMAP = 0x2000 as GameMode;
 /** Skilldex mode */
-export const SKILLDEX = 0x4000;
+export const SKILLDEX = 0x4000 as GameMode;
 /** Interface use mode */
-export const INTFACEUSE = 0x8000;
+export const INTFACEUSE = 0x8000 as GameMode;
 /** Interface loot mode */
-export const INTFACELOOT = 0x10000;
+export const INTFACELOOT = 0x10000 as GameMode;
 /** Barter mode */
-export const BARTER = 0x20000;
+export const BARTER = 0x20000 as GameMode;
 /** Hero window mode */
-export const HEROWIN = 0x40000;
+export const HEROWIN = 0x40000 as GameMode;
 /** Dialog view mode */
-export const DIALOGVIEW = 0x80000;
+export const DIALOGVIEW = 0x80000 as GameMode;
 /** Counter window for moving multiple items or setting a timer */
-export const COUNTERWIN = 0x100000;
+export const COUNTERWIN = 0x100000 as GameMode;
 /** Ctrl+P pause window */
-export const PAUSEWIN = 0x200000;
+export const PAUSEWIN = 0x200000 as GameMode;
 /** Special mode */
-export const SPECIAL = 0x80000000;
+export const SPECIAL = 0x80000000 as GameMode;
 
 // ============================================================================
 // Hook Types (for register_hook_proc)
 // ============================================================================
 
+/**
+ * Runs when Fallout is calculating the chances of an attack striking a target.
+ * Runs after the hit chance is fully calculated normally, including applying the 95% cap.
+ *
+ * ```
+ * int     arg0 - The hit chance (capped)
+ * Critter arg1 - The attacker
+ * Critter arg2 - The target of the attack
+ * int     arg3 - The targeted bodypart
+ * int     arg4 - Source tile (may differ from attacker's tile, when AI is considering potential fire position)
+ * int     arg5 - Attack Type (see ATKTYPE_* constants)
+ * int     arg6 - Ranged flag. 1 if the hit chance calculation takes into account the distance to the target
+ * int     arg7 - The raw hit chance before applying the cap
+ *
+ * int     ret0 - The new hit chance. The value is limited to the range of -99 to 999
+ * ```
+ */
 export const HOOK_TOHIT = 0;
+
+/**
+ * Runs after Fallout has decided if an attack will hit or miss.
+ *
+ * ```
+ * int     arg0 - If the attack will hit: 0 - critical miss, 1 - miss, 2 - hit, 3 - critical hit
+ * Critter arg1 - The attacker
+ * Critter arg2 - The target of the attack
+ * int     arg3 - The bodypart
+ * int     arg4 - The hit chance
+ *
+ * int     ret0 - Override the hit/miss
+ * int     ret1 - Override the targeted bodypart
+ * Critter ret2 - Override the target of the attack
+ * ```
+ */
 export const HOOK_AFTERHITROLL = 1;
+
+/**
+ * Runs whenever Fallout calculates the AP cost of using an active item in hand (or unarmed attack).
+ * Doesn't run for moving.
+ *
+ * Note that the first time a game is loaded, this script doesn't run before the initial interface
+ * is drawn, so if the script effects the AP cost of whatever is in the player's hands at the time
+ * the wrong AP cost will be shown. It will be fixed the next time the interface is redrawn.
+ *
+ * You can get the weapon object by checking item slot based on attack type (ATKTYPE_LWEP1, etc)
+ * and then calling critter_inven_obj.
+ *
+ * ```
+ * Critter arg0 - The critter performing the action
+ * int     arg1 - Attack Type (see ATKTYPE_* constants)
+ * int     arg2 - Is aimed attack (1 or 0)
+ * int     arg3 - The default AP cost
+ * Item    arg4 - The weapon for which the cost is calculated (0 if can be obtained by other method)
+ *
+ * int     ret0 - The new AP cost
+ * ```
+ */
 export const HOOK_CALCAPCOST = 2;
+
+/**
+ * Runs before Fallout tries to calculate the death animation.
+ * Lets you switch out which weapon Fallout sees.
+ * Does not run for critters in the knockdown/out state.
+ *
+ * ```
+ * int     arg0 - The pid of the weapon performing the attack (-1 if unarmed)
+ * Critter arg1 - The attacker
+ * Critter arg2 - The target
+ * int     arg3 - The amount of damage
+ * int     arg4 - Unused, always -1
+ *
+ * int     ret0 - The pid of an object to override the attacking weapon with
+ * ```
+ */
 export const HOOK_DEATHANIM1 = 3;
+
+/**
+ * Runs after Fallout has calculated the death animation.
+ * Lets you set your own custom frame id, so more powerful than HOOK_DEATHANIM1, but performs no validation.
+ * Does not run for critters in the knockdown/out state.
+ *
+ * When using critter_dmg function, this script will also run. In that case weapon pid will be -1
+ * and attacker will point to an object with obj_art_fid == 0x20001F5.
+ *
+ * ```
+ * int     arg0 - The pid of the weapon performing the attack (-1 if unarmed)
+ * Critter arg1 - The attacker
+ * Critter arg2 - The target
+ * int     arg3 - The amount of damage
+ * int     arg4 - The death anim id calculated by Fallout
+ *
+ * int     ret0 - The death anim id to override with
+ * ```
+ */
 export const HOOK_DEATHANIM2 = 4;
+
+/**
+ * Runs when:
+ * 1. Game calculates how much damage each target will get (primary target and extras from explosions/bursts).
+ *    This happens BEFORE the actual attack animation.
+ * 2. AI decides whether it is safe to use area attack (burst, grenades), if he might hit friendlies.
+ *
+ * Does not run for misses, or non-combat damage like dynamite explosions.
+ *
+ * ```
+ * Critter arg0  - The target
+ * Critter arg1  - The attacker
+ * int     arg2  - The amount of damage to the target
+ * int     arg3  - The amount of damage to the attacker
+ * int     arg4  - The special effect flags for the target (use bwand DAM_* to check)
+ * int     arg5  - The special effect flags for the attacker
+ * Item    arg6  - The weapon used in the attack
+ * int     arg7  - The bodypart that was struck
+ * int     arg8  - Damage Multiplier (divided by 2, so 3 = 1.5x, 8 = 4x)
+ * int     arg9  - Number of bullets actually hit the target (1 for melee)
+ * int     arg10 - The amount of knockback to the target
+ * int     arg11 - Attack Type (see ATKTYPE_* constants)
+ * mixed   arg12 - computed attack data (use C_ATTACK_* offsets with get/set_object_data)
+ *
+ * int     ret0 - The damage to the target
+ * int     ret1 - The damage to the attacker
+ * int     ret2 - The special effect flags for the target
+ * int     ret3 - The special effect flags for the attacker
+ * int     ret4 - The amount of knockback to the target
+ * ```
+ */
 export const HOOK_COMBATDAMAGE = 5;
+
+/**
+ * Runs immediately after a critter dies for any reason.
+ * No return values; this is just a convenience for when you need to do something after death
+ * for a large number of different critters and don't want to have to script each one.
+ *
+ * ```
+ * Critter arg0 - The critter that just died
+ * ```
+ */
 export const HOOK_ONDEATH = 6;
+
+/**
+ * Runs when the AI is trying to pick a target in combat.
+ * Fallout first chooses a list of 4 likely suspects, then normally sorts them in order of
+ * weakness/distance/etc depending on the AI caps of the attacker.
+ * This hook replaces that sorting function, allowing you to sort the targets in some arbitrary way.
+ *
+ * The return values can include critters that weren't in the list of possible targets,
+ * but they may still be discarded later if out of perception or chance of hit is too low.
+ *
+ * Use set_sfall_return to give the 4 targets, in order of preference.
+ * Pass 0 or -1 to skip return values for less than 4 targets.
+ *
+ * ```
+ * Critter arg0 - The attacker
+ * Critter arg1 - A possible target
+ * Critter arg2 - A possible target
+ * Critter arg3 - A possible target
+ * Critter arg4 - A possible target
+ *
+ * Critter ret0 - The first choice of target
+ * Critter ret1 - The second choice of target
+ * Critter ret2 - The third choice of target
+ * Critter ret3 - The fourth choice of target
+ * ```
+ */
 export const HOOK_FINDTARGET = 7;
+
+/**
+ * Runs when:
+ * 1. a critter uses an object on another critter (or themselves)
+ * 2. a critter uses an object from inventory without "Use" action flag and it's not active flare/explosive
+ * 3. player or AI uses any drug
+ *
+ * This is fired before the object is used, and the relevant use_obj_on script procedures are run.
+ * You can disable default item behavior.
+ *
+ * NOTE: You can't remove/destroy this object during the hookscript (game will crash).
+ * To remove it, return 1.
+ *
+ * ```
+ * Critter arg0 - The target
+ * Critter arg1 - The user
+ * int     arg2 - The object used
+ *
+ * int     ret0 - overrides handler (0 - place back, 1 - remove, -1 - use engine handler)
+ * ```
+ */
 export const HOOK_USEOBJON = 8;
+
+/**
+ * Runs when an object is removed from a container or critter's inventory for any reason.
+ *
+ * ```
+ * Obj     arg0 - the owner that the object is being removed from
+ * Item    arg1 - the item that is being removed
+ * int     arg2 - the number of items to remove
+ * int     arg3 - The reason the object is being removed (see RMOBJ_* constants)
+ * Obj     arg4 - The destination object when moved to another object, 0 otherwise
+ * ```
+ */
 export const HOOK_REMOVEINVENOBJ = 9;
+
+/**
+ * Runs whenever the value of goods being purchased is calculated.
+ *
+ * NOTE: the hook is executed twice when entering the barter screen or after transaction:
+ * the first time is for the player and the second time is for NPC.
+ *
+ * ```
+ * Critter arg0 - the critter doing the bartering (either dude_obj or inven_dude)
+ * Critter arg1 - the critter being bartered with
+ * int     arg2 - the default value of the goods
+ * Critter arg3 - table of requested goods (being bought from NPC)
+ * int     arg4 - the number of actual caps in the barter stack
+ * int     arg5 - the value of all goods being traded before skill modifications
+ * Critter arg6 - table of offered goods (being sold to NPC)
+ * int     arg7 - the total cost of the goods offered by the player
+ * int     arg8 - 1 if the "offers" button was pressed (not for party member), 0 otherwise
+ * int     arg9 - 1 if trading with a party member, 0 otherwise
+ *
+ * int     ret0 - the modified value of all goods (pass -1 to just modify offered goods)
+ * int     ret1 - the modified value of all offered goods
+ * ```
+ */
 export const HOOK_BARTERPRICE = 10;
+
+/**
+ * Runs when calculating the AP cost of movement.
+ *
+ * ```
+ * Critter arg0 - the critter doing the moving
+ * int     arg1 - the number of hexes being moved
+ * int     arg2 - the original AP cost
+ *
+ * int     ret0 - the new AP cost
+ * ```
+ */
 export const HOOK_MOVECOST = 11;
+
+/**
+ * @deprecated Hex movement blocking check - avoid using, very CPU intensive.
+ * May be removed in future sfall versions. Use obj_blocking_tile, obj_blocking_line,
+ * path_find_to functions instead. Or use HOOK_MOVECOST for combat hex movement.
+ */
 export const HOOK_HEXMOVEBLOCKING = 12;
+
+/**
+ * @deprecated Hex AI blocking check - avoid using, very CPU intensive.
+ * May be removed in future sfall versions.
+ */
 export const HOOK_HEXAIBLOCKING = 13;
+
+/**
+ * @deprecated Hex shoot blocking check - avoid using, very CPU intensive.
+ * May be removed in future sfall versions.
+ */
 export const HOOK_HEXSHOOTBLOCKING = 14;
+
+/**
+ * @deprecated Hex sight blocking check - avoid using, very CPU intensive.
+ * May be removed in future sfall versions.
+ */
 export const HOOK_HEXSIGHTBLOCKING = 15;
+
+/**
+ * Runs when retrieving the damage rating of the player's used weapon (which may be their fists).
+ *
+ * ```
+ * int     arg0 - The default min damage
+ * int     arg1 - The default max damage
+ * Item    arg2 - The weapon used (0 if unarmed)
+ * Critter arg3 - The critter doing the attacking
+ * int     arg4 - The type of attack
+ * int     arg5 - non-zero if this is an attack using a melee weapon
+ *
+ * int     ret0 - Either the damage to be used, if ret1 isn't given, or the new minimum damage
+ * int     ret1 - The new maximum damage
+ * ```
+ */
 export const HOOK_ITEMDAMAGE = 16;
+
+/**
+ * Runs when calculating ammo cost for a weapon. Doesn't affect damage, only how much ammo is spent.
+ * By default, a weapon can perform an attack with at least one ammo, regardless of ammo cost calculation.
+ * To add proper checks for ammo before attacking (hook type 1), set CheckWeaponAmmoCost=1 in ddraw.ini.
+ *
+ * NOTE: The return value must be >= 0 to be valid.
+ *
+ * ```
+ * Item    arg0 - The weapon
+ * int     arg1 - Number of bullets in burst or 1 for single shots
+ * int     arg2 - The amount of ammo that will be consumed (for hook type 2, this is ammo cost per round)
+ * int     arg3 - Type of hook:
+ *                0 - when subtracting ammo after single shot attack
+ *                1 - when checking for "out of ammo" before attack
+ *                2 - when calculating number of burst rounds
+ *                3 - when subtracting ammo after burst attack
+ *
+ * int     ret0 - The new ammo to consume, or ammo cost per round for hook type 2 (0 = unlimited ammo)
+ * ```
+ */
 export const HOOK_AMMOCOST = 17;
+
+/**
+ * Runs when:
+ * 1. a critter uses an object from inventory which has "Use" action flag set or it's an active flare/dynamite
+ * 2. player uses an object from main interface
+ *
+ * This is fired before the object is used, and the relevant use_obj script procedures are run.
+ * You can disable default item behavior.
+ *
+ * NOTE: You can't remove/destroy this object during the hookscript (game will crash).
+ * To remove it, return 1.
+ *
+ * ```
+ * Critter arg0 - The user
+ * Obj     arg1 - The object used
+ *
+ * int     ret0 - overrides handler (0 - place back, 1 - remove, -1 - use engine handler)
+ * ```
+ */
 export const HOOK_USEOBJ = 18;
+
+/**
+ * Runs once every time when any key was pressed or released.
+ * DX codes: see dik.h header or https://kippykip.com/b3ddocs/commands/scancodes.htm
+ *
+ * NOTE: If you want to override a key, the new key DX scancode should be the same
+ * for both pressed and released events.
+ *
+ * ```
+ * int     arg0 - event type: 1 - pressed, 0 - released
+ * int     arg1 - key DX scancode
+ * int     arg2 - key VK code (very similar to ASCII codes)
+ *
+ * int     ret0 - overrides the pressed key (a new key DX scancode or 0 for no override)
+ * ```
+ */
 export const HOOK_KEYPRESS = 19;
+
+/**
+ * Runs once every time when a mouse button was pressed or released.
+ *
+ * ```
+ * int     arg0 - event type: 1 - pressed, 0 - released
+ * int     arg1 - button number (0 - left, 1 - right, up to 7)
+ * ```
+ */
 export const HOOK_MOUSECLICK = 20;
+
+/**
+ * Runs when using any skill on any object.
+ * This is fired before the default handlers are called, which you can override.
+ *
+ * If you override, you should write your own skill use handler entirely (including fade in/out,
+ * time lapsing and messages - use message_str_game with sprintf for vanilla text).
+ *
+ * Does not run if the script of the object calls script_overrides for using the skill.
+ *
+ * ```
+ * Critter arg0 - The user critter
+ * Obj     arg1 - The target object
+ * int     arg2 - skill being used
+ * int     arg3 - skill bonus from items such as first aid kits
+ *
+ * int     ret0 - overrides handler (-1 = use engine, other = override; 0 = 10% chance to remove medical item)
+ * ```
+ */
 export const HOOK_USESKILL = 21;
+
+/**
+ * Runs when checking an attempt to steal or plant an item in other inventory using Steal skill.
+ * This is fired before the default handlers are called, which you can override.
+ *
+ * If you override, you MUST provide message of the result to player.
+ * Example: display_msg(sprintf(mstr_skill(570 + (isSuccess != false) + arg3 * 2), obj_name(arg2)));
+ *
+ * ```
+ * Critter arg0 - Thief
+ * Obj     arg1 - The target
+ * Item    arg2 - The item being stolen/planted
+ * int     arg3 - 0 when stealing, 1 when planting
+ * int     arg4 - quantity of the item being stolen/planted
+ *
+ * int     ret0 - overrides handler (2 - force fail without closing window, 1 - force success, 0 - force fail, -1 - use engine)
+ * int     ret1 - overrides experience points gained for stealing this item (must be >= 0)
+ * ```
+ */
 export const HOOK_STEAL = 22;
+
+/**
+ * Runs when checking if one critter sees another critter (used in combat AI, etc).
+ * This is fired after the default calculation is made.
+ *
+ * NOTE: obj_can_see_obj calls this first when deciding if critter can see another critter
+ * with regard to perception, lighting, sneak factors. If check fails, result is false.
+ * If check succeeds, another check is made for blocking tiles (windows, bushes, barrels, etc).
+ *
+ * You can override "within perception" check by returning 0 or 1, OR override blocking check
+ * by returning 2 (but then you should add line of sight check in your hook script).
+ *
+ * ```
+ * Critter arg0 - Watcher object
+ * Obj     arg1 - Target object
+ * int     arg2 - Result of vanilla function: 1 - within perception range, 0 - otherwise
+ * int     arg3 - Type of hook:
+ *                1 - from obj_can_see_obj script function
+ *                2 - from obj_can_hear_obj (need ObjCanHearObjFix=1 in ddraw.ini)
+ *                3 - when AI determines whether it sees a potential target
+ *                0 - all other cases
+ *
+ * int     ret0 - overrides result: 0 - not in range, 1 - in range (will see if not blocked), 2 - forced detection
+ * ```
+ */
 export const HOOK_WITHINPERCEPTION = 23;
+
+/**
+ * Runs before moving items between inventory slots in dude interface. You can override the action.
+ *
+ * What you can NOT do: force moving items to inappropriate slots (gun in armor slot).
+ * What you can do: restrict weapons/armors, add AP costs for inventory movement, apply scripted effects.
+ *
+ * ```
+ * int     arg0 - Target slot:
+ *                0 - main backpack, 1 - left hand, 2 - right hand, 3 - armor slot
+ *                4 - weapon (when reloading by dropping ammo), 5 - container (bag/backpack)
+ *                6 - dropping on ground, 7 - picking up item, 8 - dropping on character portrait
+ * Item    arg1 - Item being moved
+ * Item    arg2 - Item being replaced, weapon being reloaded, or container being filled (can be 0)
+ *
+ * int     ret0 - Override setting (-1 = use engine, other = prevent relocation/reload/pickup)
+ * ```
+ */
 export const HOOK_INVENTORYMOVE = 24;
+
+/**
+ * Runs before causing a critter or the player to wield/unwield an armor or weapon
+ * (except when using the inventory by PC).
+ *
+ * NOTE: When replacing a previously wielded armor or weapon, the unwielding hook will not be executed.
+ * If you need to rely on this, check if armor/weapon is already equipped when wielding hook is executed.
+ *
+ * ```
+ * Critter arg0 - critter
+ * Item    arg1 - item being wielded or unwielded (weapon/armor)
+ * int     arg2 - slot (INVEN_TYPE_*)
+ * int     arg3 - 1 when wielding, 0 when unwielding
+ * int     arg4 - 1 when removing an equipped item from inventory, 0 otherwise
+ *
+ * int     ret0 - overrides handler (-1 = use engine, other = override) - NOT RECOMMENDED
+ * ```
+ */
 export const HOOK_INVENWIELD = 25;
+
+/**
+ * Runs after calculating character figure FID on the inventory screen,
+ * whenever the game decides that character appearance might change.
+ * Also happens on other screens, like barter.
+ *
+ * NOTE: FID has format: 0x0ABBCDDD where A = object type, BB = animation code (always 0 here),
+ * C = weapon code, DDD = FRM index in LST file.
+ *
+ * ```
+ * int     arg0 - the vanilla FID calculated by the engine
+ * int     arg1 - the modified FID calculated by internal sfall code (like Hero Appearance Mod)
+ *
+ * int     ret0 - overrides the calculated FID with provided value
+ * ```
+ */
 export const HOOK_ADJUSTFID = 26;
+
+/**
+ * Runs before and after each turn in combat (for both PC and NPC).
+ *
+ * ```
+ * int     arg0 - event type:
+ *                1 - start of turn
+ *                0 - normal end of turn
+ *               -1 - combat ends abruptly (by script or by pressing Enter during PC turn)
+ *               -2 - combat ends normally (hook always runs at the end of combat)
+ * Critter arg1 - critter doing the turn
+ * int     arg2 - 1 at start/end of player's turn after loading a game saved in combat mode, 0 otherwise
+ *
+ * int     ret0 - pass 1 at start of turn to skip the turn, pass -1 at end of turn to force end of combat
+ * ```
+ */
 export const HOOK_COMBATTURN = 27;
+
+/**
+ * Runs continuously during world map travel by car.
+ *
+ * ```
+ * int     arg0 - vanilla car speed (between 3 and 8 "steps")
+ * int     arg1 - vanilla fuel consumption (100 and below)
+ *
+ * int     ret0 - car speed override (pass -1 if you just want to override fuel consumption)
+ * int     ret1 - fuel consumption override
+ * ```
+ */
 export const HOOK_CARTRAVEL = 28;
+
+/**
+ * Runs when setting the value of a global variable.
+ *
+ * ```
+ * int     arg0 - the index number of the global variable being set
+ * int     arg1 - the set value of the global variable
+ *
+ * int     ret0 - overrides the value of the global variable
+ * ```
+ */
 export const HOOK_SETGLOBALVAR = 29;
+
+/**
+ * Runs continuously while the player is resting (using pipboy alarm clock).
+ *
+ * ```
+ * int     arg0 - the game time in ticks
+ * int     arg1 - event type: 1 - resting ends normally, -1 - pressing ESC to cancel, 0 - otherwise
+ * int     arg2 - the hour part of the length of resting time
+ * int     arg3 - the minute part of the length of resting time
+ *
+ * int     ret0 - pass 1 to interrupt the resting, pass 0 to continue the rest if it was interrupted by ESC
+ * ```
+ */
 export const HOOK_RESTTIMER = 30;
+
+/**
+ * Runs once every time when the game mode was changed (opening/closing inventory, character screen, pipboy, etc).
+ *
+ * ```
+ * int     arg0 - event type: 1 - when the player exits the game, 0 - otherwise
+ * int     arg1 - the previous game mode
+ * ```
+ */
 export const HOOK_GAMEMODECHANGE = 31;
+
+/**
+ * Runs before playing the "use" (usually "magic hands") animation when a critter uses
+ * a scenery/container object on the map, or before walking/running animation if the player
+ * is at a distance from the object.
+ *
+ * ```
+ * Critter arg0 - the critter that uses an object (usually dude_obj)
+ * Obj     arg1 - the object being used
+ * int     arg2 - the animation code being used (see ANIM_* in Animcomd.h)
+ *
+ * int     ret0 - overrides the animation code (pass -1 if you want to skip the animation)
+ * ```
+ */
 export const HOOK_USEANIMOBJ = 32;
+
+/**
+ * Runs after setting the explosive timer. You can override the result.
+ *
+ * ```
+ * int     arg0 - the time in ticks set in the timer
+ * Obj     arg1 - the explosive object
+ * int     arg2 - the result of engine calculation: 1 - failure, 2 - success (similar to ROLL_*)
+ *
+ * int     ret0 - overrides the time of the timer (maximum 18000 ticks)
+ * int     ret1 - overrides the result: 0/1 - failure, 2/3 - success, other = use engine handler
+ * ```
+ */
 export const HOOK_EXPLOSIVETIMER = 33;
+
+/**
+ * Runs when using the examine action icon to display the description of an object.
+ * You can override the description text.
+ * An example usage would be to add an additional description to the item based on player's stats/skills.
+ *
+ * Does not run if the script of the object overrides the description.
+ *
+ * ```
+ * Obj     arg0 - the object
+ *
+ * String  ret0 - the new description text to use
+ * ```
+ */
 export const HOOK_DESCRIPTIONOBJ = 34;
+
+/**
+ * Runs before using any skill on any object. Lets you override the critter that uses the skill.
+ *
+ * NOTE: The user critter can't be overridden when using Steal skill.
+ *
+ * ```
+ * Critter arg0 - the user critter (usually dude_obj)
+ * Obj     arg1 - the target object/critter
+ * int     arg2 - skill being used
+ *
+ * int     ret0 - a new critter to override the user. Pass -1 to cancel skill use, 0 to skip this return
+ * int     ret1 - pass 1 to allow the skill to be used in combat (only for dude_obj or controlled critter)
+ * ```
+ */
 export const HOOK_USESKILLON = 35;
+
+/**
+ * Runs when Fallout is checking all the tiles within the explosion radius for targets
+ * before an explosion occurs. The tile checking will be interrupted when 6 additional targets are received.
+ *
+ * ```
+ * int     arg0 - event type: 1 - checking objects without causing damage (e.g. player drops active explosive), 0 - otherwise
+ * Critter arg1 - the attacker
+ * int     arg2 - the tile on which the explosion occurs
+ * int     arg3 - checked tile within the explosion radius
+ * Obj     arg4 - first found object on the checked tile as an additional target
+ * Critter arg5 - the target critter, may be 0 or equal to the attacker
+ * int     arg6 - 1 when using throwing weapons (e.g. grenades), 0 otherwise
+ *
+ * int     ret0 - overrides the found object on the checked tile, pass 0 to skip the object
+ * ```
+ */
 export const HOOK_ONEXPLOSION = 36;
+
+/**
+ * This hook overrides the vanilla damage calculation formula.
+ * Runs when:
+ * 1. Before the game calculates how much damage each target will get (primary and extras from explosions/bursts).
+ * 2. AI decides whether it is safe to use area attack if he might hit friendlies.
+ *
+ * Does not run for misses, non-combat damage, or if one of the damage formulas is selected in ddraw.ini.
+ *
+ * ```
+ * Critter arg0 - the attacker
+ * Critter arg1 - the target
+ * Item    arg2 - the weapon used in the attack
+ * int     arg3 - attack type (see ATKTYPE_* constants)
+ * int     arg4 - number of bullets actually hit the target (1 for melee)
+ * int     arg5 - target's Damage Resistance (DR) value
+ * int     arg6 - target's Damage Threshold (DT) value
+ * int     arg7 - bonus ranged damage from the perk
+ * int     arg8 - damage multiplier (divided by 2, so 3 = 1.5x, 8 = 4x)
+ * int     arg9 - combat difficulty multiplier (125 - rough, 100 - normal, 75 - wimpy)
+ * int     arg10 - the calculated amount of damage (usually 0)
+ * mixed   arg11 - computed attack data (use C_ATTACK_* offsets with get/set_object_data)
+ *
+ * int     ret0 - the returned amount of damage
+ * ```
+ */
 export const HOOK_SUBCOMBATDAMAGE = 37;
+
+/**
+ * Runs before setting the light level for an object or a map. You can override the result.
+ *
+ * ```
+ * Obj     arg0 - the object being set, or -1 when setting the light level for a map
+ * int     arg1 - the light intensity
+ * int     arg2 - the light radius, or -1 when setting the light level for a map
+ *
+ * int     ret0 - overrides the light intensity. Intensity range is from 0 to 65536
+ * int     ret1 - overrides the light radius. Radius range is from 0 to 8 (works only for the object)
+ * ```
+ */
 export const HOOK_SETLIGHTING = 38;
+
+/**
+ * Runs when the Sneak skill is activated, or when the game rolls another Sneak check
+ * after the duration for the current one is over.
+ * You can override the result of a random Sneak check or the duration time.
+ *
+ * ```
+ * int     arg0 - Sneak check result: 1 - success, 0 - failure
+ * int     arg1 - the duration in ticks for the current Sneak check (time depends on Sneak skill level)
+ * Critter arg2 - the critter (usually dude_obj)
+ *
+ * int     ret0 - overrides the result of the Sneak check
+ * int     ret1 - overrides the duration time for the current result
+ * ```
+ */
 export const HOOK_SNEAK = 39;
+
+/**
+ * Runs before Fallout executes a standard procedure (handler) in any script of any object.
+ * NOTE: this hook will not be executed for start, critter_p_proc, timed_event_p_proc, and map_update_p_proc.
+ *
+ * ```
+ * int     arg0 - the number of the standard script handler (see *_proc in define.h)
+ * Obj     arg1 - the object that owns this handler (self_obj)
+ * Obj     arg2 - the object that called this handler (source_obj, can be 0)
+ * int     arg3 - always 0 (1 for _END version)
+ * Obj     arg4 - the object that is acted upon by this handler (target_obj, can be 0)
+ * int     arg5 - the parameter of this call (fixed_param), useful for combat_proc
+ *
+ * int     ret0 - pass -1 to cancel the execution of the handler
+ * ```
+ */
 export const HOOK_STDPROCEDURE = 40;
+
+/**
+ * Runs after Fallout executes a standard procedure (handler) in any script of any object.
+ * NOTE: this hook will not be executed for start, critter_p_proc, timed_event_p_proc, and map_update_p_proc.
+ *
+ * ```
+ * int     arg0 - the number of the standard script handler (see *_proc in define.h)
+ * Obj     arg1 - the object that owns this handler (self_obj)
+ * Obj     arg2 - the object that called this handler (source_obj, can be 0)
+ * int     arg3 - always 1 (procedure end)
+ * Obj     arg4 - the object that is acted upon by this handler (target_obj, can be 0)
+ * int     arg5 - the parameter of this call (fixed_param), useful for combat_proc
+ * ```
+ */
 export const HOOK_STDPROCEDURE_END = 41;
+
+/**
+ * Runs when the targeting cursor hovers over an object, or when the player tries to attack the target.
+ * You can override the target object or prevent the player from attacking the chosen target.
+ *
+ * ```
+ * int     arg0 - event type: 0 - when the targeting cursor hovers over the object, 1 - when trying to attack
+ * int     arg1 - 1 when the target object is valid to attack, 0 otherwise
+ * Obj     arg2 - the target object
+ *
+ * mixed   ret0 - overrides the target object, or pass -1 to prevent the player from attacking
+ * ```
+ */
 export const HOOK_TARGETOBJECT = 42;
+
+/**
+ * Runs whenever a random encounter occurs on the world map.
+ *
+ * ```
+ * int     arg0 - event type: 0 - encounter happens, 1 - player enters a special encounter map
+ * int     arg1 - map ID for special encounters; for random encounters, 0 unless an ID was manually set
+ * int     arg2 - 1 if this is a special encounter, 0 otherwise
+ * int     arg3 - the encounter table number (from Encounter table in worldmap.txt)
+ * int     arg4 - the encounter index in the table (number of the line in Encounter table section)
+ *
+ * int     ret0 - overrides the map ID for special encounter maps
+ * int     ret1 - pass 1 to cancel the encounter and continue traveling
+ * ```
+ */
 export const HOOK_ENCOUNTER = 43;
+
+/**
+ * Runs when the player's poison level is changed.
+ * NOTE: the hook is not executed for the critter_adjust_poison function.
+ *
+ * ```
+ * Critter arg0 - the critter (always dude_obj)
+ * int     arg1 - the amount of poison being added (negative = reducing poison)
+ * int     arg2 - the calculated damage value that will be applied to hit points at the end of each day
+ *
+ * int     ret0 - the new amount of poison
+ * int     ret1 - the damage value to apply
+ * ```
+ */
 export const HOOK_ADJUSTPOISON = 44;
+
+/**
+ * Runs when the player's radiation level is changed.
+ * NOTE: the hook is not executed for the critter_adjust_rads function.
+ *
+ * ```
+ * Critter arg0 - the critter (always dude_obj)
+ * int     arg1 - the amount of radiation being added
+ *
+ * int     ret0 - the new amount of radiation
+ * ```
+ */
 export const HOOK_ADJUSTRADS = 45;
+
+/**
+ * Runs when Fallout makes a random roll check for the skills or attacker's weapon in combat.
+ *
+ * ```
+ * int     arg0 - event type:
+ *                1 - aass/fail critical skill check (determine_to_hit_func)
+ *                2 - check (determine_crit_ranged_attack_to_hit_func)
+ *                3 - weapon critical failure check (attack_crit_failure)
+ *                4 - weapon critical hit check (attack_crit_success)
+ *                5 - skill critical hit check (skill_result)
+ *                6 - skill critical miss check (skill_result)
+ *                7 - skill check (skill_result)
+ * int     arg1 - the roll result (0-100)
+ * int     arg2 - the chance of critical hit/miss (0-100)
+ * int     arg3 - the bonus value to add to/subtract from the hit chance
+ * int     arg4 - the random chance value (1-100)
+ *
+ * int     ret0 - the new roll result
+ * ```
+ */
 export const HOOK_ROLLCHECK = 46;
+
+/**
+ * Runs when AI is choosing the best weapon for an attack.
+ *
+ * ```
+ * Critter arg0 - the critter
+ * Item    arg1 - the best weapon chosen by the AI (can be 0 if nothing was chosen)
+ * Item    arg2 - the first available weapon (can be 0)
+ * Item    arg3 - the second available weapon (can be 0)
+ * Critter arg4 - the target of the attack
+ *
+ * Item    ret0 - overrides the weapon choice (pass 0 to allow no weapon, -1 to skip this return)
+ * ```
+ */
 export const HOOK_BESTWEAPON = 47;
+
+/**
+ * Runs when AI checks if a weapon is usable (has enough ammo, in range, etc).
+ *
+ * ```
+ * Critter arg0 - the critter
+ * Item    arg1 - the weapon being checked
+ * int     arg2 - attack type (see ATKTYPE_* constants)
+ * int     arg3 - 1 if the weapon can be used, 0 if it can't
+ *
+ * int     ret0 - overrides the result: 0 - cannot use, 1 - can use
+ * ```
+ */
 export const HOOK_CANUSEWEAPON = 48;
+
 // RESERVED 49..60
+
+/**
+ * Runs before the weapon sound effect is played for an attack.
+ *
+ * ```
+ * int     arg0 - the sound effect type:
+ *                0 - generic attack
+ *                1 - fire attack
+ *                2 - contact/swing/throw attack
+ *                3 - reload
+ *                4 - out of ammo
+ * Item    arg1 - the weapon (can be 0 for unarmed)
+ * int     arg2 - attack type (see ATKTYPE_* constants)
+ * Critter arg3 - the target (can be 0)
+ *
+ * String  ret0 - the path to a custom sfx sound file (relative to sound/sfx/)
+ * ```
+ */
 export const HOOK_BUILDSFXWEAPON = 61;
 
 // ============================================================================
@@ -491,7 +1287,7 @@ export function get_sfall_arg_at(index: number): number {
  * @param color Text color
  * @inline
  */
-export function set_iface_tag_text(tag: number, text: string, color: number): void {
+export function set_iface_tag_text(tag: IfaceTag, text: string, color: number): void {
     sfall_func3("set_iface_tag_text", tag, text, color);
 }
 
@@ -802,8 +1598,8 @@ export function car_gas_amount(): number {
  * @returns New tag number
  * @inline
  */
-export function add_iface_tag(): number {
-    return sfall_func0("add_iface_tag");
+export function add_iface_tag(): IfaceTag {
+    return sfall_func0("add_iface_tag") as IfaceTag;
 }
 
 /**
@@ -1257,56 +2053,56 @@ export function message_box4(text: string, flags: number, color1: number, color2
  * Formats values using C printf syntax. Format string limited to 1024 characters.
  * @inline
  */
-export function string_format1(format: string, a1: any): string {
-    return sfall_func2("string_format", format, a1);
+export function string_format1(fmt: string, a1: any): string {
+    return sfall_func2("string_format", fmt, a1);
 }
 
 /**
  * Formats values using C printf syntax.
  * @inline
  */
-export function string_format2(format: string, a1: any, a2: any): string {
-    return sfall_func3("string_format", format, a1, a2);
+export function string_format2(fmt: string, a1: any, a2: any): string {
+    return sfall_func3("string_format", fmt, a1, a2);
 }
 
 /**
  * Formats values using C printf syntax.
  * @inline
  */
-export function string_format3(format: string, a1: any, a2: any, a3: any): string {
-    return sfall_func4("string_format", format, a1, a2, a3);
+export function string_format3(fmt: string, a1: any, a2: any, a3: any): string {
+    return sfall_func4("string_format", fmt, a1, a2, a3);
 }
 
 /**
  * Formats values using C printf syntax.
  * @inline
  */
-export function string_format4(format: string, a1: any, a2: any, a3: any, a4: any): string {
-    return sfall_func5("string_format", format, a1, a2, a3, a4);
+export function string_format4(fmt: string, a1: any, a2: any, a3: any, a4: any): string {
+    return sfall_func5("string_format", fmt, a1, a2, a3, a4);
 }
 
 /**
  * Formats values using C printf syntax.
  * @inline
  */
-export function string_format5(format: string, a1: any, a2: any, a3: any, a4: any, a5: any): string {
-    return sfall_func6("string_format", format, a1, a2, a3, a4, a5);
+export function string_format5(fmt: string, a1: any, a2: any, a3: any, a4: any, a5: any): string {
+    return sfall_func6("string_format", fmt, a1, a2, a3, a4, a5);
 }
 
 /**
  * Formats values using C printf syntax.
  * @inline
  */
-export function string_format6(format: string, a1: any, a2: any, a3: any, a4: any, a5: any, a6: any): string {
-    return sfall_func7("string_format", format, a1, a2, a3, a4, a5, a6);
+export function string_format6(fmt: string, a1: any, a2: any, a3: any, a4: any, a5: any, a6: any): string {
+    return sfall_func7("string_format", fmt, a1, a2, a3, a4, a5, a6);
 }
 
 /**
  * Formats values using C printf syntax (max 7 values).
  * @inline
  */
-export function string_format7(format: string, a1: any, a2: any, a3: any, a4: any, a5: any, a6: any, a7: any): string {
-    return sfall_func8("string_format", format, a1, a2, a3, a4, a5, a6, a7);
+export function string_format7(fmt: string, a1: any, a2: any, a3: any, a4: any, a5: any, a6: any, a7: any): string {
+    return sfall_func8("string_format", fmt, a1, a2, a3, a4, a5, a6, a7);
 }
 
 /**

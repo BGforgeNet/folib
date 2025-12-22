@@ -1,29 +1,31 @@
 // Converted from headers/sfall/define_extra.h
 
+import type { ObjType, BodyPart, WeaponType, PerkID, AttackType, AttackMode, Difficulty } from "../index";
+
 export const PID_PLAYER = 16777216;
 
 // Combat Flags
 export const DAM_PRESERVE_FLAGS = 0x80000000;
 
 // Body hit locations
-export const BODY_HIT_HEAD = 0;
-export const BODY_HIT_LEFT_ARM = 1;
-export const BODY_HIT_RIGHT_ARM = 2;
-export const BODY_HIT_TORSO = 3;
-export const BODY_HIT_RIGHT_LEG = 4;
-export const BODY_HIT_LEFT_LEG = 5;
-export const BODY_HIT_EYES = 6;
-export const BODY_HIT_GROIN = 7;
-export const BODY_UNCALLED = 8;
+export const BODY_HIT_HEAD = 0 as BodyPart;
+export const BODY_HIT_LEFT_ARM = 1 as BodyPart;
+export const BODY_HIT_RIGHT_ARM = 2 as BodyPart;
+export const BODY_HIT_TORSO = 3 as BodyPart;
+export const BODY_HIT_RIGHT_LEG = 4 as BodyPart;
+export const BODY_HIT_LEFT_LEG = 5 as BodyPart;
+export const BODY_HIT_EYES = 6 as BodyPart;
+export const BODY_HIT_GROIN = 7 as BodyPart;
+export const BODY_UNCALLED = 8 as BodyPart;
 
 // Object types
-export const OBJ_TYPE_ITEM = 0;
-export const OBJ_TYPE_CRITTER = 1;
-export const OBJ_TYPE_SCENERY = 2;
-export const OBJ_TYPE_WALL = 3;
-export const OBJ_TYPE_TILE = 4;
-export const OBJ_TYPE_MISC = 5;
-export const OBJ_TYPE_SPATIAL = 6;
+export const OBJ_TYPE_ITEM = 0 as ObjType;
+export const OBJ_TYPE_CRITTER = 1 as ObjType;
+export const OBJ_TYPE_SCENERY = 2 as ObjType;
+export const OBJ_TYPE_WALL = 3 as ObjType;
+export const OBJ_TYPE_TILE = 4 as ObjType;
+export const OBJ_TYPE_MISC = 5 as ObjType;
+export const OBJ_TYPE_SPATIAL = 6 as ObjType;
 
 // Art types
 export const ART_TYPE_INTERFACE = 6;
@@ -33,11 +35,11 @@ export const ART_TYPE_BACKGRND = 9;
 export const ART_TYPE_SKILLDEX = 10;
 
 // Weapon types
-export const WEAPON_TYPE_NONE = 0;
-export const WEAPON_TYPE_UNARMED = 1;
-export const WEAPON_TYPE_MELEE = 2;
-export const WEAPON_TYPE_THROWN = 3;
-export const WEAPON_TYPE_RANGED = 4;
+export const WEAPON_TYPE_NONE = 0 as WeaponType;
+export const WEAPON_TYPE_UNARMED = 1 as WeaponType;
+export const WEAPON_TYPE_MELEE = 2 as WeaponType;
+export const WEAPON_TYPE_THROWN = 3 as WeaponType;
+export const WEAPON_TYPE_RANGED = 4 as WeaponType;
 
 // Item flags (FlagsExt in proto)
 export const HEALING_ITEM = 0x04000000;
@@ -50,37 +52,37 @@ export const WEAPON_2HAND = 0x00000200;
 export const WEAPON_ENERGY = 0x00000400;
 
 // Attack types
-export const ATKTYPE_LWEP1 = 0;
-export const ATKTYPE_LWEP2 = 1;
-export const ATKTYPE_RWEP1 = 2;
-export const ATKTYPE_RWEP2 = 3;
-export const ATKTYPE_PUNCH = 4;
-export const ATKTYPE_KICK = 5;
-export const ATKTYPE_LWEP_RELOAD = 6;
-export const ATKTYPE_RWEP_RELOAD = 7;
-export const ATKTYPE_STRONGPUNCH = 8;
-export const ATKTYPE_HAMMERPUNCH = 9;
-export const ATKTYPE_HAYMAKER = 10;
-export const ATKTYPE_JAB = 11;
-export const ATKTYPE_PALMSTRIKE = 12;
-export const ATKTYPE_PIERCINGSTRIKE = 13;
-export const ATKTYPE_STRONGKICK = 14;
-export const ATKTYPE_SNAPKICK = 15;
-export const ATKTYPE_POWERKICK = 16;
-export const ATKTYPE_HIPKICK = 17;
-export const ATKTYPE_HOOKKICK = 18;
-export const ATKTYPE_PIERCINGKICK = 19;
+export const ATKTYPE_LWEP1 = 0 as AttackType;
+export const ATKTYPE_LWEP2 = 1 as AttackType;
+export const ATKTYPE_RWEP1 = 2 as AttackType;
+export const ATKTYPE_RWEP2 = 3 as AttackType;
+export const ATKTYPE_PUNCH = 4 as AttackType;
+export const ATKTYPE_KICK = 5 as AttackType;
+export const ATKTYPE_LWEP_RELOAD = 6 as AttackType;
+export const ATKTYPE_RWEP_RELOAD = 7 as AttackType;
+export const ATKTYPE_STRONGPUNCH = 8 as AttackType;
+export const ATKTYPE_HAMMERPUNCH = 9 as AttackType;
+export const ATKTYPE_HAYMAKER = 10 as AttackType;
+export const ATKTYPE_JAB = 11 as AttackType;
+export const ATKTYPE_PALMSTRIKE = 12 as AttackType;
+export const ATKTYPE_PIERCINGSTRIKE = 13 as AttackType;
+export const ATKTYPE_STRONGKICK = 14 as AttackType;
+export const ATKTYPE_SNAPKICK = 15 as AttackType;
+export const ATKTYPE_POWERKICK = 16 as AttackType;
+export const ATKTYPE_HIPKICK = 17 as AttackType;
+export const ATKTYPE_HOOKKICK = 18 as AttackType;
+export const ATKTYPE_PIERCINGKICK = 19 as AttackType;
 
 // Attack modes
-export const ATTACK_MODE_NONE = 0;
-export const ATTACK_MODE_PUNCH = 1;
-export const ATTACK_MODE_KICK = 2;
-export const ATTACK_MODE_SWING = 3;
-export const ATTACK_MODE_THRUST = 4;
-export const ATTACK_MODE_THROW = 5;
-export const ATTACK_MODE_SINGLE = 6;
-export const ATTACK_MODE_BURST = 7;
-export const ATTACK_MODE_FLAME = 8;
+export const ATTACK_MODE_NONE = 0 as AttackMode;
+export const ATTACK_MODE_PUNCH = 1 as AttackMode;
+export const ATTACK_MODE_KICK = 2 as AttackMode;
+export const ATTACK_MODE_SWING = 3 as AttackMode;
+export const ATTACK_MODE_THRUST = 4 as AttackMode;
+export const ATTACK_MODE_THROW = 5 as AttackMode;
+export const ATTACK_MODE_SINGLE = 6 as AttackMode;
+export const ATTACK_MODE_BURST = 7 as AttackMode;
+export const ATTACK_MODE_FLAME = 8 as AttackMode;
 
 // Object flags for get/set_flags
 export const FLAG_HIDDEN = 0x1;
@@ -339,26 +341,26 @@ export const CALIBER_HN_NEEDLER = 17;
 export const CALIBER_7_62MM = 18;
 
 // Hidden perks
-export const PERK_add_nuka = 53;
-export const PERK_add_buffout = 54;
-export const PERK_add_mentats = 55;
-export const PERK_add_psycho = 56;
-export const PERK_add_radaway = 57;
-export const PERK_weapon_long_range = 58;
-export const PERK_weapon_accurate = 59;
-export const PERK_weapon_penetrate = 60;
-export const PERK_weapon_knockback = 61;
-export const PERK_armor_powered = 62;
-export const PERK_armor_combat = 63;
-export const PERK_weapon_scope_range = 64;
-export const PERK_weapon_fast_reload = 65;
-export const PERK_weapon_night_sight = 66;
-export const PERK_weapon_flameboy = 67;
-export const PERK_armor_advanced_1 = 68;
-export const PERK_armor_advanced_2 = 69;
-export const PERK_add_jet = 70;
-export const PERK_add_tragic = 71;
-export const PERK_armor_charisma = 72;
+export const PERK_add_nuka = 53 as PerkID;
+export const PERK_add_buffout = 54 as PerkID;
+export const PERK_add_mentats = 55 as PerkID;
+export const PERK_add_psycho = 56 as PerkID;
+export const PERK_add_radaway = 57 as PerkID;
+export const PERK_weapon_long_range = 58 as PerkID;
+export const PERK_weapon_accurate = 59 as PerkID;
+export const PERK_weapon_penetrate = 60 as PerkID;
+export const PERK_weapon_knockback = 61 as PerkID;
+export const PERK_armor_powered = 62 as PerkID;
+export const PERK_armor_combat = 63 as PerkID;
+export const PERK_weapon_scope_range = 64 as PerkID;
+export const PERK_weapon_fast_reload = 65 as PerkID;
+export const PERK_weapon_night_sight = 66 as PerkID;
+export const PERK_weapon_flameboy = 67 as PerkID;
+export const PERK_armor_advanced_1 = 68 as PerkID;
+export const PERK_armor_advanced_2 = 69 as PerkID;
+export const PERK_add_jet = 70 as PerkID;
+export const PERK_add_tragic = 71 as PerkID;
+export const PERK_armor_charisma = 72 as PerkID;
 
 // Weapon animation codes
 export const WPN_ANIM_NONE = 0x00;
@@ -527,9 +529,9 @@ export const CRITICAL_VALUE_MSG = 5;
 export const CRITICAL_VALUE_FAIL_MSG = 6;
 
 // Difficulty levels
-export const DIFFICULTY_EASY = 0;
-export const DIFFICULTY_NORMAL = 1;
-export const DIFFICULTY_HARD = 2;
+export const DIFFICULTY_EASY = 0 as Difficulty;
+export const DIFFICULTY_NORMAL = 1 as Difficulty;
+export const DIFFICULTY_HARD = 2 as Difficulty;
 
 // Sound playback flags
 export const soundraw = 0x80000000;

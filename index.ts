@@ -1,5 +1,11 @@
 // Re-export types
-export type { ObjectPtr, CritterPtr, ItemPtr, ContainerPtr, DoorPtr, SceneryPtr, ArrayID } from './types';
+export type {
+    ObjectPtr, CritterPtr, ItemPtr, ContainerPtr, DoorPtr, SceneryPtr,
+    ArrayID, SkillID, HookID, IfaceTag, GameMode,
+    ObjType, BodyPart, WeaponType, InvenSlot, DamageType, FloatMsgColor,
+    StatID, PerkID, TraitID, TraitType,
+    PcStatID, RollResult, AttackType, AttackMode, Gender, Difficulty, CritterState
+} from './types';
 
 /** Float constant 1.0 - use to force float division: FLOAT1 * a / b */
 export const FLOAT1 = 1.0;

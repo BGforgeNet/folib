@@ -1,7 +1,7 @@
 // Sfall scripting extensions for Fallout 2
 // Auto-generated from fallout-ssl-sfall.yml
 
-import type { ObjectPtr, ArrayID } from "../index";
+import type { ObjectPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode } from "../index";
 
 // =============================================================================
 // =============================================================================
@@ -264,7 +264,7 @@ export declare function list_as_array(type: number): any[];
 /**
  * The same as string_format, but accepts an array of parameters.
  */
-export declare function string_format_array(format: string, array: number): string;
+export declare function string_format_array(fmt: string, array: number): string;
 
 // =============================================================================
 // Art
@@ -418,14 +418,14 @@ export declare function set_critter_pickpocket_mod(CritterPtr: any, max: number,
 /**
  * Will get the number of additional points a critter has in a skill, on top of whatever they have from their stats and other bonuses
  */
-export declare function get_critter_skill_points(critter: number, skill: number): number;
+export declare function get_critter_skill_points(critter: number, skill: SkillID): number;
 
 export declare function set_critter_skill_mod(CritterPtr: any, max: number): void;
 
 /**
  * Will set the number of additional points a critter has in a skill, on top of whatever they have from their stats and other bonuses. Note that skill points are part of the proto, so calling it on a critter will affect all critters that share the same proto.
  */
-export declare function set_critter_skill_points(critter: number, skill: number, value: number): void;
+export declare function set_critter_skill_points(critter: number, skill: SkillID, value: number): void;
 
 // =============================================================================
 // Dialog
@@ -516,7 +516,7 @@ export declare function set_shader_int(ID: number, param: string, value: number)
  * Tells sfall when to use a shader. The parameter is a set of 32 flags which specify the screens on which the shader will be disabled, unless bit 32 is set, in which case the shader will only be active on those screens. Remember that screens are displayed on top of each other; if the player opens the character menu which in combat, the game still considers the player to be in combat. See **sfall.h** for a list of defines.
  * The graphics functions are only available if the user is using graphics mode 4 or 5. Use `graphics_funcs_available` to check; it returns 1 if you can use them or 0 if you can't. Calling graphics functions when `graphics_funcs_available` returns 0 will do nothing.
  */
-export declare function set_shader_mode(mode: number): void;
+export declare function set_shader_mode(mode: GameMode): void;
 
 /**
  * The graphics functions are only available if the user is using graphics mode 4 or 5. Use `graphics_funcs_available` to check; it returns 1 if you can use them or 0 if you can't. Calling graphics functions when `graphics_funcs_available` returns 0 will do nothing.
@@ -540,7 +540,7 @@ export declare function init_hook(): number;
 /**
  * Used from a normal global script if you want to run it at the same point a full hook script would normally run. In case of this function, `start` procedure will be executed in current global script. You can use all above functions like normal.
  */
-export declare function register_hook(hookID: number): void;
+export declare function register_hook(hookID: HookID): void;
 
 /**
  * The same as `register_hook`, except that you specifically define which procedure in the current script should be called as a hook (instead of "start" by default). Pass procedure the same as how you use dialog option functions. This IS the recommended way to use hook scripts, as it gives both modularity (each mod logic in a separate global script with no conflicts) and flexibility. You can place all related hook scripts for a specific mod in one global script!
@@ -573,13 +573,13 @@ export declare function register_hook(hookID: number): void;
  * The defines to use for the `hookID` are in **sfall.h**.
  * 
  */
-export declare function register_hook_proc(hookID: number, procedure: any): void;
+export declare function register_hook_proc(hookID: HookID, procedure: any): void;
 
 /**
  * Works the same as `register_hook_proc`, except that it registers the current script at the end of the hook script execution chain (i.e. the script will be executed after all previously registered scripts for the same hook, including the `hs_<name>.int` script). In addition, all scripts hooked to a single hook point with this function are executed in the exact order of how they were registered. In the case of using `register_hook` and `register_hook_proc` functions, scripts are executed in reverse order of how they were registered.
  * **The execution chain of script procedures for a hook is as follows:** 1. Procedures registered with `register_hook` and `register_hook_proc` functions (executed in reverse order of registration). 2. The `hs_<name>.int` script. 3. Procedures registered with the `register_hook_proc_spec` function (executed in the exact order of registration).
  */
-export declare function register_hook_proc_spec(hookID: number, proc: Function): void;
+export declare function register_hook_proc_spec(hookID: HookID, proc: Function): void;
 
 // =============================================================================
 // Interface
@@ -590,20 +590,20 @@ export declare function register_hook_proc_spec(hookID: number, proc: Function):
  * `show_iface_tag`, `hide_iface_tag` and `is_iface_tag_active` relate to the boxes that appear above the interface such as SNEAK and LEVEL. You can use 0 for **SNEAK** (starting from sfall 4.4.4/3.8.44), 3 for **LEVEL**, 4 for **ADDICT**, and 5 to (4 + the value of BoxBarCount in `ddraw.ini`) for custom boxes. Remember to add your messages to `intrface.msg` and set up the font colours in `ddraw.ini` if you're going to use custom boxes. Starting from sfall 4.1/3.8.12, `is_iface_tag_active` can also be used to check 0 for **SNEAK**, 1 for **POISONED**, and 2 for **RADIATED**.
  * 
  */
-export declare function hide_iface_tag(tag: number): void;
+export declare function hide_iface_tag(tag: IfaceTag): void;
 
 /**
  * `show_iface_tag`, `hide_iface_tag` and `is_iface_tag_active` relate to the boxes that appear above the interface such as SNEAK and LEVEL. You can use 0 for **SNEAK** (starting from sfall 4.4.4/3.8.44), 3 for **LEVEL**, 4 for **ADDICT**, and 5 to (4 + the value of BoxBarCount in `ddraw.ini`) for custom boxes. Remember to add your messages to `intrface.msg` and set up the font colours in `ddraw.ini` if you're going to use custom boxes. Starting from sfall 4.1/3.8.12, `is_iface_tag_active` can also be used to check 0 for **SNEAK**, 1 for **POISONED**, and 2 for **RADIATED**.
  * 
  */
-export declare function is_iface_tag_active(tag: number): number;
+export declare function is_iface_tag_active(tag: IfaceTag): number;
 
 
 /**
  * `show_iface_tag`, `hide_iface_tag` and `is_iface_tag_active` relate to the boxes that appear above the interface such as SNEAK and LEVEL. You can use 0 for **SNEAK** (starting from sfall 4.4.4/3.8.44), 3 for **LEVEL**, 4 for **ADDICT**, and 5 to (4 + the value of BoxBarCount in `ddraw.ini`) for custom boxes. Remember to add your messages to `intrface.msg` and set up the font colours in `ddraw.ini` if you're going to use custom boxes. Starting from sfall 4.1/3.8.12, `is_iface_tag_active` can also be used to check 0 for **SNEAK**, 1 for **POISONED**, and 2 for **RADIATED**.
  * 
  */
-export declare function show_iface_tag(tag: number): void;
+export declare function show_iface_tag(tag: IfaceTag): void;
 
 
 /**
@@ -969,7 +969,7 @@ export declare function get_string_pointer(text: string): number;
  * - The format string is limited to 1024 characters
  * 
  */
-export declare function string_format(format: string, val1: any, val2: any, arg3: any): string;
+export declare function string_format(fmt: string, val1: any, val2: any, arg3: any): string;
 
 /**
  * Replaces all occurances of a given search string in a string with a given replacement string.
@@ -1262,7 +1262,7 @@ export declare function game_loaded(): number;
 /**
  * A more flexible version of in_world_map. It will return a set of flags indicating which mode the game is currently in. These flags are the same as those used in the `set_shader_mode function`.
  */
-export declare function get_game_mode(): number;
+export declare function get_game_mode(): GameMode;
 
 export declare function get_kill_counter(critterType: number): number;
 
