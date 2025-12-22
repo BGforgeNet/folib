@@ -813,12 +813,18 @@ export function critter_skill_level(who: CritterPtr, skill: SkillID): number {
   return has_skill(who, skill);
 }
 
-/** Check if critter is dead @inline */
+/**
+ * Check if critter is dead
+ * @inline
+ */
 export function is_critter_dead(who: CritterPtr): boolean {
   return (critter_state(who) & CRITTER_IS_DEAD) != 0;
 }
 
-/** Remove injuries from critter @inline */
+/**
+ * Remove injuries from critter
+ * @inline
+ */
 export function critter_uninjure(who: CritterPtr, flags: number): number {
   return critter_injure(who, flags | DAM_PERFORM_REVERSE);
 }
