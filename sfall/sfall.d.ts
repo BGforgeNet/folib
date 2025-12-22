@@ -274,7 +274,7 @@ export declare function string_format_array(fmt: string, array: number): string;
 /**
  * checks if given artFID exists in the game. Useful when you want to check if critter can use specific weapon: `art_exists((artFid bwand 0xffff0fff) bwor (weaponAnim * 0x1000))`.
  */
-export declare function art_exists(artFID: number): number;
+export declare function art_exists(artFID: number): boolean;
 
 export declare function refresh_pc_art(): void;
 
@@ -596,7 +596,7 @@ export declare function hide_iface_tag(tag: IfaceTag): void;
  * `show_iface_tag`, `hide_iface_tag` and `is_iface_tag_active` relate to the boxes that appear above the interface such as SNEAK and LEVEL. You can use 0 for **SNEAK** (starting from sfall 4.4.4/3.8.44), 3 for **LEVEL**, 4 for **ADDICT**, and 5 to (4 + the value of BoxBarCount in `ddraw.ini`) for custom boxes. Remember to add your messages to `intrface.msg` and set up the font colours in `ddraw.ini` if you're going to use custom boxes. Starting from sfall 4.1/3.8.12, `is_iface_tag_active` can also be used to check 0 for **SNEAK**, 1 for **POISONED**, and 2 for **RADIATED**.
  * 
  */
-export declare function is_iface_tag_active(tag: IfaceTag): number;
+export declare function is_iface_tag_active(tag: IfaceTag): boolean;
 
 
 /**
@@ -1058,7 +1058,7 @@ export declare function modified_ini(): number;
 /**
  * Obsolete since sfall 2.1a. Always returns 0.
  */
-export declare function eax_available(): number;
+export declare function eax_available(): false;
 
 /**
  * Obsolete since sfall 2.1a. Has no effect.
@@ -1257,7 +1257,7 @@ export declare function create_spatial(scriptID: number, tile: number, elevation
 /**
  * Returns 1 the first time it is called after a new game or game load, and 0 any time after. It works on an individual basis for each script, so one script wont interfere with others. Its primary use is for global scripts, so that they know when to call `set_global_script_repeat`, but it can be called from normal scripts too.
  */
-export declare function game_loaded(): number;
+export declare function game_loaded(): boolean;
 
 /**
  * A more flexible version of in_world_map. It will return a set of flags indicating which mode the game is currently in. These flags are the same as those used in the `set_shader_mode function`.
@@ -1295,7 +1295,7 @@ export declare function get_year(): number;
 /**
  * The input functions are only available if the user has the input hook turned on in `ddraw.ini`. Use `input_funcs_available` to check.
  */
-export declare function input_funcs_available(): number;
+export declare function input_funcs_available(): boolean;
 
 export declare function mark_movie_played(id: number): void;
 
@@ -1349,7 +1349,7 @@ export declare function set_xp_mod(percentage: number): void;
 /**
  * Returns 1 if last sneak attempt (roll against skill) was successful, 0 otherwise. This calls an internal engine function which is used to determine the perception range of critters (which you can override using `HOOK_WITHINPERCEPTION`).
  */
-export declare function sneak_success(): number;
+export declare function sneak_success(): boolean;
 
 export declare function stop_game(): void;
 
