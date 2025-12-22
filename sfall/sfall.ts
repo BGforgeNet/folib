@@ -2,7 +2,7 @@
  * Sfall scripting extensions for Fallout 2
  * Converted from headers/sfall/sfall.h
  */
-import type { ObjectPtr, CritterPtr, ItemPtr, IfaceTag, GameMode } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, IfaceTag, GameMode, PerkID, TraitID, InvenSlot } from "../index";
 export * from "./define_extra";
 
 // Import engine functions for wrappers
@@ -1265,7 +1265,7 @@ export function set_explosion_max_targets(maxTargets: number): void {
  * @returns Object in slot
  * @inline
  */
-export function critter_inven_obj2(critter: number, slot: number): ItemPtr {
+export function critter_inven_obj2(critter: CritterPtr, slot: InvenSlot): ItemPtr {
     // Cast: sfall_func2 returns any, we know this returns an item pointer
     return sfall_func2("critter_inven_obj2", critter, slot) as ItemPtr;
 }
@@ -1298,7 +1298,7 @@ export function set_iface_tag_text(tag: IfaceTag, text: string, color: number): 
  * @returns Object flags
  * @inline
  */
-export function get_flags(obj: number): number {
+export function get_flags(obj: ObjectPtr): number {
     return sfall_func1("get_flags", obj);
 }
 
@@ -1308,7 +1308,7 @@ export function get_flags(obj: number): number {
  * @param flags Flags to set
  * @inline
  */
-export function set_flags(obj: number, flags: number): void {
+export function set_flags(obj: ObjectPtr, flags: number): void {
     sfall_func2("set_flags", obj, flags);
 }
 
@@ -1318,7 +1318,7 @@ export function set_flags(obj: number, flags: number): void {
  * @returns Outline color
  * @inline
  */
-export function get_outline(obj: number): number {
+export function get_outline(obj: ObjectPtr): number {
     return sfall_func1("get_outline", obj);
 }
 
@@ -1328,7 +1328,7 @@ export function get_outline(obj: number): number {
  * @param color Outline color (use OUTLINE_* constants)
  * @inline
  */
-export function set_outline(obj: number, color: number): void {
+export function set_outline(obj: ObjectPtr, color: number): void {
     sfall_func2("set_outline", obj, color);
 }
 
@@ -1339,7 +1339,7 @@ export function set_outline(obj: number, color: number): void {
  * @returns Data value
  * @inline
  */
-export function get_object_data(obj: number, offset: number): number {
+export function get_object_data(obj: ObjectPtr, offset: number): number {
     return sfall_func2("get_object_data", obj, offset);
 }
 
@@ -1350,7 +1350,7 @@ export function get_object_data(obj: number, offset: number): number {
  * @param value Value to set
  * @inline
  */
-export function set_object_data(obj: number, offset: number, value: number): void {
+export function set_object_data(obj: ObjectPtr, offset: number, value: number): void {
     sfall_func3("set_object_data", obj, offset, value);
 }
 
@@ -1405,7 +1405,7 @@ export function real_dude_obj(): number {
  * @param critter Critter to control
  * @inline
  */
-export function set_dude_obj(critter: number): void {
+export function set_dude_obj(critter: CritterPtr): void {
     sfall_func1("set_dude_obj", critter);
 }
 
@@ -1469,7 +1469,7 @@ export function attack_is_aimed(): boolean {
  * @returns Current inventory size
  * @inline
  */
-export function get_current_inven_size(obj: number): number {
+export function get_current_inven_size(obj: ObjectPtr): number {
     return sfall_func1("get_current_inven_size", obj);
 }
 
@@ -1479,7 +1479,7 @@ export function get_current_inven_size(obj: number): number {
  * @returns Item weight
  * @inline
  */
-export function item_weight(obj: number): number {
+export function item_weight(obj: ItemPtr): number {
     return sfall_func1("item_weight", obj);
 }
 
@@ -1489,7 +1489,7 @@ export function item_weight(obj: number): number {
  * @returns True if openable
  * @inline
  */
-export function obj_is_openable(obj: number): boolean {
+export function obj_is_openable(obj: ObjectPtr): boolean {
     return sfall_func1("obj_is_openable", obj);
 }
 
@@ -1499,7 +1499,7 @@ export function obj_is_openable(obj: number): boolean {
  * @returns True if jammed
  * @inline
  */
-export function lock_is_jammed(obj: number): boolean {
+export function lock_is_jammed(obj: ObjectPtr): boolean {
     return sfall_func1("lock_is_jammed", obj);
 }
 
@@ -1508,7 +1508,7 @@ export function lock_is_jammed(obj: number): boolean {
  * @param obj Lock object
  * @inline
  */
-export function unjam_lock(obj: number): void {
+export function unjam_lock(obj: ObjectPtr): void {
     sfall_func1("unjam_lock", obj);
 }
 
@@ -1518,7 +1518,7 @@ export function unjam_lock(obj: number): void {
  * @returns Radius
  * @inline
  */
-export function spatial_radius(obj: number): number {
+export function spatial_radius(obj: ObjectPtr): number {
     return sfall_func1("spatial_radius", obj);
 }
 
@@ -1751,7 +1751,7 @@ export function signal_close_game(): void {
  * @param toggle Enable/disable
  * @inline
  */
-export function npc_engine_level_up(toggle: number): void {
+export function npc_engine_level_up(toggle: boolean): void {
     sfall_func1("npc_engine_level_up", toggle);
 }
 
@@ -1762,28 +1762,28 @@ export function npc_engine_level_up(toggle: number): void {
  * @returns AI data value
  * @inline
  */
-export function get_object_ai_data(obj: number, aiParam: number): number {
+export function get_object_ai_data(obj: CritterPtr, aiParam: number): number {
     return sfall_func2("get_object_ai_data", obj, aiParam);
 }
 
 /**
  * Unwield item from slot
  * @param critter Critter object
- * @param slot Slot to unwield from
+ * @param slot Slot to unwield from (use INVEN_TYPE_* constants)
  * @inline
  */
-export function unwield_slot(critter: number, slot: number): void {
+export function unwield_slot(critter: CritterPtr, slot: InvenSlot): void {
     sfall_func2("unwield_slot", critter, slot);
 }
 
 /**
- * Get INI file section as array
+ * Get INI file section as array of "key=value" strings
  * @param file INI file path
  * @param sect Section name
- * @returns Section data as array
+ * @returns Array of "key=value" strings
  * @inline
  */
-export function get_ini_section(file: string, sect: string): any {
+export function get_ini_section(file: string, sect: string): string[] {
     return sfall_func2("get_ini_section", file, sect);
 }
 
@@ -1793,7 +1793,7 @@ export function get_ini_section(file: string, sect: string): any {
  * @returns Array of section names
  * @inline
  */
-export function get_ini_sections(file: string): any[] {
+export function get_ini_sections(file: string): string[] {
     return sfall_func1("get_ini_sections", file);
 }
 
@@ -1823,7 +1823,7 @@ export function add_trait(traitID: number): void {
  * @returns True if NPC has perk
  * @inline
  */
-export function has_fake_perk_npc(npc: number, perk: number): boolean {
+export function has_fake_perk_npc(npc: CritterPtr, perk: PerkID): boolean {
     return sfall_func2("has_fake_perk_npc", npc, perk);
 }
 
@@ -1834,7 +1834,7 @@ export function has_fake_perk_npc(npc: number, perk: number): boolean {
  * @returns True if NPC has trait
  * @inline
  */
-export function has_fake_trait_npc(npc: number, trait: number): boolean {
+export function has_fake_trait_npc(npc: CritterPtr, trait: TraitID): boolean {
     return sfall_func2("has_fake_trait_npc", npc, trait);
 }
 
@@ -1847,7 +1847,7 @@ export function has_fake_trait_npc(npc: number, trait: number): boolean {
  * @param desc Description
  * @inline
  */
-export function set_fake_perk_npc(npc: number, perk: number, level: number, image: number, desc: string): void {
+export function set_fake_perk_npc(npc: CritterPtr, perk: PerkID, level: number, image: number, desc: string): void {
     sfall_func5("set_fake_perk_npc", npc, perk, level, image, desc);
 }
 
@@ -1860,7 +1860,7 @@ export function set_fake_perk_npc(npc: number, perk: number, level: number, imag
  * @param desc Description
  * @inline
  */
-export function set_fake_trait_npc(npc: number, trait: number, active: number, image: number, desc: string): void {
+export function set_fake_trait_npc(npc: CritterPtr, trait: TraitID, active: boolean, image: number, desc: string): void {
     sfall_func5("set_fake_trait_npc", npc, trait, active, image, desc);
 }
 
@@ -2370,7 +2370,7 @@ export function metarule_exist(metaruleName: string): boolean {
  * Like set_selectable_perk but applies to specified party member NPC (including dude_obj).
  * @inline
  */
-export function set_selectable_perk_npc(npc: ObjectPtr, perk: number, active: number, image: number, desc: string): void {
+export function set_selectable_perk_npc(npc: CritterPtr, perk: PerkID, active: boolean, image: number, desc: string): void {
     sfall_func5("set_selectable_perk_npc", npc, perk, active, image, desc);
 }
 

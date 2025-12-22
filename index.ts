@@ -19,7 +19,6 @@ export {
 /** Float constant 1.0 - use to force float division: FLOAT1 * a / b */
 export const FLOAT1 = 1.0;
 
-// No barrel exports - import directly from subpaths:
 // - "folib/types" - ObjectPtr, CritterPtr, ItemPtr, etc.
 // - "folib/sfall/sfall.d" - sfall function declarations
 // - "folib/sfall/sfall" - sfall constants and wrappers
