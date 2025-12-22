@@ -1,7 +1,7 @@
 // Sfall scripting extensions for Fallout 2
 // Auto-generated from fallout-ssl-sfall.yml
 
-import type { ObjectPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode } from "../index";
+import type { ObjectPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand } from "../index";
 
 // =============================================================================
 // =============================================================================
@@ -335,7 +335,7 @@ export declare function set_car_current_town(town: number): void;
 export declare function block_combat(value: boolean): void;
 
 
-export declare function get_attack_type(): number;
+export declare function get_attack_type(): AttackType;
 
 
 /**
@@ -636,7 +636,7 @@ export declare function set_inven_ap_cost(cost: number): void;
 // Keys
 // =============================================================================
 
-export declare function key_pressed(dxScancode: number): number;
+export declare function key_pressed(dxScancode: number): boolean;
 
 export declare function tap_key(dxScancode: number): void;
 
@@ -1239,7 +1239,7 @@ export declare function tan(x: number): number;
  */
 export declare function set_self(setObj: ObjectPtr): void;
 
-export declare function active_hand(): number;
+export declare function active_hand(): Hand;
 
 /**
  * Adds a timer event that calls the `timed_event_p_proc` procedure in the current global script

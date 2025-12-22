@@ -8,9 +8,9 @@ import { key_pressed } from "./sfall.d";
  */
 export function hotkey_pressed(n: number): boolean {
   if (n < 0x10000) {
-    return key_pressed(n) != 0;
+    return key_pressed(n);
   } else {
-    return key_pressed(n & 0xFFFF) != 0 && key_pressed((n & 0xFFFF0000) / 0x10000) != 0;
+    return key_pressed(n & 0xFFFF) && key_pressed((n & 0xFFFF0000) / 0x10000);
   }
 }
 

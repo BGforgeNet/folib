@@ -1,6 +1,6 @@
 // Fallout 2 engine builtins (external - not bundled into output)
 
-import type { ObjectPtr, CritterPtr, ItemPtr, DoorPtr, ContainerPtr, SkillID, ObjType, StatID, InvenSlot, TraitType, FloatMsgColor, PerkID, TraitID, PcStatID, CritterState } from "./index";
+import type { ObjectPtr, CritterPtr, ItemPtr, DoorPtr, ContainerPtr, SkillID, ObjType, StatID, InvenSlot, TraitType, FloatMsgColor, PerkID, TraitID, PcStatID, CritterState, Elevation, Direction, Difficulty, RollResult } from "./index";
 
 // =============================================================================
 // Runtime Globals
@@ -61,10 +61,10 @@ export declare const combat_is_initialized: boolean;
 export declare const game_ui_is_disabled: boolean;
 
 /** Returns the current Game difficulty level (0-2) */
-export declare const difficulty_level: number;
+export declare const difficulty_level: Difficulty;
 
 /** Returns the current Combat difficulty level (0-2) */
-export declare const combat_difficulty: number;
+export declare const combat_difficulty: Difficulty;
 
 /** Returns the running-burning-guy setting */
 export declare const running_burning_guy: number;
@@ -86,7 +86,7 @@ export declare function obj_pid(obj: ObjectPtr): number;
 export declare function obj_name(obj: ObjectPtr): string;
 
 /** Returns the object's elevation (0-2) */
-export declare function elevation(obj: ObjectPtr): number;
+export declare function elevation(obj: ObjectPtr): 0 | 1 | 2;
 
 /** Returns the tile number of an object */
 export declare function tile_num(obj: ObjectPtr): number;
@@ -383,7 +383,7 @@ export declare function tile_contains_pid_obj(tile: number, elev: number, pid: n
 /**
  * Returns the rotation (0-5) to face a particular tile (destTile) from srcTile.
  */
-export declare function rotation_to_tile(srcTile: number, destTile: number): number;
+export declare function rotation_to_tile(srcTile: number, destTile: number): Direction;
 
 // =============================================================================
 // Combat Functions
@@ -439,7 +439,7 @@ export declare function get_pc_stat(stat: PcStatID): number;
  * Performs a check/test-roll versus one of the basic traits (strength, perception, etc.).
  * Note: these cannot generate Critical Success or Critical Failure as they are a basic X==Y check.
  */
-export declare function do_check(who: CritterPtr, check: number, modifier: number): number;
+export declare function do_check(who: CritterPtr, check: number, modifier: number): RollResult;
 
 /**
  * Returns the value of a completed skill roll made upon an object's skill level,
@@ -447,16 +447,16 @@ export declare function do_check(who: CritterPtr, check: number, modifier: numbe
  * is_success and is_critical to determine states, and how_much can be used to
  * determine the difference succeeded or failed by.
  */
-export declare function roll_vs_skill(who: CritterPtr, skill: SkillID, modifier: number): number;
+export declare function roll_vs_skill(who: CritterPtr, skill: SkillID, modifier: number): RollResult;
 
 /** Returns the value of a completed skill vs skill contest */
-export declare function skill_contest(skill: SkillID): number;
+export declare function skill_contest(skill: SkillID): RollResult;
 
 /** Returns true if the roll result is a success (including critical) */
-export declare function is_success(rollResult: number): boolean;
+export declare function is_success(rollResult: RollResult): boolean;
 
 /** Returns true if the roll result is a critical */
-export declare function is_critical(rollResult: number): boolean;
+export declare function is_critical(rollResult: RollResult): boolean;
 
 /** Returns how much the rolls differed by */
 export declare function how_much(val: number): number;
