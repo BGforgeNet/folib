@@ -1,6 +1,6 @@
 // Command macros from command_lite.h
 
-import type { ObjectPtr, Elevation } from "../index";
+import type { Elevation } from "../index";
 import { dude_obj, self_obj, tile_num, elevation, obj_name } from "../base.d";
 
 /** @inline */

@@ -10,7 +10,6 @@ import {
     sfall_func0, sfall_func1, sfall_func2, sfall_func3, sfall_func4, sfall_func5, sfall_func6, sfall_func7, sfall_func8,
     scan_array, create_array, temp_array, metarule3, resize_array, metarule2_explosions, get_tile_fid
 } from "./sfall.d";
-import { OBJ_DATA_CUR_ACTION_POINT } from "./define_extra";
 import { DMG_fire } from "./define_lite";
 
 // ============================================================================

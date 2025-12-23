@@ -5,7 +5,7 @@ import {
   create_object_sid, has_skill, critter_state, critter_injure, critter_inven_obj,
   attack_complex, wield_obj_critter, has_trait, inven_cmds, self_obj
 } from "../base.d";
-import { ObjectPtr, CritterPtr, ItemPtr, SkillID, FloatMsgColor, TraitType, TraitID, PerkID, StatID, InvenSlot, DamageType, PcStatID, RollResult, AttackType, AttackMode, Gender, Difficulty, CritterState, Elevation } from "../index";
+import { ObjectPtr, CritterPtr, ItemPtr, SkillID, FloatMsgColor, TraitType, TraitID, PerkID, StatID, InvenSlot, DamageType, PcStatID, RollResult, Gender, CritterState, Elevation } from "../index";
 
 export const no_proc = 0;
 export const start_proc = 1;

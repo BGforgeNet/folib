@@ -6,9 +6,9 @@
 import { random } from "../base.d";
 import {
     len_array, resize_array, set_array, get_array, array_key,
-    scan_array, fix_array, temp_array, load_array, save_array, free_array
+    fix_array, temp_array, load_array, save_array, free_array
 } from "./sfall.d";
-import { temp_array_list, temp_array_map, create_array_map, array_is_map, unset_array } from "./sfall";
+import { temp_array_list, temp_array_map, array_is_map } from "./sfall";
 
 /** Check if key exists in map array */
 export function map_contains_key(arrayMap: any[], key: any): boolean {
