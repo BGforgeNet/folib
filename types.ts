@@ -1,6 +1,6 @@
 // Runtime constants for union types
 
-import type { Hand, Difficulty, Elevation, Direction } from './types.d';
+import type { Hand, Difficulty, Elevation, Direction, HitResult, ObjectPtr } from './types.d';
 
 /** Active hand: left */
 export const LEFT_HAND: Hand = 0;
@@ -35,3 +35,15 @@ export const DIRECTION_SW: Direction = 3;
 export const DIRECTION_W: Direction = 4;
 /** Direction: Northwest */
 export const DIRECTION_NW: Direction = 5;
+
+/** Hit result: critical miss */
+export const HITRESULT_CRITICAL_MISS: HitResult = 0;
+/** Hit result: miss */
+export const HITRESULT_MISS: HitResult = 1;
+/** Hit result: hit */
+export const HITRESULT_HIT: HitResult = 2;
+/** Hit result: critical hit */
+export const HITRESULT_CRITICAL_HIT: HitResult = 3;
+
+/** Null pointer - compatible with all pointer types (ObjectPtr, CritterPtr, ItemPtr, etc.) */
+export const NullPtr = 0 as ObjectPtr<never>;

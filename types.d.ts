@@ -104,3 +104,6 @@ export type Direction = 0 | 1 | 2 | 3 | 4 | 5;
 
 /** Critter state bitmask from critter_state() */
 export type CritterState = number & { __brand: 'CritterState' };
+
+/** Hit result from HOOK_AFTERHITROLL (0=critical miss, 1=miss, 2=hit, 3=critical hit) */
+export type HitResult = 0 | 1 | 2 | 3;

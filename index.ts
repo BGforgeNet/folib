@@ -16,6 +16,7 @@ export type {
     GameMode,
     Gender,
     Hand,
+    HitResult,
     HookID,
     IfaceTag,
     InvenSlot,
@@ -48,7 +49,12 @@ export {
     ELEVATION_1,
     ELEVATION_2,
     ELEVATION_ALL,
+    HITRESULT_CRITICAL_HIT,
+    HITRESULT_CRITICAL_MISS,
+    HITRESULT_HIT,
+    HITRESULT_MISS,
     LEFT_HAND,
+    NullPtr,
     RIGHT_HAND,
 } from './types';
 

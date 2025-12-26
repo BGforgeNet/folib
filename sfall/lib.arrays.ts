@@ -243,7 +243,7 @@ export function array_fill(arr: any[], pos: number, count: number, value: any): 
 }
 
 /** Append all items from arr2 to arr1 */
-export function array_append(arr1: any[], arr2: any[]): any[] {
+export function array_append(arr1: any, arr2: any): any {
     if (array_is_map(arr1)) {
         const len2 = len_array(arr2);
         for (let i = 0; i < len2; i++) {
@@ -260,7 +260,7 @@ export function array_append(arr1: any[], arr2: any[]): any[] {
 }
 
 /** Concat arrays into new temp array */
-export function array_concat(arr1: any[], arr2: any[]): any[] {
+export function array_concat(arr1: any, arr2: any): any {
     return array_append(clone_array(arr1), arr2);
 }
 

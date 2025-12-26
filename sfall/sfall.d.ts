@@ -1,7 +1,8 @@
 // Sfall scripting extensions for Fallout 2
 // Auto-generated from fallout-ssl-sfall.yml
 
-import type { ObjectPtr, CritterPtr, ItemPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand, BodyPart, Elevation, Direction, StatID } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand, BodyPart, Elevation, Direction, StatID } from "../index";
+import { LIST_CRITTERS, LIST_GROUNDITEMS, LIST_SCENERY, LIST_WALLS, LIST_MISC, LIST_SPATIAL, LIST_ALL } from "./sfall";
 
 // =============================================================================
 // =============================================================================
@@ -256,10 +257,20 @@ export declare function set_array(arrayID: any[], key: any, value: any): void;
  */
 export declare function temp_array(size: number, nothing: number): any[];
 
-/**
- * The `list_xxx` functions can be used to loop over all items on a map. `list_begin` takes an argument telling sfall what you want to list (defined in **sfall.h**). It returns a list pointer, which you iterate through with `list_next`. Finally, when you've finished with the list use `list_end` on it. Not calling `list_end` will result in a memory leak. Alternatively, use `list_as_array` to get the whole list at once as a temp array variable, which can be looped over using `len_array` and which you don't need to remember to free afterwards.
- */
-export declare function list_as_array(type: number): any[];
+/** Returns all critters on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_CRITTERS): CritterPtr[];
+/** Returns all ground items on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_GROUNDITEMS): ItemPtr[];
+/** Returns all scenery objects on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_SCENERY): SceneryPtr[];
+/** Returns all wall objects on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_WALLS): ObjectPtr[];
+/** Returns all misc objects on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_MISC): ObjectPtr[];
+/** Returns all spatial scripts on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_SPATIAL): ObjectPtr[];
+/** Returns all objects on the current map elevation as a temp array. */
+export declare function list_as_array(type: typeof LIST_ALL): ObjectPtr[];
 
 /**
  * The same as string_format, but accepts an array of parameters.
@@ -399,7 +410,10 @@ export declare function set_weapon_ammo_pid(weapon: ObjectPtr, pid: number): voi
 export declare function set_critter_burst_disable(critter: number, disable: number): void;
 
 
-export declare function get_npc_level(npc: string): number;
+/**
+ * Takes a party member PID or an NPC name as an argument. The NPC must be in your party.
+ */
+export declare function get_npc_level(pid_or_name: number | string): number;
 
 /**
  * Takes a party member PID or an NPC name (deprecated, for compatibility with sfall 4.1.5/3.8.15 or earlier) as an argument. The NPC must be in your party. This function ignores player level requirements and the minimum 3 player level delay between NPC level gains. It also ignores the random element, regardless of sfall's `NPCAutoLevel` setting.
@@ -1429,9 +1443,17 @@ export declare function substr(text: string, start: number, length: number): str
  */
 export declare function path_find_to(objFrom: ObjectPtr, tileTo: number, blockingType: number): Direction[];
 
-export declare function atof(text: string): number;
+/**
+ * Convert any to float.
+ * @param any any value
+ */
+export declare function atof(any: any): number;
 
-export declare function atoi(text: string): number;
+/**
+ * Convert any to integer.
+ * @param any any value
+ */
+export declare function atoi(any: any): number;
 
 /**
  * Formats given value using standart syntax of C `printf` function (google "printf" for format details). However, it is limited to formatting only 1 value.

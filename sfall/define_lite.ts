@@ -384,10 +384,14 @@ export const GENDER_FEMALE = 1 as Gender;
 export const CRITTER_IS_NORMAL = 0 as CritterState;
 export const CRITTER_IS_DEAD = 1 as CritterState;
 export const CRITTER_IS_PRONE = 2 as CritterState;
-export const INVEN_TYPE_WORN = 0 as InvenSlot;
-export const INVEN_TYPE_RIGHT_HAND = 1 as InvenSlot;
-export const INVEN_TYPE_LEFT_HAND = 2 as InvenSlot;
-export const INVEN_TYPE_INV_COUNT = -2 as InvenSlot;
+/** Worn armor slot - returns ItemPtr */
+export const INVEN_TYPE_WORN: InvenSlot = 0;
+/** Right hand slot - returns ItemPtr */
+export const INVEN_TYPE_RIGHT_HAND: InvenSlot = 1;
+/** Left hand slot - returns ItemPtr */
+export const INVEN_TYPE_LEFT_HAND: InvenSlot = 2;
+/** Inventory count - returns number, use inven_count() wrapper instead */
+export const INVEN_TYPE_INV_COUNT: InvenSlot = -2;
 export const item_type_armor = 0;
 export const item_type_container = 1;
 export const item_type_drug = 2;
@@ -846,8 +850,8 @@ export function obj_is_visible_flag(who: ObjectPtr): number {
 }
 
 /** @inline */
-export function inven_count(who: CritterPtr): ItemPtr {
-  return critter_inven_obj(who, INVEN_TYPE_INV_COUNT);
+export function inven_count(who: CritterPtr): number {
+  return critter_inven_obj(who, INVEN_TYPE_INV_COUNT) as unknown as number;
 }
 
 /** @inline */

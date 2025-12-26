@@ -2,7 +2,8 @@
  * Sfall scripting extensions for Fallout 2
  * Converted from headers/sfall/sfall.h
  */
-import type { ObjectPtr, CritterPtr, ItemPtr, IfaceTag, GameMode, PerkID, TraitID, InvenSlot } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, IfaceTag, GameMode, PerkID, TraitID, InvenSlot } from "../index";
+import { OBJ_TYPE_CRITTER, OBJ_TYPE_ITEM, OBJ_TYPE_SCENERY, OBJ_TYPE_WALL, OBJ_TYPE_MISC, OBJ_TYPE_SPATIAL } from "./define_extra";
 export * from "./define_extra";
 
 // Import engine functions for wrappers
@@ -1413,7 +1414,7 @@ export function set_dude_obj(critter: CritterPtr): void {
  * @returns Dialog object
  * @inline
  */
-export function dialog_obj(): number {
+export function dialog_obj(): ObjectPtr {
     return sfall_func0("dialog_obj");
 }
 
@@ -1670,16 +1671,28 @@ export function add_global_timer_event(time: number, fixedParam: number): void {
     sfall_func2("add_g_timer_event", time, fixedParam);
 }
 
+/** Returns all critters within radius of tile. */
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_CRITTER): CritterPtr[];
+/** Returns all items within radius of tile. */
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_ITEM): ItemPtr[];
+/** Returns all scenery within radius of tile. */
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_SCENERY): SceneryPtr[];
+/** Returns all walls within radius of tile. */
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_WALL): ObjectPtr[];
+/** Returns all misc objects within radius of tile. */
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_MISC): ObjectPtr[];
+/** Returns all spatial scripts within radius of tile. */
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_SPATIAL): ObjectPtr[];
 /**
  * Get all objects within radius
  * @param tile Center tile
  * @param radius Search radius
  * @param elev Elevation
- * @param type Object type (use LIST_* constants)
+ * @param type Object type (use OBJ_TYPE_* constants)
  * @returns Array of objects
  * @inline
  */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: number): any[] {
+export function objects_in_radius(tile: number, radius: number, elev: number, type: number): ObjectPtr[] {
     return sfall_func4("objects_in_radius", tile, radius, elev, type);
 }
 
@@ -1782,7 +1795,7 @@ export function unwield_slot(critter: CritterPtr, slot: InvenSlot): void {
  * @returns Array of "key=value" strings
  * @inline
  */
-export function get_ini_section(file: string, sect: string): string[] {
+export function get_ini_section(file: string, sect: string): { [key: string]: string } {
     return sfall_func2("get_ini_section", file, sect);
 }
 
