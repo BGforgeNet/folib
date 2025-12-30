@@ -18,6 +18,6 @@ jobs:
           node-version: "22"
           cache: pnpm
       - run: pnpm install && pnpm exec eslint src && pnpm exec tsc
-      - uses: JS-DevTools/npm-publish@v4.1.1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+      # - uses: JS-DevTools/npm-publish@v4.1.1
+      #   with:
+      #     token: ${{ secrets.NPM_TOKEN }}
