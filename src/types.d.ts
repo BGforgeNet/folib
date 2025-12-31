@@ -107,3 +107,26 @@ export type CritterState = number & { __brand: 'CritterState' };
 
 /** Hit result from HOOK_AFTERHITROLL (0=critical miss, 1=miss, 2=hit, 3=critical hit) */
 export type HitResult = 0 | 1 | 2 | 3;
+
+/** Sfall list array - numeric index, iterable over values */
+export type SfallList<T> = {
+    [index: number]: T;
+    readonly __brand: 'SfallList';
+} & Iterable<T>;
+
+/** Sfall map array - key/value pairs, iterable as [key, value] tuples */
+export type SfallMap<K, V> = {
+    [key: string]: V;
+    [key: number]: V;
+    readonly __brand: 'SfallMap';
+} & Iterable<[K, V]>;
+
+/**
+ * Create a typed list from items. Transpiles to array literal [a, b, c].
+ */
+export declare function list<T>(...items: T[]): SfallList<T>;
+
+/**
+ * Create a typed map from object literal. Transpiles to map literal {a: 1}.
+ */
+export declare function map<K extends string | number, V>(obj: Record<K, V>): SfallMap<K, V>;

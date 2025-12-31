@@ -1740,3 +1740,6 @@ export {
     unwield_slot,
     win_fill_color,
 } from './sfall';
+
+// Re-export transpiler-handled functions from types.d
+export { list, map } from '../types.d';

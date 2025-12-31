@@ -5,6 +5,7 @@
  */
 import { len_array, resize_array, set_array, get_array, string_split, atoi, atof } from "./sfall.d";
 import { temp_array_list, string_find } from "./sfall";
+import type { SfallList } from "../types.d";
 
 /** Check if str contains sub anywhere */
 export function string_contains(str: string, sub: string): boolean {
@@ -17,7 +18,7 @@ export function string_starts_with(str: string, sub: string): boolean {
 }
 
 /** Join array of strings with delimiter */
-export function string_join(array: any[], join: string): string {
+export function string_join(array: SfallList<string>, join: string): string {
     let str = "";
     const len = len_array(array);
     if (len > 0) {
@@ -39,11 +40,11 @@ export function string_repeat(str: string, count: number): string {
 }
 
 /** Split string and convert parts to integers */
-export function string_split_ints(str: string, split: string): any[] {
-    if (str == "") return temp_array_list(0);
+export function string_split_ints(str: string, split: string): SfallList<number> {
+    if (str == "") return temp_array_list<number>(0);
 
     const list = string_split(str, split);
-    const result = temp_array_list(0);
+    const result = temp_array_list<number>(0);
     let n = 0;
     const len = len_array(list);
     for (let i = 0; i < len; i++) {

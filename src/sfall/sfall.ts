@@ -2,7 +2,7 @@
  * Sfall scripting extensions for Fallout 2
  * Converted from headers/sfall/sfall.h
  */
-import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, IfaceTag, GameMode, PerkID, TraitID, InvenSlot } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, IfaceTag, GameMode, PerkID, TraitID, InvenSlot, SfallList, SfallMap } from "../index";
 import { OBJ_TYPE_CRITTER, OBJ_TYPE_ITEM, OBJ_TYPE_SCENERY, OBJ_TYPE_WALL, OBJ_TYPE_MISC, OBJ_TYPE_SPATIAL } from "./define_extra";
 export * from "./define_extra";
 
@@ -1066,36 +1066,46 @@ export const ADD_PERK_MODE_REMOVE = 4;
  * Create a persistent list
  * @param size Initial size of the list
  */
-export function create_array_list(size: number): any[] {
-    return create_array(size, 0);
+export function create_array_list<T>(size: number): SfallList<T> {
+    return create_array(size, 0) as unknown as SfallList<T>;
 }
 
 /**
  * Create a temporary list
  * @param size Initial size of the list
  */
-export function temp_array_list(size: number): any[] {
-    return temp_array(size, 0);
+export function temp_array_list<T>(size: number): SfallList<T> {
+    return temp_array(size, 0) as unknown as SfallList<T>;
 }
 
 /** Create a persistent map */
-export function create_array_map(): any[] { return create_array(-1, 0); }
+export function create_array_map<K, V>(): SfallMap<K, V> {
+    return create_array(-1, 0) as unknown as SfallMap<K, V>;
+}
 
 /** Create a temporary map */
-export function temp_array_map(): any[] { return temp_array(-1, 0); }
+export function temp_array_map<K, V>(): SfallMap<K, V> {
+    return temp_array(-1, 0) as unknown as SfallMap<K, V>;
+}
 
 /** Create a persistent lookup map (see arrays.txt for details) */
-export function create_lookup_map(): any[] { return create_array(-1, 2); }
+export function create_lookup_map<K, V>(): SfallMap<K, V> {
+    return create_array(-1, 2) as unknown as SfallMap<K, V>;
+}
 
 /** Create a temporary lookup map */
-export function temp_lookup_map(): any[] { return temp_array(-1, 2); }
+export function temp_lookup_map<K, V>(): SfallMap<K, V> {
+    return temp_array(-1, 2) as unknown as SfallMap<K, V>;
+}
+
+// list() and map() are declared in types.d.ts - transpiler converts them to literals
 
 /**
  * Check if item exists in array
  * @param item Item to search for
  * @param array Array to search in
  */
-export function is_in_array(item: any, array: any[]): boolean {
+export function is_in_array<T>(item: T, array: SfallList<T>): boolean {
     return scan_array(array, item) != -1;
 }
 
@@ -1103,7 +1113,7 @@ export function is_in_array(item: any, array: any[]): boolean {
  * Check if array exists
  * @param array Array to check
  */
-export function array_exists(array: any[]): boolean {
+export function array_exists(array: SfallArray): boolean {
     return len_array(array) != -1;
 }
 
@@ -1111,7 +1121,7 @@ export function array_exists(array: any[]): boolean {
  * Remove all elements from array
  * @param array Array to clear
  */
-export function clear_array(array: any[]): void {
+export function clear_array(array: SfallArray): void {
     resize_array(array, 0);
 }
 
@@ -1119,7 +1129,7 @@ export function clear_array(array: any[]): void {
  * Sort array or map by key in ascending order
  * @param array Array to sort
  */
-export function sort_array(array: any[]): void {
+export function sort_array(array: SfallArray): void {
     resize_array(array, -2);
 }
 
@@ -1127,7 +1137,7 @@ export function sort_array(array: any[]): void {
  * Sort array or map by key in descending order
  * @param array Array to sort
  */
-export function sort_array_reverse(array: any[]): void {
+export function sort_array_reverse(array: SfallArray): void {
     resize_array(array, -3);
 }
 
@@ -1135,7 +1145,7 @@ export function sort_array_reverse(array: any[]): void {
  * Reverse elements in list/map
  * @param array Array to reverse
  */
-export function reverse_array(array: any[]): void {
+export function reverse_array(array: SfallArray): void {
     resize_array(array, -4);
 }
 
@@ -1143,7 +1153,7 @@ export function reverse_array(array: any[]): void {
  * Randomly shuffle elements in list/map
  * @param array Array to shuffle
  */
-export function shuffle_array(array: any[]): void {
+export function shuffle_array(array: SfallArray): void {
     resize_array(array, -5);
 }
 
@@ -1151,7 +1161,7 @@ export function shuffle_array(array: any[]): void {
  * Sort map in ascending order by value
  * @param array Map to sort
  */
-export function sort_map_value(array: any[]): void {
+export function sort_map_value<K extends string | number, V>(array: SfallMap<K, V>): void {
     resize_array(array, -6);
 }
 
@@ -1159,7 +1169,7 @@ export function sort_map_value(array: any[]): void {
  * Sort map in descending order by value
  * @param array Map to sort
  */
-export function sort_map_reverse(array: any[]): void {
+export function sort_map_reverse<K extends string | number, V>(array: SfallMap<K, V>): void {
     resize_array(array, -7);
 }
 
@@ -1672,17 +1682,17 @@ export function add_global_timer_event(time: number, fixedParam: number): void {
 }
 
 /** Returns all critters within radius of tile. */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_CRITTER): CritterPtr[];
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_CRITTER): SfallList<CritterPtr>;
 /** Returns all items within radius of tile. */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_ITEM): ItemPtr[];
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_ITEM): SfallList<ItemPtr>;
 /** Returns all scenery within radius of tile. */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_SCENERY): SceneryPtr[];
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_SCENERY): SfallList<SceneryPtr>;
 /** Returns all walls within radius of tile. */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_WALL): ObjectPtr[];
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_WALL): SfallList<ObjectPtr>;
 /** Returns all misc objects within radius of tile. */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_MISC): ObjectPtr[];
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_MISC): SfallList<ObjectPtr>;
 /** Returns all spatial scripts within radius of tile. */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_SPATIAL): ObjectPtr[];
+export function objects_in_radius(tile: number, radius: number, elev: number, type: typeof OBJ_TYPE_SPATIAL): SfallList<ObjectPtr>;
 /**
  * Get all objects within radius
  * @param tile Center tile
@@ -1692,7 +1702,7 @@ export function objects_in_radius(tile: number, radius: number, elev: number, ty
  * @returns Array of objects
  * @inline
  */
-export function objects_in_radius(tile: number, radius: number, elev: number, type: number): ObjectPtr[] {
+export function objects_in_radius(tile: number, radius: number, elev: number, type: number): SfallList<ObjectPtr> {
     return sfall_func4("objects_in_radius", tile, radius, elev, type);
 }
 
@@ -1789,13 +1799,13 @@ export function unwield_slot(critter: CritterPtr, slot: InvenSlot): void {
 }
 
 /**
- * Get INI file section as array of "key=value" strings
+ * Get INI file section as map of key-value pairs
  * @param file INI file path
  * @param sect Section name
- * @returns Array of "key=value" strings
+ * @returns Map of key-value string pairs
  * @inline
  */
-export function get_ini_section(file: string, sect: string): { [key: string]: string } {
+export function get_ini_section(file: string, sect: string): SfallMap<string, string> {
     return sfall_func2("get_ini_section", file, sect);
 }
 
@@ -1805,7 +1815,7 @@ export function get_ini_section(file: string, sect: string): { [key: string]: st
  * @returns Array of section names
  * @inline
  */
-export function get_ini_sections(file: string): string[] {
+export function get_ini_sections(file: string): SfallList<string> {
     return sfall_func1("get_ini_sections", file);
 }
 
@@ -1815,7 +1825,7 @@ export function get_ini_sections(file: string): string[] {
  * @param value Value to set
  * @inline
  */
-export function set_ini_setting(setting: string, value: any): void {
+export function set_ini_setting(setting: string, value: string | number): void {
     sfall_func2("set_ini_setting", setting, value);
 }
 
@@ -1897,7 +1907,7 @@ export function add_extra_msg_file(fileName: string): number {
  * @param rot - rotation to get the frame for, useful when reading FRM files by path
  * @inline
  */
-export function art_frame_data(art: number, frame: number, rot: number): any {
+export function art_frame_data(art: string | number, frame: number, rot: number): SfallList<number> {
     return sfall_func3("art_frame_data", art, frame, rot);
 }
 
@@ -2223,7 +2233,7 @@ export function get_tile_roof_fid(tile: number, elev: number): number {
  * Subsequent calls for the same file return the same array unless disposed with free_array.
  * @inline
  */
-export function get_ini_config(file: string): any {
+export function get_ini_config(file: string): SfallMap<string, SfallMap<string, string>> {
     return sfall_func2("get_ini_config", file, 0);
 }
 
@@ -2231,7 +2241,7 @@ export function get_ini_config(file: string): any {
  * Like get_ini_config but searches in DAT files first, then regular file system.
  * @inline
  */
-export function get_ini_config_db(file: string): any {
+export function get_ini_config_db(file: string): SfallMap<string, SfallMap<string, string>> {
     return sfall_func2("get_ini_config", file, 1);
 }
 
@@ -2428,26 +2438,26 @@ export function set_current_save_slot(page: number, slot: number): void {
 // ============================================================================
 // Wrappers for sfall.d native functions
 // ============================================================================
-import { len_array, party_member_list, array_key, set_array, message_str_game } from "./sfall.d";
+import { len_array, party_member_list, array_key, set_array, message_str_game, SfallArray } from "./sfall.d";
 
 /** Check if array is a map (associative array) */
-export function array_is_map(array: any[]): boolean {
+export function array_is_map(array: SfallArray): boolean {
     return array_key(array, -1) == 1;
 }
 
 /** Remove key from array (sets value to 0) */
-export function unset_array(array: any[], key: any): void {
+export function unset_array(array: SfallArray, key: any): void {
     set_array(array, key, 0);
 }
 
 /** Get list of party member critters (returns array for iteration) */
-export function party_member_list_critters(): CritterPtr[] {
-    // Cast: party_member_list returns temp array, we know elements are critter pointers
-    return party_member_list(false) as unknown as CritterPtr[];
+export function party_member_list_critters(): SfallList<CritterPtr> {
+    // Cast: we know elements are critter pointers when not including hidden
+    return party_member_list(false) as SfallList<CritterPtr>;
 }
 
 /** Get list of all party members */
-export function party_member_list_all(): ObjectPtr[] {
+export function party_member_list_all(): SfallList<ObjectPtr> {
     return party_member_list(true);
 }
 

@@ -1,5 +1,7 @@
 // Critter PIDs from critrpid.h
 
+import { list, map } from "../types.d";
+
 export const PID_HERO_PRIMITIVE_MALE = 16777217;
 export const PID_HERO_PRIMITIVE_FEMALE = 16777218;
 export const PID_PRIMITIVE_VILLAGER_MALE = 16777219;
@@ -540,7 +542,7 @@ export const PID_BLUE_TOUGH_MISSILE_BOT = 16777763;
 export const PID_OLD_JOE = 16777764;
 
 // F2 vanilla party member PIDs
-export const f2_party_member_pids = [
+export const f2_party_member_pids = list(
     PID_VIC,
     PID_SULIK,
     PID_JOHN_MACRAE,
@@ -557,13 +559,13 @@ export const f2_party_member_pids = [
     PID_CYBERDOG,
     PID_K9,
     PID_DOGMEAT
-];
+);
 
 // RP-specific party member PIDs
-export const rp_party_member_pids = [PID_KITSUNE, PID_DEX, PID_CAT_JULES];
+export const rp_party_member_pids = list(PID_KITSUNE, PID_DEX, PID_CAT_JULES);
 
 // F2RP combined party member PIDs
-export const f2rp_party_member_pids = [
+export const f2rp_party_member_pids = list(
     PID_VIC,
     PID_SULIK,
     PID_JOHN_MACRAE,
@@ -583,10 +585,10 @@ export const f2rp_party_member_pids = [
     PID_KITSUNE,
     PID_DEX,
     PID_CAT_JULES
-];
+);
 
 // NPC level stages (min_level, step) per PID
-export const f2rp_npc_stages: Record<number, string> = {
+export const f2rp_npc_stages = map({
     [PID_SULIK]: "6,3",
     [PID_VIC]: "5,4",
     [PID_JOHN_MACRAE]: "10,4",
@@ -601,4 +603,4 @@ export const f2rp_npc_stages: Record<number, string> = {
     [PID_CAT_JULES]: "12,3",
     [PID_KITSUNE]: "12,3",
     [PID_DEX]: "12,3"
-};
+});

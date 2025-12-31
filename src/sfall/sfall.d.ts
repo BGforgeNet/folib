@@ -1,7 +1,10 @@
 // Sfall scripting extensions for Fallout 2
 // Auto-generated from fallout-ssl-sfall.yml
 
-import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand, BodyPart, Elevation, Direction, StatID } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand, BodyPart, Elevation, Direction, StatID, SfallList, SfallMap } from "../index";
+
+/** Any sfall array type */
+export type SfallArray = SfallList<any> | SfallMap<any, any>;
 import { LIST_CRITTERS, LIST_GROUNDITEMS, LIST_SCENERY, LIST_WALLS, LIST_MISC, LIST_SPATIAL, LIST_ALL } from "./sfall";
 
 // =============================================================================
@@ -10,7 +13,7 @@ import { LIST_CRITTERS, LIST_GROUNDITEMS, LIST_SCENERY, LIST_WALLS, LIST_MISC, L
 // =============================================================================
 
 /** Internal sfall metarule function */
-export declare function metarule3(func: number, arg1: number, arg2: number, arg3: number): any;
+export declare function metarule3(func: number, arg1: ObjectPtr | number, arg2: ObjectPtr | number, arg3: ObjectPtr | number): number;
 
 // Stats
 // =============================================================================
@@ -118,7 +121,7 @@ export declare function set_pc_base_stat(stat: StatID, value: number): void;
  * - `delay`: delay from the previous animation. A value of -1 will execute the specified animation immediately after the previous one in the sequence ends.
  * 
  */
-export declare function reg_anim_animate_and_hide(ObjectPtr: any, animID: number, delay: number): void;
+export declare function reg_anim_animate_and_hide(obj: ObjectPtr, animID: number, delay: number): void;
 
 /**
  * Adds the given procedure to an animation sequence-list and executes it in the registered sequence.
@@ -128,7 +131,7 @@ export declare function reg_anim_callback(proc: Function): void;
 /**
  * Should work like `art_change_fid_num` but in `reg_anim` sequence.
  */
-export declare function reg_anim_change_fid(ObjectPtr: any, FID: number, delay: number): void;
+export declare function reg_anim_change_fid(obj: ObjectPtr, FID: number, delay: number): void;
 
 /**
  * Allows enabling all `reg_anim_*` functions in combat (including vanilla functions) if set to 0. It is automatically reset at the end of each frame, so you need to call it before `reg_anim_begin` - `reg_anim_end` block.
@@ -143,7 +146,7 @@ export declare function reg_anim_destroy(obj: ObjectPtr): void;
 /**
  * Change light of any object. Light argument is a light radius (0-8), but you can use highest 2 bytes to pass light intensity as well (example: 0xFFFF0008 - intensity 65535 and radius 8). If highest 2 bytes are 0, intensity will not be changed. Intensity range is from 0 to 65535 (0xFFFF)
  */
-export declare function reg_anim_light(ObjectPtr: any, light: number, delay: number): void;
+export declare function reg_anim_light(obj: ObjectPtr, light: number, delay: number): void;
 
 /**
  * Plays "take out weapon" animation for given `holdFrameID`. It is not required to have such weapon in critter's inventory.
@@ -166,7 +169,7 @@ export declare function reg_anim_turn_towards(obj: ObjectPtr, tileTarget: number
  *   - can be checked if given array is associative or not, by using index (-1): 0 - array is list, 1 - array is map.
  * 
  */
-export declare function array_key(arrayID: any[], index: number): any;
+export declare function array_key(arrayID: SfallArray, index: number): any;
 
 /**
  * Don't use it directly; it is used by compiler to create array expressions.
@@ -184,45 +187,45 @@ export declare function arrayexpr(key: any, value: any): number;
  * - returns array ID (valid until array is deleted).
  * 
  */
-export declare function create_array(size: number, nothing: number): any[];
+export declare function create_array(size: number, nothing: number): SfallArray;
 
 /**
  * Changes "temporary" array into "permanent" ("permanent" arrays are not automatically saved into savegames).
  */
-export declare function fix_array(arrayID: any[]): void;
+export declare function fix_array(arrayID: SfallArray): void;
 
 /**
  * Deletes any array.
  * - if array was "saved", it will be removed from a savegame.
  * 
  */
-export declare function free_array(arrayID: any[]): void;
+export declare function free_array(arrayID: SfallArray): void;
 
 /**
  * Returns array value by key or index (shorthand: `arrayID[key]`).
  * - if key doesn't exist or index is not in valid range, returns 0.
  * 
  */
-export declare function get_array(arrayID: any[], key: any): any;
+export declare function get_array(arrayID: SfallArray, key: any): any;
 
 /**
  * Returns number of elements or key=>value pairs in a given array.
  * - if array is not found, returns -1 (can be used to check if given array exist).
  * 
  */
-export declare function len_array(arrayID: any[]): number;
+export declare function len_array(arrayID: SfallArray): number;
 
 /**
  * Loads array from savegame data by the same key provided in `save_array`.
  * - returns array ID or zero (0) if none found.
  * 
  */
-export declare function load_array(key: any): any[] | 0;
+export declare function load_array(key: any): SfallArray | 0;
 
 /**
  * Changes array size. - applicable to maps too, but only to reduce elements. - there are number of special negative values of "size" which perform various operations on the array, use macros `sort_array`, `sort_array_reverse`, `reverse_array`, `shuffle_array` from **sfall.h** header.
  */
-export declare function resize_array(arrayID: any[], size: number): void;
+export declare function resize_array(arrayID: SfallArray, size: number): void;
 
 /**
  * Makes the array saveable; it will be saved in **sfallgv.sav** file when saving the game.
@@ -232,7 +235,7 @@ export declare function resize_array(arrayID: any[], size: number): void;
  * - if you specify 0 as the key for the array ID, it will make the array "unsaved".
  * 
  */
-export declare function save_array(key: any, arrayID: any[]): void;
+export declare function save_array(key: any, arrayID: SfallArray): void;
 
 /**
  * Searches for a first occurence of given value inside given array.
@@ -240,7 +243,7 @@ export declare function save_array(key: any, arrayID: any[]): void;
  * - if value is not found, returns -1 (be careful, as -1 can be a valid key for a map).
  * 
  */
-export declare function scan_array(arrayID: any[], value: any): any;
+export declare function scan_array(arrayID: SfallArray, value: any): number;
 
 /**
  * Sets array value (shorthand: `arrayID[key] := value`).
@@ -250,27 +253,27 @@ export declare function scan_array(arrayID: any[], value: any): any;
  *   - NOTE: to add a value of 0 for the key, use the float value of 0.0
  * 
  */
-export declare function set_array(arrayID: any[], key: any, value: any): void;
+export declare function set_array(arrayID: SfallArray, key: any, value: any): void;
 
 /**
  * Works exactly like `create_array`, only created array becomes "temporary".
  */
-export declare function temp_array(size: number, nothing: number): any[];
+export declare function temp_array(size: number, nothing: number): SfallArray;
 
 /** Returns all critters on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_CRITTERS): CritterPtr[];
+export declare function list_as_array(type: typeof LIST_CRITTERS): SfallList<CritterPtr>;
 /** Returns all ground items on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_GROUNDITEMS): ItemPtr[];
+export declare function list_as_array(type: typeof LIST_GROUNDITEMS): SfallList<ItemPtr>;
 /** Returns all scenery objects on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_SCENERY): SceneryPtr[];
+export declare function list_as_array(type: typeof LIST_SCENERY): SfallList<SceneryPtr>;
 /** Returns all wall objects on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_WALLS): ObjectPtr[];
+export declare function list_as_array(type: typeof LIST_WALLS): SfallList<ObjectPtr>;
 /** Returns all misc objects on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_MISC): ObjectPtr[];
+export declare function list_as_array(type: typeof LIST_MISC): SfallList<ObjectPtr>;
 /** Returns all spatial scripts on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_SPATIAL): ObjectPtr[];
+export declare function list_as_array(type: typeof LIST_SPATIAL): SfallList<ObjectPtr>;
 /** Returns all objects on the current map elevation as a temp array. */
-export declare function list_as_array(type: typeof LIST_ALL): ObjectPtr[];
+export declare function list_as_array(type: typeof LIST_ALL): SfallList<ObjectPtr>;
 
 /**
  * The same as string_format, but accepts an array of parameters.
@@ -381,12 +384,12 @@ export declare function remove_weapon_knockback(weapon: ItemPtr): void;
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
  */
-export declare function set_attacker_knockback(CritterPtr: any, type: number, value: number): void;
+export declare function set_attacker_knockback(critter: CritterPtr, type: number, value: number): void;
 
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
  */
-export declare function set_weapon_knockback(WeaponPtr: any, type: number, value: number): void;
+export declare function set_weapon_knockback(weapon: ItemPtr, type: number, value: number): void;
 
 /**
  * This also allows to get current charges of a misc item (Geiger counter, etc).
@@ -420,12 +423,12 @@ export declare function get_npc_level(pid_or_name: number | string): number;
  */
 export declare function inc_npc_level(party_member_pid: number): void;
 
-export declare function set_critter_hit_chance_mod(CritterPtr: any, max: number, mod: number): void;
+export declare function set_critter_hit_chance_mod(critter: CritterPtr, max: number, mod: number): void;
 
 /**
  * The same as `set_base_pickpocket`, but applies only to specific critter.
  */
-export declare function set_critter_pickpocket_mod(CritterPtr: any, max: number, mod: number): void;
+export declare function set_critter_pickpocket_mod(critter: CritterPtr, max: number, mod: number): void;
 
 
 
@@ -434,7 +437,7 @@ export declare function set_critter_pickpocket_mod(CritterPtr: any, max: number,
  */
 export declare function get_critter_skill_points(critter: number, skill: SkillID): number;
 
-export declare function set_critter_skill_mod(CritterPtr: any, max: number): void;
+export declare function set_critter_skill_mod(critter: CritterPtr, max: number): void;
 
 /**
  * Will set the number of additional points a critter has in a skill, on top of whatever they have from their stats and other bonuses. Note that skill points are part of the proto, so calling it on a critter will affect all critters that share the same proto.
@@ -681,7 +684,7 @@ export declare function list_next(listid: number): number;
 /**
  * Returns an array of the player's position data (index: 0 - tile, 1 - elevation, 2 - rotation) when entering the map through exit grids. If entering from the world map, the tile value will be -1. Should be called in `map_enter_p_proc` procedure to get the correct position data.
  */
-export declare function get_map_enter_position(): any[];
+export declare function get_map_enter_position(): SfallList<number>;
 
 /**
  * Returns 1 if the player is looking at the world map, or 0 at any other time. Obviously this is only useful in global scripts, since normal scripts will never get the chance to run on the world map.
@@ -703,7 +706,7 @@ export declare function obj_blocking_tile(tileNum: number, elevation: Elevation,
 /**
  * Returns an array of all objects at given tile. It will include any hidden, dead or system objects (like cursor), so make sure to check properly when iterating.
  */
-export declare function tile_get_objs(tileNum: number, elevation: Elevation): ObjectPtr[];
+export declare function tile_get_objs(tileNum: number, elevation: Elevation): SfallList<ObjectPtr>;
 
 /**
  * Returns light intensity at the given tile in range from 0 to 65535.
@@ -785,7 +788,7 @@ export declare function obj_blocking_line(objFrom: ObjectPtr, tileTo: number, bl
  * Returns an array of all current party members (0 - only critters that are alive and visible will be returned, 1 - all objects, including the car trunk, etc.)
  * The `list_xxx` functions can be used to loop over all items on a map. `list_begin` takes an argument telling sfall what you want to list (defined in **sfall.h**). It returns a list pointer, which you iterate through with `list_next`. Finally, when you've finished with the list use `list_end` on it. Not calling `list_end` will result in a memory leak. Alternatively, use `list_as_array` to get the whole list at once as a temp array variable, which can be looped over using `len_array` and which you don't need to remember to free afterwards.
  */
-export declare function party_member_list(includeHidden: boolean): ObjectPtr[];
+export declare function party_member_list(includeHidden: boolean): SfallList<ObjectPtr>;
 
 // =============================================================================
 // Perks
@@ -993,7 +996,7 @@ export declare function string_replace(str: string, search: string, replace: str
 /**
  * Takes a string and a seperator, searches the string for all instances of the seperator, and returns a temp array filled with the pieces of the string split at each instance. If you give an empty string as the seperator, the string is split into individual characters. You can use this to search for a substring in a string like this: `strlen(get_array(string_split(haystack, needle), 0))`
  */
-export declare function string_split(text: string, split: string): string[];
+export declare function string_split(text: string, split: string): SfallList<string>;
 
 /**
  * Converts all letters in the given string to the specified case.
@@ -1170,7 +1173,7 @@ export declare function remove_target_knockback(critter: CritterPtr): void;
 /**
  * The `type` value in the weapon knockback functions can be 0 or 1. If 0, the value becomes an absolute distance that targets will be knocked back. If 1, the value is multiplied by the distance they would normally have been knocked back. Weapon knockback modifiers are applied in the order weapon -> attacker -> target, so a x2 weapon wielded by an abs 6 attacker hitting a /2 target will knock the target back 3 squares. The knockback functions will not override the stonewall perk or knockdowns resulting from criticals. knockback values set on weapons or critters are not saved, and must be reset each time the player reloads.
  */
-export declare function set_target_knockback(CritterPtr: any, type: number, value: number): void;
+export declare function set_target_knockback(critter: CritterPtr, type: number, value: number): void;
 
 
 
@@ -1182,7 +1185,7 @@ export declare function set_target_knockback(CritterPtr: any, type: number, valu
 /**
  * Absolute (positive) value of x.
  */
-export declare function abs(): any;
+export declare function abs(x: number): number;
 
 /**
  * Arctangent of x. Pass 1 as y (don't ask...).
@@ -1205,7 +1208,7 @@ export declare function cos(x: number): number;
  * If one of them is a float, div will perform the signed division just like vanilla division operator.
  * 
  */
-export declare function div(x: any, y: any): void;
+export declare function div(x: number, y: number): number;
 
 /**
  * E^X
@@ -1395,7 +1398,7 @@ export declare function set_swiftlearner_mod(bonus: number): void;
 /**
  * Returns names of all currently available script functions.
  */
-export declare function get_metarule_table(): any[];
+export declare function get_metarule_table(): SfallList<number>;
 
 
 
@@ -1441,7 +1444,7 @@ export declare function substr(text: string, start: number, length: number): str
 /**
  * Returns the shortest path to a given tile using given blocking function as an array of tile directions (0..5) to move on each step. Array length equals to a number of steps. Empty array means that specified target cannot be reached.
  */
-export declare function path_find_to(objFrom: ObjectPtr, tileTo: number, blockingType: number): Direction[];
+export declare function path_find_to(objFrom: ObjectPtr, tileTo: number, blockingType: number): SfallList<Direction>;
 
 /**
  * Convert any to float.

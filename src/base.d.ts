@@ -578,10 +578,10 @@ export declare function game_time_advance(ticks: number): void;
 // =============================================================================
 
 /** Generic metarule function */
-export declare function metarule(func: number, param: number): number;
+export declare function metarule(func: number, param: ObjectPtr | number): number;
 
 /** Generic metarule3 function */
-export declare function metarule3(func: number, param1: any, param2: any, param3: any): number;
+export declare function metarule3(func: number, param1: ObjectPtr | number, param2: ObjectPtr | number, param3: ObjectPtr | number): number;
 
 /** Inventory commands function */
 export declare function inven_cmds(obj: ObjectPtr, cmd: number, param: number): ObjectPtr;

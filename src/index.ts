@@ -27,12 +27,17 @@ export type {
     PerkID,
     RollResult,
     SceneryPtr,
+    SfallList,
+    SfallMap,
     SkillID,
     StatID,
     TraitID,
     TraitType,
     WeaponType,
 } from './types.d';
+
+// Re-export transpiler-handled functions from types.d
+export { list, map } from './types.d';
 
 // Re-export constants from runtime file
 export {

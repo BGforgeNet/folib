@@ -667,7 +667,7 @@ export const ROLL_CRITICAL_SUCCESS = 3 as RollResult;
  * Returns the damage type of a weapon (DMG_* constants).
  * @inline
  */
-export function weapon_dmg_type(weapon: any): number {
+export function weapon_dmg_type(weapon: ItemPtr): number {
   return metarule(METARULE_W_DAMAGE_TYPE, weapon);
 }
 
@@ -675,7 +675,7 @@ export function weapon_dmg_type(weapon: any): number {
  * Returns the kill type of a critter (KILL_TYPE_* constants).
  * @inline
  */
-export function critter_kill_type(who: any): number {
+export function critter_kill_type(who: CritterPtr): number {
   return metarule(METARULE_CRITTER_KILL_TYPE, who);
 }
 
@@ -866,8 +866,7 @@ export function town_known(areaId: number): number {
 
 /** @inline */
 export function drug_influence(who: ObjectPtr): number {
-  // Cast: SSL objects are integers at runtime, metarule expects number
-  return metarule(METARULE_WHO_ON_DRUGS, who as unknown as number);
+  return metarule(METARULE_WHO_ON_DRUGS, who);
 }
 
 /** @inline */
@@ -887,14 +886,12 @@ export function is_skill_tagged(skill: SkillID): number {
 
 /** @inline */
 export function obj_drop_everything(who: ObjectPtr): void {
-  // Cast: SSL objects are integers at runtime, metarule expects number
-  metarule(METARULE_DROP_ALL_INVEN, who as unknown as number);
+  metarule(METARULE_DROP_ALL_INVEN, who);
 }
 
 /** @inline */
 export function inven_unwield(who: ObjectPtr): void {
-  // Cast: SSL objects are integers at runtime, metarule expects number
-  metarule(METARULE_INVEN_UNWIELD_WHO, who as unknown as number);
+  metarule(METARULE_INVEN_UNWIELD_WHO, who);
 }
 
 /** @inline */
