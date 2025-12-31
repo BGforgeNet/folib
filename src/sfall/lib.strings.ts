@@ -43,12 +43,12 @@ export function string_repeat(str: string, count: number): string {
 export function string_split_ints(str: string, split: string): SfallList<number> {
     if (str == "") return temp_array_list<number>(0);
 
-    const list = string_split(str, split);
+    const parts = string_split(str, split);
     const result = temp_array_list<number>(0);
     let n = 0;
-    const len = len_array(list);
+    const len = len_array(parts);
     for (let i = 0; i < len; i++) {
-        const val = get_array(list, i);
+        const val = get_array(parts, i);
         if (val != "") {
             resize_array(result, n + 1);
             set_array(result, n, atoi(val));

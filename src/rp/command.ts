@@ -1,13 +1,11 @@
-import { elevation, dude_obj, get_critter_stat, global_var } from "../base.d";
+import { dude_obj, get_critter_stat, global_var } from "../base.d";
 import { len_array } from "../sfall/sfall.d";
 import { party_member_list_critters } from "../sfall/sfall";
+import { dude_elevation } from "../sfall/command_lite";
 import { STAT_ch } from "../sfall/define_lite";
 import { GVAR_PLAYER_GOT_CAR } from "./global";
-import type { Elevation } from "../index";
 
-export function dude_elevation(): Elevation {
-    return elevation(dude_obj);
-}
+export { dude_elevation };
 
 /** @inline */
 export function dude_charisma(): number {
