@@ -2450,7 +2450,7 @@ export function unset_array(array: SfallArray, key: any): void {
     set_array(array, key, 0);
 }
 
-/** Get list of party member critters (returns array for iteration) */
+/** Get list of party member critters (returns array for iteration). Includes dude_obj. */
 export function party_member_list_critters(): SfallList<CritterPtr> {
     // Cast: we know elements are critter pointers when not including hidden
     return party_member_list(false) as SfallList<CritterPtr>;
