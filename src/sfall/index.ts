@@ -36,7 +36,7 @@ export {
     DIK_LWIN, DIK_RWIN, DIK_APPS,
 } from './dik';
 
-// From define_extra.ts
+// AI behavior
 export {
     AI_CAP_AGGRESSION,
     AI_CAP_AREA_ATTACK_MODE,
@@ -53,6 +53,73 @@ export {
     AI_CAP_MIN_TO_HIT,
     AI_CAP_RUN_AWAY_MODE,
     AI_CAP_SECONDARY_FREQ,
+} from './ai_cap';
+
+export {
+    ai_area_always,
+    ai_area_be_absolutely_sure,
+    ai_area_be_careful,
+    ai_area_be_sure,
+    ai_area_sometimes,
+} from './ai_area';
+
+export {
+    ai_attack_closest,
+    ai_attack_strongest,
+    ai_attack_weakest,
+    ai_attack_whomever,
+    ai_attack_whomever_attacking_me,
+} from './ai_attack';
+
+export {
+    ai_run_away_bleeding,
+    ai_run_away_coward,
+    ai_run_away_finger_hurts,
+    ai_run_away_never,
+    ai_run_away_none,
+    ai_run_away_not_feeling_good,
+    ai_run_away_tourniquet,
+} from './ai_run_away';
+
+export {
+    ai_disposition_aggressive,
+    ai_disposition_berserk,
+    ai_disposition_coward,
+    ai_disposition_custom,
+    ai_disposition_defensive,
+    ai_disposition_none,
+} from './ai_disposition';
+
+export {
+    ai_distance_charge,
+    ai_distance_on_your_own,
+    ai_distance_snipe,
+    ai_distance_stay,
+    ai_distance_stay_close,
+} from './ai_distance';
+
+export {
+    ai_weapon_melee,
+    ai_weapon_melee_over_ranged,
+    ai_weapon_no_pref,
+    ai_weapon_random,
+    ai_weapon_ranged,
+    ai_weapon_ranged_over_melee,
+    ai_weapon_unarmed,
+    ai_weapon_unarmed_over_thrown,
+} from './ai_weapon';
+
+export {
+    ai_chem_always,
+    ai_chem_anytime,
+    ai_chem_clean,
+    ai_chem_sometimes,
+    ai_chem_stims_when_hurt_little,
+    ai_chem_stims_when_hurt_lots,
+} from './ai_chem';
+
+// From define_extra.ts
+export {
     ART_TYPE_BACKGRND,
     ART_TYPE_HEADS,
     ART_TYPE_INTERFACE,
@@ -444,48 +511,6 @@ export {
     WPN_ANIM_SLEDGEHAMMER,
     WPN_ANIM_SMG,
     WPN_ANIM_SPEAR,
-    ai_area_always,
-    ai_area_be_absolutely_sure,
-    ai_area_be_careful,
-    ai_area_be_sure,
-    ai_area_sometimes,
-    ai_attack_closest,
-    ai_attack_strongest,
-    ai_attack_weakest,
-    ai_attack_whomever,
-    ai_attack_whomever_attacking_me,
-    ai_chem_always,
-    ai_chem_anytime,
-    ai_chem_clean,
-    ai_chem_sometimes,
-    ai_chem_stims_when_hurt_little,
-    ai_chem_stims_when_hurt_lots,
-    ai_disposition_aggressive,
-    ai_disposition_berserk,
-    ai_disposition_coward,
-    ai_disposition_custom,
-    ai_disposition_defensive,
-    ai_disposition_none,
-    ai_distance_charge,
-    ai_distance_on_your_own,
-    ai_distance_snipe,
-    ai_distance_stay,
-    ai_distance_stay_close,
-    ai_run_away_bleeding,
-    ai_run_away_coward,
-    ai_run_away_finger_hurts,
-    ai_run_away_never,
-    ai_run_away_none,
-    ai_run_away_not_feeling_good,
-    ai_run_away_tourniquet,
-    ai_weapon_melee,
-    ai_weapon_melee_over_ranged,
-    ai_weapon_no_pref,
-    ai_weapon_random,
-    ai_weapon_ranged,
-    ai_weapon_ranged_over_melee,
-    ai_weapon_unarmed,
-    ai_weapon_unarmed_over_thrown,
     soundraw,
 } from './define_extra';
 
