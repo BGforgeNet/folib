@@ -3,7 +3,6 @@ export type {
     ArrayID,
     AttackMode,
     AttackType,
-    BodyPart,
     ContainerPtr,
     CritterPtr,
     CritterState,
@@ -29,8 +28,6 @@ export type {
     SceneryPtr,
     SfallList,
     SfallMap,
-    SkillID,
-    StatID,
     TraitID,
     TraitType,
     WeaponType,
@@ -62,7 +59,6 @@ export {
     NullPtr,
     RIGHT_HAND,
 } from './types';
-
 
 // Re-export engine builtins from base.d
 export {
@@ -246,6 +242,10 @@ export {
     wm_area_set_pos,
     world_map,
 } from './base.d';
+
+// Re-export enums from sfall (needed by core function signatures in base.d)
+export { BODY } from './sfall/define_extra';
+export { SKILL, STAT } from './sfall/define_lite';
 
 // Re-export helpers from define
 export {

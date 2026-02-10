@@ -1,22 +1,24 @@
 // Converted from headers/sfall/define_extra.h
 
-import type { ObjType, BodyPart, WeaponType, PerkID, AttackType, AttackMode, Difficulty } from "../index";
+import type { ObjType, WeaponType, PerkID, AttackType, AttackMode, Difficulty } from "../index";
 
 export const PID_PLAYER = 16777216;
 
 // Combat Flags
 export const DAM_PRESERVE_FLAGS = 0x80000000;
 
-// Body hit locations
-export const BODY_HIT_HEAD = 0 as BodyPart;
-export const BODY_HIT_LEFT_ARM = 1 as BodyPart;
-export const BODY_HIT_RIGHT_ARM = 2 as BodyPart;
-export const BODY_HIT_TORSO = 3 as BodyPart;
-export const BODY_HIT_RIGHT_LEG = 4 as BodyPart;
-export const BODY_HIT_LEFT_LEG = 5 as BodyPart;
-export const BODY_HIT_EYES = 6 as BodyPart;
-export const BODY_HIT_GROIN = 7 as BodyPart;
-export const BODY_UNCALLED = 8 as BodyPart;
+/** Body part / hit location for targeted attacks */
+export enum BODY {
+  HIT_HEAD = 0,
+  HIT_LEFT_ARM = 1,
+  HIT_RIGHT_ARM = 2,
+  HIT_TORSO = 3,
+  HIT_RIGHT_LEG = 4,
+  HIT_LEFT_LEG = 5,
+  HIT_EYES = 6,
+  HIT_GROIN = 7,
+  UNCALLED = 8,
+}
 
 // Object types
 export const OBJ_TYPE_ITEM = 0 as ObjType;

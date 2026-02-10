@@ -5,7 +5,7 @@ import {
   create_object_sid, has_skill, critter_state, critter_injure, critter_inven_obj,
   attack_complex, wield_obj_critter, has_trait, inven_cmds, self_obj
 } from "../base.d";
-import { ObjectPtr, CritterPtr, ItemPtr, SkillID, FloatMsgColor, TraitType, TraitID, PerkID, StatID, InvenSlot, DamageType, PcStatID, RollResult, Gender, CritterState, Elevation } from "../index";
+import { ObjectPtr, CritterPtr, ItemPtr, FloatMsgColor, TraitType, TraitID, PerkID, InvenSlot, DamageType, PcStatID, RollResult, Gender, CritterState, Elevation } from "../index";
 
 export const no_proc = 0;
 export const start_proc = 1;
@@ -305,46 +305,50 @@ export const TRAIT_drug_resistant = 12 as TraitID;
 export const TRAIT_sex_appeal = 13 as TraitID;
 export const TRAIT_skilled = 14 as TraitID;
 export const TRAIT_gifted = 15 as TraitID;
-export const STAT_st = 0 as StatID;
-export const STAT_pe = 1 as StatID;
-export const STAT_en = 2 as StatID;
-export const STAT_ch = 3 as StatID;
-export const STAT_iq = 4 as StatID;
-export const STAT_ag = 5 as StatID;
-export const STAT_lu = 6 as StatID;
-export const STAT_max_hp = 7 as StatID;
-export const STAT_max_hit_points = 7 as StatID;
-export const STAT_max_move_points = 8 as StatID;
-export const STAT_ac = 9 as StatID;
-/** used in sfall for critter inventory size (see CritterInvSizeLimitMode) */
-export const STAT_unused = 10 as StatID;
-export const STAT_melee_dmg = 11 as StatID;
-export const STAT_carry_amt = 12 as StatID;
-export const STAT_sequence = 13 as StatID;
-export const STAT_heal_rate = 14 as StatID;
-export const STAT_crit_chance = 15 as StatID;
-export const STAT_better_crit = 16 as StatID;
-export const STAT_dmg_thresh = 17 as StatID;
-export const STAT_dmg_thresh_laser = 18 as StatID;
-export const STAT_dmg_thresh_fire = 19 as StatID;
-export const STAT_dmg_thresh_plasma = 20 as StatID;
-export const STAT_dmg_thresh_electrical = 21 as StatID;
-export const STAT_dmg_thresh_emp = 22 as StatID;
-export const STAT_dmg_thresh_explosion = 23 as StatID;
-export const STAT_dmg_resist = 24 as StatID;
-export const STAT_dmg_resist_laser = 25 as StatID;
-export const STAT_dmg_resist_fire = 26 as StatID;
-export const STAT_dmg_resist_plasma = 27 as StatID;
-export const STAT_dmg_resist_electrical = 28 as StatID;
-export const STAT_dmg_resist_emp = 29 as StatID;
-export const STAT_dmg_resist_explosion = 30 as StatID;
-export const STAT_rad_resist = 31 as StatID;
-export const STAT_poison_resist = 32 as StatID;
-export const STAT_age = 33 as StatID;
-export const STAT_gender = 34 as StatID;
-export const STAT_current_hp = 35 as StatID;
-export const STAT_current_poison = 36 as StatID;
-export const STAT_current_rad = 37 as StatID;
+/** Stat ID for get_critter_stat, set_critter_stat, etc. (0-37) */
+export enum STAT {
+  st = 0,
+  pe = 1,
+  en = 2,
+  ch = 3,
+  iq = 4,
+  ag = 5,
+  lu = 6,
+  max_hp = 7,
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values -- intentional alias for max_hp, matches original STAT_max_hit_points constant
+  max_hit_points = 7,
+  max_move_points = 8,
+  ac = 9,
+  /** used in sfall for critter inventory size (see CritterInvSizeLimitMode) */
+  unused = 10,
+  melee_dmg = 11,
+  carry_amt = 12,
+  sequence = 13,
+  heal_rate = 14,
+  crit_chance = 15,
+  better_crit = 16,
+  dmg_thresh = 17,
+  dmg_thresh_laser = 18,
+  dmg_thresh_fire = 19,
+  dmg_thresh_plasma = 20,
+  dmg_thresh_electrical = 21,
+  dmg_thresh_emp = 22,
+  dmg_thresh_explosion = 23,
+  dmg_resist = 24,
+  dmg_resist_laser = 25,
+  dmg_resist_fire = 26,
+  dmg_resist_plasma = 27,
+  dmg_resist_electrical = 28,
+  dmg_resist_emp = 29,
+  dmg_resist_explosion = 30,
+  rad_resist = 31,
+  poison_resist = 32,
+  age = 33,
+  gender = 34,
+  current_hp = 35,
+  current_poison = 36,
+  current_rad = 37,
+}
 export const STAT_real_max_stat = 38;
 export const PCSTAT_unspent_skill_points = 0 as PcStatID;
 export const PCSTAT_level = 1 as PcStatID;
@@ -352,25 +356,29 @@ export const PCSTAT_experience = 2 as PcStatID;
 export const PCSTAT_reputation = 3 as PcStatID;
 export const PCSTAT_karma = 4 as PcStatID;
 export const PCSTAT_max_pc_stat = 5 as PcStatID;
-export const SKILL_SMALL_GUNS = 0;
-export const SKILL_BIG_GUNS = 1;
-export const SKILL_ENERGY_WEAPONS = 2;
-export const SKILL_UNARMED_COMBAT = 3;
-export const SKILL_MELEE = 4;
-export const SKILL_THROWING = 5;
-export const SKILL_FIRST_AID = 6;
-export const SKILL_DOCTOR = 7;
-export const SKILL_SNEAK = 8;
-export const SKILL_LOCKPICK = 9;
-export const SKILL_STEAL = 10;
-export const SKILL_TRAPS = 11;
-export const SKILL_SCIENCE = 12;
-export const SKILL_REPAIR = 13;
-export const SKILL_SPEECH = 14;
-export const SKILL_CONVERSANT = 14;
-export const SKILL_BARTER = 15;
-export const SKILL_GAMBLING = 16;
-export const SKILL_OUTDOORSMAN = 17;
+/** Skill ID for has_skill, critter_mod_skill, etc. (0-17) */
+export enum SKILL {
+  SMALL_GUNS = 0,
+  BIG_GUNS = 1,
+  ENERGY_WEAPONS = 2,
+  UNARMED_COMBAT = 3,
+  MELEE = 4,
+  THROWING = 5,
+  FIRST_AID = 6,
+  DOCTOR = 7,
+  SNEAK = 8,
+  LOCKPICK = 9,
+  STEAL = 10,
+  TRAPS = 11,
+  SCIENCE = 12,
+  REPAIR = 13,
+  SPEECH = 14,
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values -- intentional alias for SPEECH, matches original SKILL_CONVERSANT constant
+  CONVERSANT = 14,
+  BARTER = 15,
+  GAMBLING = 16,
+  OUTDOORSMAN = 17,
+}
 export const rl_disastrous = 0;
 export const rl_very_bad = 1;
 export const rl_bad = 2;
@@ -813,7 +821,7 @@ export function create_object(pid: number, tile: number, elev: Elevation): Objec
 }
 
 /** @inline */
-export function critter_skill_level(who: CritterPtr, skill: SkillID): number {
+export function critter_skill_level(who: CritterPtr, skill: SKILL): number {
   return has_skill(who, skill);
 }
 
@@ -880,7 +888,7 @@ export function car_give_gas(amount: number): number {
 }
 
 /** @inline */
-export function is_skill_tagged(skill: SkillID): number {
+export function is_skill_tagged(skill: SKILL): number {
   return metarule(METARULE_SKILL_CHECK_TAG, skill);
 }
 

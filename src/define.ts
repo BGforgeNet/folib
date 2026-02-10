@@ -1,4 +1,4 @@
-// Bundleable implementations for functions that need to be defined in each script
+// Custom defines
 
 import { debug_msg } from "./base.d";
 

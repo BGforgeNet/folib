@@ -1,8 +1,9 @@
-// AI chem-use mode values for AI_CAP_CHEM_USE.
-
-export const ai_chem_clean = 0;
-export const ai_chem_stims_when_hurt_little = 1;
-export const ai_chem_stims_when_hurt_lots = 2;
-export const ai_chem_sometimes = 3;
-export const ai_chem_anytime = 4;
-export const ai_chem_always = 5;
+/** AI chem-use mode values for AI_CAP.CHEM_USE. */
+export enum ai_chem {
+    clean = 0,
+    stims_when_hurt_little = 1,
+    stims_when_hurt_lots = 2,
+    sometimes = 3,
+    anytime = 4,
+    always = 5,
+}

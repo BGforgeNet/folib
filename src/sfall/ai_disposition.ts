@@ -1,8 +1,9 @@
-// AI disposition values for AI_CAP_DISPOSITION.
-
-export const ai_disposition_none = -1;
-export const ai_disposition_custom = 0;
-export const ai_disposition_coward = 1;
-export const ai_disposition_defensive = 2;
-export const ai_disposition_aggressive = 3;
-export const ai_disposition_berserk = 4;
+/** AI disposition values for AI_CAP.DISPOSITION. */
+export enum ai_disposition {
+    none = -1,
+    custom = 0,
+    coward = 1,
+    defensive = 2,
+    aggressive = 3,
+    berserk = 4,
+}

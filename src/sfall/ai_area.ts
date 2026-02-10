@@ -1,7 +1,8 @@
-// AI attack area mode values for AI_CAP_AREA_ATTACK_MODE.
-
-export const ai_area_always = 0;
-export const ai_area_sometimes = 1;
-export const ai_area_be_sure = 2;
-export const ai_area_be_careful = 3;
-export const ai_area_be_absolutely_sure = 4;
+/** AI attack area mode values for AI_CAP.AREA_ATTACK_MODE. */
+export enum ai_area {
+    always = 0,
+    sometimes = 1,
+    be_sure = 2,
+    be_careful = 3,
+    be_absolutely_sure = 4,
+}

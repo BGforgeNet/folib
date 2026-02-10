@@ -21,9 +21,6 @@ export type DoorPtr = ObjectPtr<'door'>;
 /** Array ID - an integer handle to a sfall array */
 export type ArrayID = number & { __brand: 'ArrayID' };
 
-/** Skill ID - valid skill identifiers (0-17) */
-export type SkillID = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17;
-
 /** Hook ID - valid sfall hook identifiers (0-48, 61) */
 export type HookID =
   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -42,9 +39,6 @@ export type GameMode = number & { __brand: 'GameMode' };
 /** Object type returned by obj_type() */
 export type ObjType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-/** Body part / hit location for targeted attacks */
-export type BodyPart = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-
 /** Weapon type classification */
 export type WeaponType = 0 | 1 | 2 | 3 | 4;
 
@@ -56,13 +50,6 @@ export type DamageType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 /** Float message color for float_msg */
 export type FloatMsgColor = -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-
-/** Stat ID for get_critter_stat, set_critter_stat, etc. (0-37) */
-export type StatID =
-  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19
-  | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29
-  | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37;
 
 /** Perk ID for has_perk, set_perk, etc. */
 export type PerkID = number & { __brand: 'PerkID' };

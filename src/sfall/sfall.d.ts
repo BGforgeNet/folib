@@ -1,7 +1,9 @@
 // Sfall scripting extensions for Fallout 2
 // Auto-generated from fallout-ssl-sfall.yml
 
-import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, ArrayID, SkillID, HookID, IfaceTag, GameMode, AttackType, Hand, BodyPart, Elevation, Direction, StatID, SfallList, SfallMap } from "../index";
+import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, ArrayID, SKILL, HookID, IfaceTag, GameMode, AttackType, Hand, Elevation, Direction, SfallList, SfallMap } from "../index";
+import type { BODY } from "./define_extra";
+import type { STAT } from "./define_lite";
 
 /** Any sfall array type */
 export type SfallArray = SfallList<any> | SfallMap<any, any>;
@@ -21,44 +23,44 @@ export declare function metarule3(func: number, arg1: ObjectPtr | number, arg2: 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_npc_stat_max(stat: StatID, value: number): void;
+export declare function set_npc_stat_max(stat: STAT, value: number): void;
 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_npc_stat_min(stat: StatID, value: number): void;
+export declare function set_npc_stat_min(stat: STAT, value: number): void;
 
 
 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_stat_max(stat: StatID, value: number): void;
+export declare function set_stat_max(stat: STAT, value: number): void;
 
 /**
  * The `set_stat_max/min` functions can be used to set the valid ranges on stats. Values returned by `get_current_stat` will be clamped to this range. The `set_pc_` function only affects the player, the `set_npc_` functions only affects other critters, and the `set_` functions affects both.
  */
-export declare function set_stat_min(stat: StatID, value: number): void;
+export declare function set_stat_min(stat: STAT, value: number): void;
 
 /**
  * Set PC stat maximum. Only affects the player.
  */
-export declare function set_pc_stat_max(stat: StatID, value: number): void;
+export declare function set_pc_stat_max(stat: STAT, value: number): void;
 
 /**
  * Set PC stat minimum. Only affects the player.
  */
-export declare function set_pc_stat_min(stat: StatID, value: number): void;
+export declare function set_pc_stat_min(stat: STAT, value: number): void;
 
 /**
  * Get PC extra stat value (bonus stats). Equivalent to calling get_critter_extra_stat with dude_obj.
  */
-export declare function get_pc_extra_stat(stat: StatID): number;
+export declare function get_pc_extra_stat(stat: STAT): number;
 
 /**
  * Set PC extra stat value (bonus stats). Equivalent to calling set_critter_extra_stat with dude_obj.
  */
-export declare function set_pc_extra_stat(stat: StatID, value: number): void;
+export declare function set_pc_extra_stat(stat: STAT, value: number): void;
 
 export declare function set_perk_stat(perkID: number, value: number): void;
 
@@ -67,17 +69,17 @@ export declare function set_perk_stat_mag(perkID: number, value: number): void;
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_critter_base_stat(critter: ObjectPtr, stat: StatID): number;
+export declare function get_critter_base_stat(critter: ObjectPtr, stat: STAT): number;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_critter_extra_stat(critter: ObjectPtr, stat: StatID): number;
+export declare function get_critter_extra_stat(critter: ObjectPtr, stat: STAT): number;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_pc_base_stat(stat: StatID): number;
+export declare function get_pc_base_stat(stat: STAT): number;
 
 
 /**
@@ -86,7 +88,7 @@ export declare function get_pc_base_stat(stat: StatID): number;
  *
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_stat_max(stat: StatID, who: boolean): void;
+export declare function get_stat_max(stat: STAT, who: boolean): void;
 
 /**
  * - Returns the minimum set value of the specified stat (see `set_stat_min` functions)
@@ -94,22 +96,22 @@ export declare function get_stat_max(stat: StatID, who: boolean): void;
  *
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_stat_min(stat: StatID, who: boolean): void;
+export declare function get_stat_min(stat: STAT, who: boolean): void;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function set_critter_base_stat(critter: ObjectPtr, stat: StatID, value: number): void;
+export declare function set_critter_base_stat(critter: ObjectPtr, stat: STAT, value: number): void;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function set_critter_extra_stat(critter: ObjectPtr, stat: StatID, value: number): void;
+export declare function set_critter_extra_stat(critter: ObjectPtr, stat: STAT, value: number): void;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function set_pc_base_stat(stat: StatID, value: number): void;
+export declare function set_pc_base_stat(stat: STAT, value: number): void;
 
 
 // =============================================================================
@@ -295,12 +297,12 @@ export declare function refresh_pc_art(): void;
 /**
  * Gets the hit percentage modifiers for aiming at specific bodyparts. Valid bodypart id's are from 0 to 8.
  */
-export declare function get_bodypart_hit_modifier(bodypart: BodyPart): number;
+export declare function get_bodypart_hit_modifier(bodypart: BODY): number;
 
 /**
  * Alters the hit percentage modifiers for aiming at specific bodyparts. Valid bodypart id's are from 0 to 8. Changes are not saved, and will reset to the defaults (or to the values specified in ddraw.ini if they exist) at each reload.
  */
-export declare function set_bodypart_hit_modifier(bodypart: BodyPart, value: number): void;
+export declare function set_bodypart_hit_modifier(bodypart: BODY, value: number): void;
 
 
 /**
@@ -435,14 +437,14 @@ export declare function set_critter_pickpocket_mod(critter: CritterPtr, max: num
 /**
  * Will get the number of additional points a critter has in a skill, on top of whatever they have from their stats and other bonuses
  */
-export declare function get_critter_skill_points(critter: number, skill: SkillID): number;
+export declare function get_critter_skill_points(critter: number, skill: SKILL): number;
 
 export declare function set_critter_skill_mod(critter: CritterPtr, max: number): void;
 
 /**
  * Will set the number of additional points a critter has in a skill, on top of whatever they have from their stats and other bonuses. Note that skill points are part of the proto, so calling it on a critter will affect all critters that share the same proto.
  */
-export declare function set_critter_skill_points(critter: number, skill: SkillID, value: number): void;
+export declare function set_critter_skill_points(critter: number, skill: SKILL, value: number): void;
 
 // =============================================================================
 // Dialog
@@ -1095,7 +1097,7 @@ export declare function force_aimed_shots(pid: number): void;
 /**
  * Gets current critical table. For details see [critical hit tables](http://falloutmods.wikia.com/wiki/Critical_hit_tables). Requires `OverrideCriticalTable` to be enabled in `ddraw.ini` (already enabled by default).
  */
-export declare function get_critical_table(crittertype: number, bodypart: BodyPart, level: number, valuetype: number): number;
+export declare function get_critical_table(crittertype: number, bodypart: BODY, level: number, valuetype: number): number;
 
 /**
  * Will return the last critter to be deliberately attacked. Outside of combat always returns 0.
@@ -1105,12 +1107,12 @@ export declare function get_last_target(critter: ObjectPtr): ObjectPtr;
 /**
  * Resets the critical table to default (or to the contents of `CriticalOverrides.ini`, if it exists). For details see 'http://falloutmods.wikia.com/wiki/Critical_hit_tables'. Requires `OverrideCriticalTable` to be set to 1 in `ddraw.ini`. (Disabled by default, because it noticably increases loading times.)
  */
-export declare function reset_critical_table(crittertype: number, bodypart: BodyPart, level: number, valuetype: number): void;
+export declare function reset_critical_table(crittertype: number, bodypart: BODY, level: number, valuetype: number): void;
 
 /**
  * Used for modifying the critical table. For details see [critical hit tables](http://falloutmods.wikia.com/wiki/Critical_hit_tables). Changes are not saved, and will reset to the defaults (or to the contents of `CriticalOverrides.ini`, if it exists) at each game reload. Requires `OverrideCriticalTable` to be enabled in `ddraw.ini` (already enabled by default).
  */
-export declare function set_critical_table(crittertype: number, bodypart: BodyPart, level: number, valuetype: number, value: number): void;
+export declare function set_critical_table(crittertype: number, bodypart: BODY, level: number, valuetype: number, value: number): void;
 
 
 

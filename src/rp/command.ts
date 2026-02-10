@@ -2,14 +2,14 @@ import { dude_obj, get_critter_stat, global_var } from "../base.d";
 import { len_array } from "../sfall/sfall.d";
 import { party_member_list_critters } from "../sfall/sfall";
 import { dude_elevation } from "../sfall/command_lite";
-import { STAT_ch } from "../sfall/define_lite";
+import { STAT } from "../sfall/define_lite";
 import { GVAR_PLAYER_GOT_CAR } from "./global";
 
 export { dude_elevation };
 
 /** @inline */
 export function dude_charisma(): number {
-    return get_critter_stat(dude_obj, STAT_ch);
+    return get_critter_stat(dude_obj, STAT.ch);
 }
 
 /** @inline */

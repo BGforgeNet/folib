@@ -1,6 +1,6 @@
 // Fallout 2 engine builtins (external - not bundled into output)
 
-import type { ObjectPtr, CritterPtr, ItemPtr, DoorPtr, ContainerPtr, SkillID, ObjType, StatID, InvenSlot, TraitType, FloatMsgColor, PerkID, TraitID, PcStatID, CritterState, Elevation, Direction, Difficulty, RollResult } from "./index";
+import type { ObjectPtr, CritterPtr, ItemPtr, DoorPtr, ContainerPtr, SKILL, ObjType, STAT, InvenSlot, TraitType, FloatMsgColor, PerkID, TraitID, PcStatID, CritterState, Elevation, Direction, Difficulty, RollResult } from "./index";
 
 // =============================================================================
 // Runtime Globals
@@ -194,13 +194,13 @@ export declare function critter_state(who: CritterPtr): CritterState;
 export declare function critter_inven_obj(who: CritterPtr, slot: InvenSlot): ItemPtr;
 
 /** Returns a critter stat value */
-export declare function get_critter_stat(who: CritterPtr, stat: StatID): number;
+export declare function get_critter_stat(who: CritterPtr, stat: STAT): number;
 
 /**
  * DOES NOT SET THE STAT.
  * Modifies attribute `stat` in critter `who` by value `mod`.
  */
-export declare function set_critter_stat(who: CritterPtr, stat: StatID, mod: number): number;
+export declare function set_critter_stat(who: CritterPtr, stat: STAT, mod: number): number;
 
 /** Returns true if the critter has its FLEE flag set */
 export declare function critter_is_fleeing(who: CritterPtr): boolean;
@@ -234,7 +234,7 @@ export declare function has_trait(traitType: TraitType, who: ObjectPtr, trait: n
  * Note: Only works on dude_obj! Will not work on other critters.
  * For tagged skills, the amount will be rounded down to the closest even number.
  */
-export declare function critter_mod_skill(who: CritterPtr, skill: SkillID, amount: number): number;
+export declare function critter_mod_skill(who: CritterPtr, skill: SKILL, amount: number): number;
 
 /** Returns the critter's poison level */
 export declare function get_poison(who: CritterPtr): number;
@@ -430,7 +430,7 @@ export declare function terminate_combat(): void;
  * Returns the level of the skill (0-17) of the target critter.
  * Returns 0-200 for Fallout 1, 0-300 for Fallout 2.
  */
-export declare function has_skill(who: CritterPtr, skill: SkillID): number;
+export declare function has_skill(who: CritterPtr, skill: SKILL): number;
 
 /** Returns a pc-only stat value (PCSTAT_*) */
 export declare function get_pc_stat(stat: PcStatID): number;
@@ -447,10 +447,10 @@ export declare function do_check(who: CritterPtr, check: number, modifier: numbe
  * is_success and is_critical to determine states, and how_much can be used to
  * determine the difference succeeded or failed by.
  */
-export declare function roll_vs_skill(who: CritterPtr, skill: SkillID, modifier: number): RollResult;
+export declare function roll_vs_skill(who: CritterPtr, skill: SKILL, modifier: number): RollResult;
 
 /** Returns the value of a completed skill vs skill contest */
-export declare function skill_contest(skill: SkillID): RollResult;
+export declare function skill_contest(skill: SKILL): RollResult;
 
 /** Returns true if the roll result is a success (including critical) */
 export declare function is_success(rollResult: RollResult): boolean;
@@ -908,7 +908,7 @@ export declare function use_obj(obj: ObjectPtr): void;
 export declare function use_obj_on_obj(item: ObjectPtr, target: ObjectPtr): ObjectPtr;
 
 /** Returns true if an active skill is being used */
-export declare function using_skill(who: CritterPtr, skill: SkillID): boolean;
+export declare function using_skill(who: CritterPtr, skill: SKILL): boolean;
 
 // =============================================================================
 // Named Events (sfall)

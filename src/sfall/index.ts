@@ -37,86 +37,14 @@ export {
 } from './dik';
 
 // AI behavior
-export {
-    AI_CAP_AGGRESSION,
-    AI_CAP_AREA_ATTACK_MODE,
-    AI_CAP_ATTACK_WHO,
-    AI_CAP_BEST_WEAPON,
-    AI_CAP_CALLED_FREQ,
-    AI_CAP_CHEM_PRIMARY_DESIRE,
-    AI_CAP_CHEM_USE,
-    AI_CAP_DISPOSITION,
-    AI_CAP_DISTANCE,
-    AI_CAP_HURT_TOO_MUCH,
-    AI_CAP_MAX_DISTANCE,
-    AI_CAP_MIN_HP,
-    AI_CAP_MIN_TO_HIT,
-    AI_CAP_RUN_AWAY_MODE,
-    AI_CAP_SECONDARY_FREQ,
-} from './ai_cap';
-
-export {
-    ai_area_always,
-    ai_area_be_absolutely_sure,
-    ai_area_be_careful,
-    ai_area_be_sure,
-    ai_area_sometimes,
-} from './ai_area';
-
-export {
-    ai_attack_closest,
-    ai_attack_strongest,
-    ai_attack_weakest,
-    ai_attack_whomever,
-    ai_attack_whomever_attacking_me,
-} from './ai_attack';
-
-export {
-    ai_run_away_bleeding,
-    ai_run_away_coward,
-    ai_run_away_finger_hurts,
-    ai_run_away_never,
-    ai_run_away_none,
-    ai_run_away_not_feeling_good,
-    ai_run_away_tourniquet,
-} from './ai_run_away';
-
-export {
-    ai_disposition_aggressive,
-    ai_disposition_berserk,
-    ai_disposition_coward,
-    ai_disposition_custom,
-    ai_disposition_defensive,
-    ai_disposition_none,
-} from './ai_disposition';
-
-export {
-    ai_distance_charge,
-    ai_distance_on_your_own,
-    ai_distance_snipe,
-    ai_distance_stay,
-    ai_distance_stay_close,
-} from './ai_distance';
-
-export {
-    ai_weapon_melee,
-    ai_weapon_melee_over_ranged,
-    ai_weapon_no_pref,
-    ai_weapon_random,
-    ai_weapon_ranged,
-    ai_weapon_ranged_over_melee,
-    ai_weapon_unarmed,
-    ai_weapon_unarmed_over_thrown,
-} from './ai_weapon';
-
-export {
-    ai_chem_always,
-    ai_chem_anytime,
-    ai_chem_clean,
-    ai_chem_sometimes,
-    ai_chem_stims_when_hurt_little,
-    ai_chem_stims_when_hurt_lots,
-} from './ai_chem';
+export { AI_CAP } from './ai_cap';
+export { ai_area } from './ai_area';
+export { ai_attack } from './ai_attack';
+export { ai_chem } from './ai_chem';
+export { ai_disposition } from './ai_disposition';
+export { ai_distance } from './ai_distance';
+export { ai_run_away } from './ai_run_away';
+export { ai_weapon } from './ai_weapon';
 
 // From define_extra.ts
 export {
@@ -154,15 +82,7 @@ export {
     ATTACK_MODE_SWING,
     ATTACK_MODE_THROW,
     ATTACK_MODE_THRUST,
-    BODY_HIT_EYES,
-    BODY_HIT_GROIN,
-    BODY_HIT_HEAD,
-    BODY_HIT_LEFT_ARM,
-    BODY_HIT_LEFT_LEG,
-    BODY_HIT_RIGHT_ARM,
-    BODY_HIT_RIGHT_LEG,
-    BODY_HIT_TORSO,
-    BODY_UNCALLED,
+    BODY,
     CALIBER_10MM,
     CALIBER_12_GAUGE,
     CALIBER_14MM,
@@ -818,65 +738,9 @@ export {
     ROLL_CRITICAL_SUCCESS,
     ROLL_FAILURE,
     ROLL_SUCCESS,
-    SKILL_BARTER,
-    SKILL_BIG_GUNS,
-    SKILL_CONVERSANT,
-    SKILL_DOCTOR,
-    SKILL_ENERGY_WEAPONS,
-    SKILL_FIRST_AID,
-    SKILL_GAMBLING,
-    SKILL_LOCKPICK,
-    SKILL_MELEE,
-    SKILL_OUTDOORSMAN,
-    SKILL_REPAIR,
-    SKILL_SCIENCE,
-    SKILL_SMALL_GUNS,
-    SKILL_SNEAK,
-    SKILL_SPEECH,
-    SKILL_STEAL,
-    SKILL_THROWING,
-    SKILL_TRAPS,
-    SKILL_UNARMED_COMBAT,
-    STAT_ac,
-    STAT_ag,
-    STAT_age,
-    STAT_better_crit,
-    STAT_carry_amt,
-    STAT_ch,
-    STAT_crit_chance,
-    STAT_current_hp,
-    STAT_current_poison,
-    STAT_current_rad,
-    STAT_dmg_resist,
-    STAT_dmg_resist_electrical,
-    STAT_dmg_resist_emp,
-    STAT_dmg_resist_explosion,
-    STAT_dmg_resist_fire,
-    STAT_dmg_resist_laser,
-    STAT_dmg_resist_plasma,
-    STAT_dmg_thresh,
-    STAT_dmg_thresh_electrical,
-    STAT_dmg_thresh_emp,
-    STAT_dmg_thresh_explosion,
-    STAT_dmg_thresh_fire,
-    STAT_dmg_thresh_laser,
-    STAT_dmg_thresh_plasma,
-    STAT_en,
-    STAT_gender,
-    STAT_heal_rate,
-    STAT_iq,
-    STAT_lu,
-    STAT_max_hit_points,
-    STAT_max_hp,
-    STAT_max_move_points,
-    STAT_melee_dmg,
-    STAT_pe,
-    STAT_poison_resist,
-    STAT_rad_resist,
+    SKILL,
+    STAT,
     STAT_real_max_stat,
-    STAT_sequence,
-    STAT_st,
-    STAT_unused,
     TANKER_MOVIE,
     TRAIT_OBJECT,
     TRAIT_PERK,
