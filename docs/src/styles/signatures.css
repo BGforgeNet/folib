@@ -1,0 +1,46 @@
+/**
+ * Styles for syntax-highlighted function signature blocks.
+ *
+ * Generated <pre class="sig"> blocks use Shiki tokens with --dark/--light
+ * CSS variables per span. The active color is selected based on Starlight's
+ * data-theme attribute. Background/border use Starlight color variables
+ * to match the built-in Expressive Code blocks.
+ */
+pre.sig {
+  font-family: var(--sl-font-mono);
+  font-size: var(--sl-text-code);
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5), transparent 25%);
+  border-radius: 0.4rem;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Theme-aware backgrounds matching Starlight's Expressive Code blocks */
+:root[data-theme='dark'] pre.sig {
+  background-color: var(--sl-color-gray-6);
+}
+:root[data-theme='light'] pre.sig {
+  background-color: var(--sl-color-gray-7);
+}
+
+/* Token colors: switch between dark/light based on active theme */
+:root[data-theme='dark'] pre.sig span {
+  color: var(--dark);
+}
+:root[data-theme='light'] pre.sig span {
+  color: var(--light);
+}
+
+/* Type links inherit token color but add a subtle underline */
+pre.sig a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.15em;
+}
+
+pre.sig a:hover {
+  text-decoration-style: solid;
+}

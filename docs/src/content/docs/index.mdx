@@ -1,0 +1,29 @@
+---
+title: FOlib
+description: TypeScript bindings for Fallout 2 scripting
+template: splash
+hero:
+  tagline: Type-safe declarations for the Fallout 2 engine and sfall extensions.
+  actions:
+    - text: Core API
+      link: /api/core/base-decl/
+      icon: right-arrow
+    - text: sfall API
+      link: /api/sfall/sfall-decl/
+      icon: right-arrow
+      variant: minimal
+    - text: Restoration Project
+      link: /api/rp/itempid/
+      icon: right-arrow
+      variant: minimal
+---
+
+FOlib provides TypeScript type declarations and constants for Fallout 2's SSL scripting engine. It is consumed by [BGforge MLS transpiler](https://github.com/BGforgeNet/VScode-BGforge-MLS) that transpiles TypeScript into Fallout 2's SSL scripting language.
+
+FOlib is a work in progress. Headers are added and/or ported on demand. Contribute on [github](https://github.com/BGforgeNet/folib).
+
+## Entry Points
+
+- **Core** (`folib`) -- vanilla engine builtins: game globals, object/critter/inventory/combat/dialogue functions, branded pointer types.
+- **sfall** (`folib/sfall`) -- sfall extension bindings: arrays, hooks, shaders, metarules, helper macros, and game constants.
+- **Restoration Project** (`folib/rp/*`) -- game-specific constants for the Fallout 2 Restoration Project: PIDs, scripts, maps, globals.
