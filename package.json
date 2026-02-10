@@ -3,6 +3,10 @@
 	"version": "0.1.2",
 	"description": "TypeScript bindings for Fallout 2",
 	"type": "module",
+	"files": [
+		"src",
+		"README.md"
+	],
 	"exports": {
 		".": "./src/index.ts",
 		"./sfall": "./src/sfall/index.ts",
