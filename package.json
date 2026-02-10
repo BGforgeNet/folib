@@ -1,21 +1,32 @@
 {
 	"name": "folib",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "TypeScript bindings for Fallout 2",
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
-		"./sfall": "./src/sfall/index.ts"
+		"./sfall": "./src/sfall/index.ts",
+		"./rp/*": "./src/rp/*.ts"
 	},
 	"scripts": {
 		"lint": "eslint src",
-		"typecheck": "tsc"
+		"typecheck": "tsc",
+		"docs:generate": "pnpm --filter folib-docs exec tsx ../docs/generate.ts",
+		"docs:serve": "pnpm docs:generate && pnpm --filter folib-docs dev",
+		"docs:build": "pnpm docs:generate && pnpm --filter folib-docs build",
+		"docs:preview": "pnpm --filter folib-docs preview"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.2",
 		"eslint": "^9.39.2",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.50.1"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"sharp"
+		]
 	},
 	"keywords": [
 		"Fallout",
