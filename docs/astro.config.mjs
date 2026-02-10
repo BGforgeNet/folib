@@ -8,10 +8,12 @@ import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
+  site: 'https://folib.bgforge.net',
   integrations: [
     starlight({
       title: 'FOlib',
       description: 'TypeScript bindings for Fallout 2 scripting',
+      favicon: '/favicon.svg',
       customCss: ['./src/styles/signatures.css'],
       sidebar: [
         {

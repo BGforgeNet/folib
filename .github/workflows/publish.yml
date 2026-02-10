@@ -5,8 +5,17 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  publish:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -17,7 +26,23 @@ jobs:
         with:
           node-version: "22"
           cache: pnpm
-      - run: pnpm install && pnpm exec eslint src && pnpm exec tsc
+      - run: pnpm install
+      - run: pnpm exec eslint src
+      - run: pnpm exec tsc
+      - run: pnpm docs:build
       - uses: JS-DevTools/npm-publish@v4.1.1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs/dist
+
+  deploy-docs:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
