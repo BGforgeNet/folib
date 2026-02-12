@@ -1,5 +1,5 @@
 /**
- * Generates eslint-config/reserved-words.ts from the .d.ts source files.
+ * Generates eslint-config/reserved-words.js from the .d.ts source files.
  *
  * Reads exported function and const names from base.d.ts, sfall.d.ts, and types.d.ts,
  * then writes them as sorted arrays for use in the ESLint config.
@@ -57,15 +57,15 @@ const output = `/**
 /** SSL engine builtins from base.d.ts */
 export const SSL_RESERVED_WORDS = [
 ${formatArray(sslNames)}
-] as const
+]
 
 /** Sfall extensions from sfall.d.ts + types.d.ts */
 export const SFALL_RESERVED_WORDS = [
 ${formatArray(sfallNames)}
-] as const
+]
 `
 
-const outPath = join(ROOT, 'eslint-config/reserved-words.ts')
+const outPath = join(ROOT, 'eslint-config/reserved-words.js')
 writeFileSync(outPath, output, 'utf-8')
 
 console.log(`Generated ${outPath}`)

@@ -186,7 +186,7 @@ export const SSL_RESERVED_WORDS = [
     'wield_obj_critter',
     'wm_area_set_pos',
     'world_map',
-] as const
+]
 
 /** Sfall extensions from sfall.d.ts + types.d.ts */
 export const SFALL_RESERVED_WORDS = [
@@ -501,4 +501,4 @@ export const SFALL_RESERVED_WORDS = [
     'write_int',
     'write_short',
     'write_string',
-] as const
+]
