@@ -17,7 +17,7 @@
 
 import tseslint from 'typescript-eslint'
 import unusedImports from 'eslint-plugin-unused-imports'
-import { SSL_RESERVED_WORDS, SFALL_RESERVED_WORDS } from './reserved-words'
+import { SSL_RESERVED_WORDS, SFALL_RESERVED_WORDS } from './reserved-words.js'
 
 export interface TsslConfigOptions {
   /** Absolute path to the directory containing tsconfig.json (required) */

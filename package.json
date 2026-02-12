@@ -1,6 +1,6 @@
 {
 	"name": "folib",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "TypeScript bindings for Fallout 2",
 	"type": "module",
 	"files": [
@@ -12,9 +12,11 @@
 		".": "./src/index.ts",
 		"./sfall": "./src/sfall/index.ts",
 		"./rp/*": "./src/rp/*.ts",
-		"./eslint-config": "./eslint-config/index.ts"
+		"./eslint-config": "./eslint-config/index.js"
 	},
 	"scripts": {
+		"build": "tsc -p tsconfig.eslint-config.json",
+		"prepublishOnly": "pnpm run build",
 		"generate:eslint": "tsx scripts/generate-eslint-config.ts",
 		"lint": "eslint src",
 		"typecheck": "tsc",

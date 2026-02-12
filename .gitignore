@@ -2,3 +2,5 @@ node_modules/
 docs/dist/
 docs/.astro/
 docs/src/content/docs/api/
+eslint-config/*.js
+eslint-config/*.d.ts
