@@ -11,9 +11,6 @@ importers:
       eslint-plugin-unused-imports:
         specifier: ^4.0.0
         version: 4.4.1(@typescript-eslint/eslint-plugin@8.50.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)
-      folib:
-        specifier: ^0.2.2
-        version: 0.2.2(eslint-plugin-unused-imports@4.4.1(@typescript-eslint/eslint-plugin@8.50.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2))(eslint@9.39.2)(typescript-eslint@8.50.1(eslint@9.39.2)(typescript@5.9.3))
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.2
@@ -1406,20 +1403,6 @@ packages:
   flattie@1.1.1:
     resolution: {integrity: sha512-9UbaD6XdAL97+k/n+N7JwX46K/M6Zc6KcFYskrYL8wbBV/Uyk0CTAMY0VT+qiK5PM7AIc9aTWYtq65U7T+aCNQ==}
     engines: {node: '>=8'}
-
-  folib@0.2.2:
-    resolution: {integrity: sha512-z+z6bj2fbXyV0bhhJTtCNkCTEzXzkCclHL4ReZY1kze3Ir9sIXKlZ9KSdl0W0W0haY+4jsbG/091UKKmwIvDpw==}
-    peerDependencies:
-      eslint: ^9.0.0
-      eslint-plugin-unused-imports: ^4.0.0
-      typescript-eslint: ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
-      eslint-plugin-unused-imports:
-        optional: true
-      typescript-eslint:
-        optional: true
 
   fontace@0.4.0:
     resolution: {integrity: sha512-moThBCItUe2bjZip5PF/iZClpKHGLwMvR79Kp8XpGRBrvoRSnySN4VcILdv3/MJzbhvUA5WeiUXF5o538m5fvg==}
@@ -3806,12 +3789,6 @@ snapshots:
   flatted@3.3.3: {}
 
   flattie@1.1.1: {}
-
-  folib@0.2.2(eslint-plugin-unused-imports@4.4.1(@typescript-eslint/eslint-plugin@8.50.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2))(eslint@9.39.2)(typescript-eslint@8.50.1(eslint@9.39.2)(typescript@5.9.3)):
-    optionalDependencies:
-      eslint: 9.39.2
-      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.50.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)
-      typescript-eslint: 8.50.1(eslint@9.39.2)(typescript@5.9.3)
 
   fontace@0.4.0:
     dependencies:
