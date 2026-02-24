@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- **Breaking:** Rename `folib/rp/*` to `folib/rpu/*` (Restoration Project, updated).
+
 ## 0.2.4
 
 - Fix eslint config publish.
@@ -10,7 +14,7 @@
 
 ## 0.1.2
 
-- Export Restoration Project, updated headers.
+- Export RPU headers.
 - Add documentation site.
 
 ## 0.1.1
