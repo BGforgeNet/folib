@@ -1,0 +1,38 @@
+# FOlib
+
+> TypeScript bindings for Fallout 2 scripting. Type declarations and constants consumed by a transpiler that compiles TypeScript into Fallout 2's SSL language. This is NOT a runtime library.
+
+## Entry Points
+
+- `folib` (src/index.ts): Core Fallout 2 engine bindings
+- `folib/sfall` (src/sfall/index.ts): sfall extension bindings
+- `folib/rpu/*` (src/rpu/*.ts): Restoration Project, updated game data
+- `folib/eslint-config` (eslint-config/index.js): ESLint config for TSSL projects
+
+## Key Concepts
+
+- Ambient `.d.ts` files declare functions that map to SSL opcodes -- they have no JS implementation
+- Runtime `.ts` constants are inlined by the transpiler into compiled scripts
+- Functions with `@inline` JSDoc are inlined by the transpiler
+- `SCRIPT_REALNAME` is injected by the transpiler, not defined here
+- Branded types (`ObjectPtr`, `CritterPtr`, `ItemPtr`) enforce pointer safety at compile time
+- `list()` and `map()` constructors are transpiler-handled (declared, not implemented)
+
+## File Categories
+
+- `src/base.d.ts`: Vanilla engine builtins (game globals, objects, critters, combat, dialogue)
+- `src/types.d.ts`: Branded pointer types and transpiler-handled constructors
+- `src/types.ts`, `src/define.ts`: Core constants and helpers
+- `src/sfall/sfall.d.ts`: sfall function declarations
+- `src/sfall/define_lite.ts`, `src/sfall/define_extra.ts`, `src/sfall/sfall.ts`: Game constants
+- `src/sfall/command_lite.ts`, `src/sfall/lib.*.ts`: Inline helper functions
+- `src/rpu/`: Restoration Project, updated data (PIDs, scripts, maps, globals)
+- `eslint-config/`: ESLint flat config enforcing TSSL restrictions
+
+## Constraints
+
+Do not suggest:
+- Runtime implementations for `.d.ts` declarations
+- Arrow functions, template literals, optional chaining, destructuring, async/await, classes (forbidden in TSSL)
+- Standard JS globals: Array, Date, JSON, Map, Math, Object, Promise (unavailable in SSL)
+- Build steps, test suites, or bundling (none exist; library is published as source)

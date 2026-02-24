@@ -32,8 +32,8 @@ export default defineConfig({
           autogenerate: { directory: 'api/sfall' },
         },
         {
-          label: 'Restoration Project',
-          autogenerate: { directory: 'api/rp' },
+          label: 'Restoration Project, updated',
+          autogenerate: { directory: 'api/rpu' },
         },
       ],
     }),

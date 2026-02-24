@@ -11,7 +11,7 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./sfall": "./src/sfall/index.ts",
-		"./rp/*": "./src/rp/*.ts",
+		"./rpu/*": "./src/rpu/*.ts",
 		"./eslint-config": "./eslint-config/index.js"
 	},
 	"scripts": {

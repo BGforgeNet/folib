@@ -10,7 +10,7 @@
 
 ## 0.1.2
 
-- Export Restoration Project headers.
+- Export Restoration Project, updated headers.
 - Add documentation site.
 
 ## 0.1.1

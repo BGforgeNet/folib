@@ -81,9 +81,9 @@ const ROOT = resolve(dirname(import.meta.filename), '..')
 const OUT_DIR = resolve(dirname(import.meta.filename), 'src/content/docs/api')
 
 const SECTIONS: readonly Section[] = [
-  { name: 'core', dir: 'src', exclude: ['sfall/', 'rp/', 'index.ts'] },
+  { name: 'core', dir: 'src', exclude: ['sfall/', 'rpu/', 'index.ts'] },
   { name: 'sfall', dir: 'src/sfall', exclude: ['index.ts'] },
-  { name: 'rp', dir: 'src/rp', exclude: [] },
+  { name: 'rpu', dir: 'src/rpu', exclude: [] },
 ]
 
 // ---------------------------------------------------------------------------
