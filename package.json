@@ -50,7 +50,12 @@
 		"onlyBuiltDependencies": [
 			"esbuild",
 			"sharp"
-		]
+		],
+		"overrides": {
+			"//": "Astro pins vulnerable transitive deps; override until astro updates them",
+			"rollup": ">=4.59.0",
+			"devalue": ">=5.6.3"
+		}
 	},
 	"keywords": [
 		"Fallout",
