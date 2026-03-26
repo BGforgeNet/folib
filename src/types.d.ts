@@ -98,15 +98,16 @@ export type HitResult = 0 | 1 | 2 | 3;
 /** Sfall list array - numeric index, iterable over values */
 export type SfallList<T> = {
     [index: number]: T;
+} & Iterable<T> & {
     readonly __brand: 'SfallList';
-} & Iterable<T>;
+};
 
 /** Sfall map array - key/value pairs, iterable as [key, value] tuples */
-export type SfallMap<K, V> = {
-    [key: string]: V;
-    [key: number]: V;
+export type SfallMap<K extends string | number, V> = {
+    [key in K]: V;
+} & Iterable<[K, V]> & {
     readonly __brand: 'SfallMap';
-} & Iterable<[K, V]>;
+};
 
 /**
  * Create a typed list from items. Transpiles to array literal [a, b, c].
@@ -114,6 +115,16 @@ export type SfallMap<K, V> = {
 export declare function list<T>(...items: T[]): SfallList<T>;
 
 /**
+ * Create an empty typed list. Transpiles to empty array literal [].
+ */
+export declare function list<T>(): SfallList<T>;
+
+/**
  * Create a typed map from object literal. Transpiles to map literal {a: 1}.
  */
 export declare function map<K extends string | number, V>(obj: Record<K, V>): SfallMap<K, V>;
+
+/**
+ * Create an empty typed map. Transpiles to empty map literal {}.
+ */
+export declare function map<K extends string | number, V>(): SfallMap<K, V>;

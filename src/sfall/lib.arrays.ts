@@ -12,7 +12,7 @@ import {
 import { temp_array_list, temp_array_map, array_is_map } from "./sfall";
 
 /** Check if key exists in map array */
-export function map_contains_key<K, V>(arrayMap: SfallMap<K, V>, key: K): boolean {
+export function map_contains_key<K extends string | number, V>(arrayMap: SfallMap<K, V>, key: K): boolean {
     for (let i = 0; i < len_array(arrayMap); i++) {
         if (array_key(arrayMap, i) == key) return true;
     }
@@ -51,7 +51,7 @@ export function array_pop<T>(array: SfallList<T>): T {
 }
 
 /** Returns a temp list of keys from a given array */
-export function array_keys<K, V>(array: SfallMap<K, V>): SfallList<K>;
+export function array_keys<K extends string | number, V>(array: SfallMap<K, V>): SfallList<K>;
 export function array_keys<T>(array: SfallList<T>): SfallList<number>;
 export function array_keys(array: any): any {
     const len = len_array(array);
@@ -63,7 +63,7 @@ export function array_keys(array: any): any {
 }
 
 /** Returns a temp list of values from a given array */
-export function array_values<K, V>(array: SfallMap<K, V>): SfallList<V>;
+export function array_values<K extends string | number, V>(array: SfallMap<K, V>): SfallList<V>;
 export function array_values<T>(array: SfallList<T>): SfallList<T>;
 export function array_values(array: any): any {
     const len = len_array(array);
@@ -118,7 +118,7 @@ export function copy_array<T>(src: SfallList<T>, srcPos: number, dest: SfallList
 }
 
 /** Create a shallow copy of array as new temp array */
-export function clone_array<K, V>(array: SfallMap<K, V>): SfallMap<K, V>;
+export function clone_array<K extends string | number, V>(array: SfallMap<K, V>): SfallMap<K, V>;
 export function clone_array<T>(array: SfallList<T>): SfallList<T>;
 export function clone_array(array: any): any {
     const len = len_array(array);
@@ -251,7 +251,7 @@ export function array_fill<T>(arr: SfallList<T>, pos: number, count: number, val
 
 /** Append all items from arr2 to arr1 */
 export function array_append<T>(arr1: SfallList<T>, arr2: SfallList<T>): SfallList<T>;
-export function array_append<K, V>(arr1: SfallMap<K, V>, arr2: SfallMap<K, V>): SfallMap<K, V>;
+export function array_append<K extends string | number, V>(arr1: SfallMap<K, V>, arr2: SfallMap<K, V>): SfallMap<K, V>;
 export function array_append(arr1: any, arr2: any): any {
     if (array_is_map(arr1)) {
         const len2 = len_array(arr2);
@@ -270,7 +270,7 @@ export function array_append(arr1: any, arr2: any): any {
 
 /** Concat arrays into new temp array */
 export function array_concat<T>(arr1: SfallList<T>, arr2: SfallList<T>): SfallList<T>;
-export function array_concat<K, V>(arr1: SfallMap<K, V>, arr2: SfallMap<K, V>): SfallMap<K, V>;
+export function array_concat<K extends string | number, V>(arr1: SfallMap<K, V>, arr2: SfallMap<K, V>): SfallMap<K, V>;
 export function array_concat(arr1: any, arr2: any): any {
     return array_append(clone_array(arr1), arr2);
 }

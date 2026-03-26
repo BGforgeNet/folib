@@ -1079,22 +1079,22 @@ export function temp_array_list<T>(size: number): SfallList<T> {
 }
 
 /** Create a persistent map */
-export function create_array_map<K, V>(): SfallMap<K, V> {
+export function create_array_map<K extends string | number, V>(): SfallMap<K, V> {
     return create_array(-1, 0) as unknown as SfallMap<K, V>;
 }
 
 /** Create a temporary map */
-export function temp_array_map<K, V>(): SfallMap<K, V> {
+export function temp_array_map<K extends string | number, V>(): SfallMap<K, V> {
     return temp_array(-1, 0) as unknown as SfallMap<K, V>;
 }
 
 /** Create a persistent lookup map (see arrays.txt for details) */
-export function create_lookup_map<K, V>(): SfallMap<K, V> {
+export function create_lookup_map<K extends string | number, V>(): SfallMap<K, V> {
     return create_array(-1, 2) as unknown as SfallMap<K, V>;
 }
 
 /** Create a temporary lookup map */
-export function temp_lookup_map<K, V>(): SfallMap<K, V> {
+export function temp_lookup_map<K extends string | number, V>(): SfallMap<K, V> {
     return temp_array(-1, 2) as unknown as SfallMap<K, V>;
 }
 
