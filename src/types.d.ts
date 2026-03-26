@@ -102,9 +102,17 @@ export type SfallList<T> = {
     readonly __brand: 'SfallList';
 };
 
-/** Sfall map array - key/value pairs, iterable as [key, value] tuples */
+/**
+ * Sfall map array - key/value pairs, iterable as [key, value] tuples.
+ *
+ * The mapped type uses a distributive conditional (K extends number ? number : string)
+ * to widen literal key types to their base type in the index position. This ensures
+ * SfallMap<16777278 | 16777295, V> is assignable to SfallMap<number, V>, which plain
+ * [key in K] would not allow (it creates specific properties, not an index signature).
+ * The precise K is preserved in Iterable<[K, V]> for type-safe iteration.
+ */
 export type SfallMap<K extends string | number, V> = {
-    [key in K]: V;
+    [key in (K extends number ? number : string)]: V;
 } & Iterable<[K, V]> & {
     readonly __brand: 'SfallMap';
 };
