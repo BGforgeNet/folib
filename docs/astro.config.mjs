@@ -25,15 +25,15 @@ export default defineConfig({
         },
         {
           label: 'Core API',
-          autogenerate: { directory: 'api/core' },
+          items: [{ autogenerate: { directory: 'api/core' } }],
         },
         {
           label: 'sfall API',
-          autogenerate: { directory: 'api/sfall' },
+          items: [{ autogenerate: { directory: 'api/sfall' } }],
         },
         {
           label: 'Restoration Project, updated',
-          autogenerate: { directory: 'api/rpu' },
+          items: [{ autogenerate: { directory: 'api/rpu' } }],
         },
       ],
     }),
