@@ -3,6 +3,10 @@
 	"version": "0.4.2",
 	"description": "TypeScript bindings for Fallout 2",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BGforgeNet/folib.git"
+	},
 	"packageManager": "pnpm@11.19.0",
 	"files": [
 		"src",
