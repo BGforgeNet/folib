@@ -3,6 +3,7 @@
 	"version": "0.4.2",
 	"description": "TypeScript bindings for Fallout 2",
 	"type": "module",
+	"packageManager": "pnpm@11.19.0",
 	"files": [
 		"src",
 		"eslint-config",
@@ -24,7 +25,7 @@
 		"docs:preview": "pnpm --filter folib-docs preview"
 	},
 	"peerDependencies": {
-		"eslint": "^9.0.0",
+		"eslint": "^9.0.0 || ^10.0.0",
 		"eslint-plugin-unused-imports": "^4.0.0",
 		"typescript-eslint": "^8.0.0"
 	},
@@ -40,10 +41,10 @@
 		}
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.39.5",
-		"eslint": "^9.39.5",
+		"@eslint/js": "^10.0.1",
+		"eslint": "^10.8.1",
 		"tsx": "^4.23.12",
-		"typescript": "^5.9.3",
+		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.67.0"
 	},
 	"keywords": [
