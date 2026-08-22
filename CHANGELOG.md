@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2
+
+Uninline `map_first_run`, `inven_count`, `shitter_has_blown`.
+
 ## 0.4.1
 
 - Fix `SfallMap` mapped type: widen literal key types to base type (`number`/`string`) via distributive conditional, so `SfallMap<16777278 | 16777295, V>` is assignable to `SfallMap<number, V>`.

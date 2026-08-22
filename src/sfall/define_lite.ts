@@ -1,11 +1,20 @@
 // Constants from define_lite.h
 
 import {
-  metarule, metarule3, gdialog_mod_barter, gfade_out, gfade_in,
-  create_object_sid, has_skill, critter_state, critter_injure, critter_inven_obj,
-  attack_complex, wield_obj_critter, has_trait, inven_cmds, self_obj
+    attack_complex,
+    create_object_sid,
+    critter_injure, critter_inven_obj,
+    critter_state,
+    gdialog_mod_barter,
+    gfade_in,
+    gfade_out,
+    has_skill,
+    has_trait, inven_cmds,
+    metarule, metarule3,
+    self_obj,
+    wield_obj_critter
 } from "../base.d";
-import { ObjectPtr, CritterPtr, ItemPtr, FloatMsgColor, TraitType, TraitID, PerkID, InvenSlot, DamageType, PcStatID, RollResult, Gender, CritterState, Elevation } from "../index";
+import { CritterPtr, CritterState, DamageType, Elevation, FloatMsgColor, Gender, InvenSlot, ItemPtr, ObjectPtr, PcStatID, PerkID, RollResult, TraitID, TraitType } from "../index";
 
 export const no_proc = 0;
 export const start_proc = 1;
@@ -689,7 +698,6 @@ export function critter_kill_type(who: CritterPtr): number {
 
 /**
  * Returns true if the current map is being run for the first time.
- * @inline
  */
 export function map_first_run(): boolean {
   return metarule(METARULE_TEST_FIRSTRUN, 0) != 0;
@@ -857,7 +865,6 @@ export function obj_is_visible_flag(who: ObjectPtr): number {
   return has_trait(TRAIT_OBJECT, who, OBJECT_VISIBILITY);
 }
 
-/** @inline */
 export function inven_count(who: CritterPtr): number {
   return critter_inven_obj(who, INVEN_TYPE_INV_COUNT) as unknown as number;
 }
