@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix `obj_is_carrying_obj`, `get_stat_min` and `get_stat_max` return types: `number`, not `void`. The `who` argument of `get_stat_min`/`get_stat_max` is optional.
+
 ## 0.4.2
 
 Uninline `map_first_run`, `inven_count`, `shitter_has_blown`.

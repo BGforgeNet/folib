@@ -88,7 +88,7 @@ export declare function get_pc_base_stat(stat: STAT): number;
  *
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_stat_max(stat: STAT, who: boolean): void;
+export declare function get_stat_max(stat: STAT, who?: boolean): number;
 
 /**
  * - Returns the minimum set value of the specified stat (see `set_stat_min` functions)
@@ -96,7 +96,7 @@ export declare function get_stat_max(stat: STAT, who: boolean): void;
  *
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
  */
-export declare function get_stat_min(stat: STAT, who: boolean): void;
+export declare function get_stat_min(stat: STAT, who?: boolean): number;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
@@ -767,7 +767,7 @@ export declare function message_box(message: string, flags: number, color1: numb
 /**
  * Returns number of `itemObj` inside invenObj's inventory, note that both arguments are object pointers. useful when dealing with different stacks of same item (`obj_is_carrying_obj_pid` just returns total for all stacks of the same PID.)
  */
-export declare function obj_is_carrying_obj(invenObj: ObjectPtr, itemObj: ObjectPtr): void;
+export declare function obj_is_carrying_obj(invenObj: ObjectPtr, itemObj: ObjectPtr): number;
 
 
 
