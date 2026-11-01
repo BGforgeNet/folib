@@ -4,3 +4,8 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+
+# The minimatch globparts DoS fix exists only in 11.x; eslint and typescript-eslint still declare ^10.
+# Drop this once they move to 11.
+overrides:
+  minimatch: ^11.0.3
