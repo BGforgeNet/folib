@@ -914,6 +914,15 @@ export function rm_fixed_timer_event(who: ObjectPtr, fixedVal: number): void {
   metarule3(METARULE3_CLR_FIXED_TIMED_EVENTS, who, fixedVal, 0);
 }
 
+/**
+ * Sets the frame index of an object's FID, keeping its animation, weapon and rotation. Does not check that the
+ * art exists.
+ * @inline
+ */
+export function art_change_fid_num(who: ObjectPtr, fid: number): void {
+  metarule3(METARULE3_ART_SET_BASE_FID_NUM, who, fid, 0);
+}
+
 /** @inline */
 export function inven_ptr(who: ObjectPtr, where: number): ItemPtr {
   return inven_cmds(who, INVEN_CMD_INDEX_PTR, where) as ItemPtr;

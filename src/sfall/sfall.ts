@@ -3,7 +3,7 @@
  * Converted from headers/sfall/sfall.h
  */
 import type { ObjectPtr, CritterPtr, ItemPtr, SceneryPtr, IfaceTag, GameMode, PerkID, TraitID, InvenSlot, SfallList, SfallMap } from "../index";
-import { OBJ_TYPE_CRITTER, OBJ_TYPE_ITEM, OBJ_TYPE_SCENERY, OBJ_TYPE_WALL, OBJ_TYPE_MISC, OBJ_TYPE_SPATIAL } from "./define_extra";
+import { OBJ_TYPE_CRITTER, OBJ_TYPE_ITEM, OBJ_TYPE_SCENERY, OBJ_TYPE_WALL, OBJ_TYPE_MISC, OBJ_TYPE_SPATIAL, OBJ_DATA_MISC_FLAGS } from "./define_extra";
 export * from "./define_extra";
 
 // Import engine functions for wrappers
@@ -1351,6 +1351,15 @@ export function set_outline(obj: ObjectPtr, color: number): void {
  */
 export function get_object_data(obj: ObjectPtr, offset: number): number {
     return sfall_func2("get_object_data", obj, offset);
+}
+
+/**
+ * Whether the engine marks a weapon unusable in combat. HOOK_CANUSEWEAPON can override it.
+ * @param item Weapon to check
+ * @inline
+ */
+export function weapon_is_unusable(item: ItemPtr): boolean {
+    return (get_object_data(item, OBJ_DATA_MISC_FLAGS) & 0x00000010) != 0;
 }
 
 /**

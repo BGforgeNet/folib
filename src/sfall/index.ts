@@ -768,6 +768,7 @@ export {
     VLNCLVL_NONE,
     VLNCLVL_NORMAL,
     VSUIT_MOVIE,
+    art_change_fid_num,
     attack,
     bad_fidget,
     barter_init_proc,
@@ -1627,6 +1628,7 @@ export {
     unjam_lock,
     unset_array,
     unwield_slot,
+    weapon_is_unusable,
     win_fill_color,
 } from './sfall';
 
