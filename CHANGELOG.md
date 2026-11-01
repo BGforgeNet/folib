@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.4
 
 - Add `art_change_fid_num` and `weapon_is_unusable`.
 
