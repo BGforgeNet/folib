@@ -1,6 +1,6 @@
 {
 	"name": "folib",
-	"version": "0.4.2",
+	"version": "0.4.3",
 	"description": "TypeScript bindings for Fallout 2",
 	"type": "module",
 	"repository": {
