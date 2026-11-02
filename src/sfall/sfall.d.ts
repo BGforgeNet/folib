@@ -82,21 +82,6 @@ export declare function get_critter_extra_stat(critter: ObjectPtr, stat: STAT): 
 export declare function get_pc_base_stat(stat: STAT): number;
 
 
-/**
- * - Returns the maximum set value of the specified stat (see `set_stat_max` functions)
- * - who: 0 (`False`) or omitting the argument - returns the value of the player, 1 (`True`) - returns the value set for other critters
- *
- * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
- */
-export declare function get_stat_max(stat: STAT, who?: boolean): number;
-
-/**
- * - Returns the minimum set value of the specified stat (see `set_stat_min` functions)
- * - who: 0 (`False`) or omitting the argument - returns the value of the player, 1 (`True`) - returns the value set for other critters
- *
- * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
- */
-export declare function get_stat_min(stat: STAT, who?: boolean): number;
 
 /**
  * The `get/set_pc_base/extra_stat` functions are equivalent to calling `get/set_critter_base/extra_stat` with `dude_obj` as the critter pointer. None of these stat functions take perks into account, and neither do they do range clamping to make sure the stats are valid. Use the normal `get_critter_stat` function to get a correctly perk adjusted and range clamped value for a stat.
@@ -624,28 +609,10 @@ export declare function is_iface_tag_active(tag: IfaceTag): boolean;
  */
 export declare function show_iface_tag(tag: IfaceTag): void;
 
-
-/**
- * Alternative form: `int sfall_func6("interface_overlay", int winType, 2, int x, int y, int width, int height)`.
- * 
- * Creates an additional drawing surface above the graphic layer of the specified interface window. All subsequent calls of `interface_art_draw` and `interface_print` functions will draw on it.
- * - `winType`: the type number of the interface window (see `WINTYPE_*` constants in **sfall.h**)
- * - `mode`: 1 - creates a new overlay surface
- *           2 - clears the overlay area or the specified rectangle defined by the `x`, `y`, `width`, `height` arguments
- *           0 - destroys the created overlay surface (frees up the memory allocated to the surface)
- * 
- */
-export declare function interface_overlay(winType: number, mode: number): void;
-
 // =============================================================================
 // Inventory
 // =============================================================================
 
-
-/**
- * Returns the current AP cost to access the inventory in combat
- */
-export declare function get_inven_ap_cost(): number;
 
 export declare function set_inven_ap_cost(cost: number): void;
 
@@ -683,10 +650,6 @@ export declare function list_next(listid: number): number;
 // =============================================================================
 
 
-/**
- * Returns an array of the player's position data (index: 0 - tile, 1 - elevation, 2 - rotation) when entering the map through exit grids. If entering from the world map, the tile value will be -1. Should be called in `map_enter_p_proc` procedure to get the correct position data.
- */
-export declare function get_map_enter_position(): SfallList<number>;
 
 /**
  * Returns 1 if the player is looking at the world map, or 0 at any other time. Obviously this is only useful in global scripts, since normal scripts will never get the chance to run on the world map.
@@ -745,18 +708,6 @@ export declare function create_message_window(message: string): void;
  * 
  */
 export declare function message_str_game(fileId: number, messageId: number): string;
-
-/**
- * Creates a dialog box with text and returns the result of pressing the button: 0 - No (Escape), 1 - Yes/Done (Enter). Returns -1 if for some reason the dialog box cannot be created.
- * ```
- * - message: the text in the dialog box. Use the `\n` control character to move text to a new line (example: "Hello\nWorld!")
- * optional arguments:
- * - flags: mode flags (see `MSGBOX_*` constants in define_extra.h). Pass -1 to skip setting the flags (default flags are NORMAL and YESNO)
- * - color1/color2: the color index in the game palette. `color1` sets the text color for the first line, and `color2` for all subsequent lines of text (default color is 145)
- * ```
- * 
- */
-export declare function message_box(message: string, flags?: number, color1?: number, color2?: number): number;
 
 // =============================================================================
 // Objects
@@ -833,10 +784,6 @@ export declare function hide_real_perks(): void;
  */
 export declare function perk_add_mode(type: number): void;
 
-/**
- * Sets the number of levels between each perk.
- */
-export declare function seq_perk_freq(value: number): void;
 
 /**
  * Used to add additional traits and perks to the character screen. They will be saved correctly when the player saves and reloads games, but by themselves they will have no further effect on the character. For perks, the allowed range for levels is between 0 and 100; setting the level to 0 removes that perk. For traits, the level must be 0 or 1. The image is a numeric ID that corresponds to an entry in `skilldex.lst`. The name is limited to 63 characters and the description to 255 characters by sfall, but internal Fallout limits may be lower.
@@ -974,41 +921,12 @@ export declare function set_script(obj: ObjectPtr, scriptID: number): void;
  */
 export declare function get_ini_string(setting: string): string;
 
-/**
- * (DEPRECATED) Returns a pointer to a string variable or to a text
- * - __NOTE:__ this function is intended for use only in `HOOK_DESCRIPTIONOBJ`. Starting from sfall 4.4/3.8.40, you can return normal strings directly in the hook without calling the function
- * 
- */
-export declare function get_string_pointer(text: string): number;
-
-
-
-/**
- * Formats given values using standard syntax of C `printf` function (google "printf" for format details). However, it is limited to formatting up to 7 values.
- * - The format string is limited to 1024 characters
- * 
- */
-export declare function string_format(fmt: string, val1: any, val2: any, arg3: any): string;
-
-/**
- * Replaces all occurances of a given search string in a string with a given replacement string.
- */
-export declare function string_replace(str: string, search: string, replace: string): string;
 
 /**
  * Takes a string and a seperator, searches the string for all instances of the seperator, and returns a temp array filled with the pieces of the string split at each instance. If you give an empty string as the seperator, the string is split into individual characters. You can use this to search for a substring in a string like this: `strlen(get_array(string_split(haystack, needle), 0))`
  */
 export declare function string_split(text: string, split: string): SfallList<string>;
 
-/**
- * Converts all letters in the given string to the specified case.
- * ```
- * toCase: 0 - lowercase, 1 - uppercase
- * ```
- * NOTE: this function works only for English letters of A-Z/a-z.
- * 
- */
-export declare function string_to_case(text: string, toCase: number): string;
 
 /**
  * The `fs_*` functions are used to manipulate a virtual file system. Files saved here should have paths relative to the data folder, and use backslashes as the directory separator. They will take precedence over files stored in the normal data folder. They will also be saved into save games if you set a flag for them using `fs_resize(fileId, -1)`, so be avoid creating large files. Using `fs_copy` followed by `fs_read_xxx`, you can read the contents of existing files.
@@ -1205,14 +1123,6 @@ export declare function ceil(x: number): number;
 export declare function cos(x: number): number;
 
 /**
- * Unsigned integer division. Use as a division operator, like `3 + (20 div 5)`.
- * If both dividend and divisor are integers, they will be treated as unsigned integers.
- * If one of them is a float, div will perform the signed division just like vanilla division operator.
- * 
- */
-export declare function div(x: number, y: number): number;
-
-/**
  * E^X
  */
 export declare function exponent(x: number): number;
@@ -1259,14 +1169,6 @@ export declare function tan(x: number): number;
 export declare function set_self(setObj: ObjectPtr): void;
 
 export declare function active_hand(): Hand;
-
-/**
- * Adds a timer event that calls the `timed_event_p_proc` procedure in the current global script
- * `time`: the number of ticks after which the event timer is triggered
- * `fixedParam`: the value that is passed to the `timed_event_p_proc` procedure for the `fixed_param` function
- * 
- */
-export declare function add_g_timer_event(time: number, fixedParam: number): void;
 
 /**
  * Creates new spatial script with given SID, at given tile, and radius.
@@ -1397,10 +1299,6 @@ export declare function set_pyromaniac_mod(bonus: number): void;
 export declare function set_swiftlearner_mod(bonus: number): void;
 
 
-/**
- * Returns names of all currently available script functions.
- */
-export declare function get_metarule_table(): SfallList<number>;
 
 
 
@@ -1552,21 +1450,6 @@ export declare function fs_write_int(id: number, data: number): void;
  * The `fs_*` functions are used to manipulate a virtual file system. Files saved here should have paths relative to the data folder, and use backslashes as the directory separator. They will take precedence over files stored in the normal data folder. They will also be saved into save games if you set a flag for them using `fs_resize(fileId, -1)`, so be avoid creating large files. Using `fs_copy` followed by `fs_read_xxx`, you can read the contents of existing files.
  */
 export declare function fs_write_short(id: number, data: number): void;
-
-/**
- * Alternative form: `int sfall_func2("get_window_attribute", int winType, int attrType)`
- * Returns the attribute of the specified interface window by the `attrType` argument.
- * - `winType`: the type number of the interface window (see `WINTYPE_*` constants in **sfall.h**)
- * - `attrType`: `0` - checks and returns a value of 1 if the specified interface window is created by the game (same as without the argument)
- *               `1` - X position, `2` - Y position (relative to the top-left corner of the game screen)
- *               `3` - interface width size, `4` - interface height size
- *               `5` - window ID (to compare with the `get_window_under_mouse` function)
- *               `-1` - returns an associative array of keys (left, top, right, bottom) and values that define the position of the window rectangle
- *               (use standard syntax to access array values, e.g. `winRect.top`, `winRect.bottom`)
- * - returns -1 if the specified attribute cannot be obtained
- * 
- */
-export declare function get_window_attribute(winType: number, attrType?: number): number;
 
 /**
  * Returns the internal ID of the top-most window under mouse cursor.

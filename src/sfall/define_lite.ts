@@ -1,6 +1,9 @@
 // Constants from define_lite.h
 
 import {
+    animate_move_obj_to_tile,
+    animate_stand_obj,
+    animate_stand_reverse_obj,
     attack_complex,
     create_object_sid,
     critter_dmg,
@@ -13,6 +16,7 @@ import {
     has_skill,
     has_trait, inven_cmds,
     metarule, metarule3,
+    reg_anim_func,
     self_obj,
     wield_obj_critter
 } from "../base.d";
@@ -941,4 +945,30 @@ export function art_change_fid_num(who: ObjectPtr, fid: number): void {
 /** @inline */
 export function inven_ptr(who: ObjectPtr, where: number): ItemPtr {
   return inven_cmds(who, INVEN_CMD_INDEX_PTR, where) as ItemPtr;
+}
+
+// Animation mode constant for animate_run_to_tile; same value as rpu/animcomd.ts's ANIMATE_RUN.
+const ANIMATE_RUN = 1;
+// reg_anim_func command for reg_anim_end; same value as rpu/animcomd.ts's REG_ANIM_END.
+const REG_ANIM_END = 3;
+
+/** Run self_obj's stand animation. @inline */
+export function animate_stand(): void {
+  animate_stand_obj(self_obj);
+}
+
+/** Run self_obj's stand animation in reverse. @inline */
+export function animate_stand_reverse(): void {
+  animate_stand_reverse_obj(self_obj);
+}
+
+/** Animate self_obj running to a tile. @inline */
+export function animate_run_to_tile(tile: number): void {
+  // Cast: self_obj is ObjectPtr but animate_move_obj_to_tile is only called from critter scripts
+  animate_move_obj_to_tile(self_obj as CritterPtr, tile, ANIMATE_RUN);
+}
+
+/** Activates a registered animation sequence (see reg_anim_func). @inline */
+export function reg_anim_end(): void {
+  reg_anim_func(REG_ANIM_END, 0);
 }

@@ -11,7 +11,7 @@ import {
     sfall_func0, sfall_func1, sfall_func2, sfall_func3, sfall_func4, sfall_func5, sfall_func6, sfall_func7, sfall_func8,
     scan_array, create_array, temp_array, metarule3, resize_array, metarule2_explosions, get_tile_fid
 } from "./sfall.d";
-import { DMG_fire } from "./define_lite";
+import { DMG_fire, type STAT } from "./define_lite";
 
 // ============================================================================
 // Interface Tag Constants (for show_iface_tag, hide_iface_tag, is_iface_tag_active)
@@ -1290,6 +1290,19 @@ export function get_sfall_arg_at(index: number): number {
     return sfall_func1("get_sfall_arg_at", index);
 }
 
+/** Returns the current AP cost to access the inventory in combat. @inline */
+export function get_inven_ap_cost(): number {
+    return sfall_func0("get_inven_ap_cost");
+}
+
+/**
+ * @deprecated Intended for use only in HOOK_DESCRIPTIONOBJ. Since sfall 4.4/3.8.40, a normal string can be
+ * returned directly from the hook instead of calling this function.
+ */
+export function get_string_pointer(text: string): number {
+    return sfall_func1("get_string_pointer", text);
+}
+
 /**
  * Set interface tag text
  * @param tag Tag number
@@ -1673,6 +1686,45 @@ export function interface_redraw_all(): void {
 }
 
 /**
+ * Returns an associative array of keys (left, top, right, bottom) defining the position of the window rectangle.
+ * @param winType - the type number of the interface window (see WINTYPE_* constants in sfall.h)
+ * @inline
+ */
+export function get_interface_rect(winType: number): SfallMap<string, number> {
+    return sfall_func2("get_window_attribute", winType, -1);
+}
+
+/** Returns the X position of the interface window, relative to the top-left corner of the game screen. @inline */
+export function get_interface_x(winType: number): number {
+    return sfall_func2("get_window_attribute", winType, 1);
+}
+
+/** Returns the Y position of the interface window, relative to the top-left corner of the game screen. @inline */
+export function get_interface_y(winType: number): number {
+    return sfall_func2("get_window_attribute", winType, 2);
+}
+
+/** Returns the width of the interface window. @inline */
+export function get_interface_width(winType: number): number {
+    return sfall_func2("get_window_attribute", winType, 3);
+}
+
+/** Returns the height of the interface window. @inline */
+export function get_interface_height(winType: number): number {
+    return sfall_func2("get_window_attribute", winType, 4);
+}
+
+/** Returns the window ID of the interface window, to compare with `get_window_under_mouse`. @inline */
+export function get_interface_id(winType: number): number {
+    return sfall_func2("get_window_attribute", winType, 5);
+}
+
+/** Returns True if the specified interface window is created by the game. @inline */
+export function intface_is_shown(winType: number): boolean {
+    return sfall_func1("get_window_attribute", winType);
+}
+
+/**
  * Check if interface bar is hidden
  * @returns True if hidden
  * @inline
@@ -2004,6 +2056,17 @@ export function win_fill_color(x: number, y: number, width: number, height: numb
     sfall_func5("win_fill_color", x, y, width, height, color);
 }
 
+/**
+ * Creates an additional drawing surface above the graphic layer of the specified interface window. All
+ * subsequent calls of `interface_art_draw` and `interface_print` will draw on it.
+ * @param winType - the type number of the interface window (see WINTYPE_* constants in sfall.h)
+ * @param mode - 1 creates a new overlay surface, 2 clears the overlay area, 0 destroys the overlay surface
+ * @inline
+ */
+export function interface_overlay(winType: number, mode: number): void {
+    sfall_func2("interface_overlay", winType, mode);
+}
+
 /** Hides currently active (selected) script window. @inline */
 export function hide_win(): void {
     sfall_func0("hide_window");
@@ -2297,6 +2360,16 @@ export function set_map_enter_position(tile: number, elev: number, rot: number):
 }
 
 /**
+ * Returns an array of the player's position data (index: 0 - tile, 1 - elevation, 2 - rotation) when entering
+ * the map through exit grids. If entering from the world map, the tile value will be -1. Should be called in
+ * `map_enter_p_proc` to get the correct position data.
+ * @inline
+ */
+export function get_map_enter_position(): SfallList<number> {
+    return sfall_func0("get_map_enter_position");
+}
+
+/**
  * Sets the time interval in minutes for healing during world map travel. Default is 180.
  * @param time - minutes between heals. 0 = 1 second real time, -1 = disable healing
  * @inline
@@ -2373,6 +2446,22 @@ export function get_pc_stat_max(stat: number): number {
  */
 export function get_pc_stat_min(stat: number): number {
     return sfall_func1("get_stat_min", stat);
+}
+
+/**
+ * Returns the maximum set value of the specified stat (see `set_stat_max` functions).
+ * @param who - omit or false for the player, true for other critters
+ */
+export function get_stat_max(stat: STAT, who?: boolean): number {
+    return who ? sfall_func2("get_stat_max", stat, 1) : sfall_func1("get_stat_max", stat);
+}
+
+/**
+ * Returns the minimum set value of the specified stat (see `set_stat_min` functions).
+ * @param who - omit or false for the player, true for other critters
+ */
+export function get_stat_min(stat: STAT, who?: boolean): number {
+    return who ? sfall_func2("get_stat_min", stat, 1) : sfall_func1("get_stat_min", stat);
 }
 
 // ============================================================================
@@ -2535,12 +2624,22 @@ export function opcode_exists(opcodeNum: number): boolean {
     return sfall_func1("opcode_exists", opcodeNum);
 }
 
+/** Returns names of all currently available script functions. @inline */
+export function get_metarule_table(): SfallList<number> {
+    return sfall_func0("get_metarule_table");
+}
+
 /**
  * Like set_selectable_perk but applies to specified party member NPC (including dude_obj).
  * @inline
  */
 export function set_selectable_perk_npc(npc: CritterPtr, perk: PerkID, active: boolean, image: number, desc: string): void {
     sfall_func5("set_selectable_perk_npc", npc, perk, active, image, desc);
+}
+
+/** Sets the number of levels between each perk. @inline */
+export function seq_perk_freq(value: number): void {
+    sfall_func1("seq_perk_freq", value);
 }
 
 // ============================================================================

@@ -23,6 +23,7 @@
 		"generate:eslint": "tsx scripts/generate-eslint-config.ts",
 		"lint": "eslint src",
 		"typecheck": "tsc",
+		"test": "tsx scripts/check-tssl.ts",
 		"docs:generate": "pnpm --filter folib-docs exec tsx ../docs/generate.ts",
 		"docs:serve": "pnpm docs:generate && pnpm --filter folib-docs dev",
 		"docs:build": "pnpm docs:generate && pnpm --filter folib-docs build",

@@ -30,6 +30,11 @@ export function string_join(array: SfallList<string>, join: string): string {
     return str;
 }
 
+/** Replaces all occurrences of a given search string in a string with a given replacement string */
+export function string_replace(str: string, search: string, replace: string): string {
+    return string_join(string_split(str, search), replace);
+}
+
 /** Create string by repeating str count times */
 export function string_repeat(str: string, count: number): string {
     let out = "";
@@ -73,9 +78,9 @@ export function to_string(val: any): string {
     return "" + val;
 }
 
-/** Check if string is null or empty */
+/** Check if string is empty. SSL has no null string, so this only checks emptiness. */
 export function string_null_or_empty(str: string): boolean {
-    return str == null || str == "";
+    return str == "";
 }
 
 import { tokenize } from "../base.d";

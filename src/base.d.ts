@@ -40,12 +40,6 @@ export declare const cur_map_index: number;
 /** Returns the number of days since this map was last visited, or -1 if never */
 export declare const days_since_visited: number;
 
-/** Returns the current X position of the party on the World Map */
-export declare const world_map_x_pos: number;
-
-/** Returns the current Y position of the party on the World Map */
-export declare const world_map_y_pos: number;
-
 // =============================================================================
 // Game Time Globals
 // =============================================================================
@@ -74,9 +68,6 @@ export declare const combat_difficulty: Difficulty;
 
 /** Returns the running-burning-guy setting */
 export declare const running_burning_guy: number;
-
-/** (Fallout 2 only) Returns the current setting of the violence level. See define.h for values */
-export declare const violence_level_setting: number;
 
 // =============================================================================
 // Object Functions
@@ -173,9 +164,6 @@ export declare function move_to(obj: ObjectPtr, tile: number, elev: Elevation): 
  * If it fails, it tries to find a nearby hex as near as possible to the start hex.
  */
 export declare function critter_attempt_placement(who: CritterPtr, hex: number, elev: Elevation): number;
-
-/** Moves the character to the specified map */
-export declare function goto_xy(map: number): void;
 
 // =============================================================================
 // Object Perception
@@ -504,23 +492,8 @@ export declare function anim_busy(who: ObjectPtr): boolean;
  */
 export declare function animate_move_obj_to_tile(who: CritterPtr, tile: number, speed: number): void;
 
-/** Animate self_obj running to a tile */
-export declare function animate_run_to_tile(tile: number): void;
-
-/** Change self_obj's facing direction (0-5) */
-export declare function animate_rotation(direction: Direction): void;
-
-/** Change self_obj's animation frame */
-export declare function animate_set_frame(frame: number): void;
-
-/** Run self_obj's stand animation */
-export declare function animate_stand(): void;
-
 /** Run an object's stand animation */
 export declare function animate_stand_obj(obj: ObjectPtr): void;
-
-/** Run self_obj's stand animation in reverse */
-export declare function animate_stand_reverse(): void;
 
 /** Run an object's stand animation in reverse */
 export declare function animate_stand_reverse_obj(obj: ObjectPtr): void;
@@ -531,9 +504,6 @@ export declare function animate_stand_reverse_obj(obj: ObjectPtr): void;
 
 /** Low-level animation registration function */
 export declare function reg_anim_func(cmd: number, arg: number | ObjectPtr): void;
-
-/** Activate the animation sequence */
-export declare function reg_anim_end(): void;
 
 /**
  * Adds a single, in-place animation on an object to an animation sequence-list,
@@ -891,9 +861,6 @@ export declare function override_map_start(x: number, y: number, elev: Elevation
  * mapID (may be -1 to stay on this map), elevation, tileNum, and rotation.
  */
 export declare function set_exit_grids(markElev: Elevation, mapID: number, elev: Elevation, tile: number, rot: Direction): void;
-
-/** Returns True if a given map # is known, False otherwise */
-export declare function map_known(mapNum: number): boolean;
 
 /**
  * Marks a town area or map location on the world map. areaType selects whether to mark

@@ -17,6 +17,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # pnpm version comes from the "packageManager" field in package.json
@@ -29,6 +30,7 @@ jobs:
       - run: pnpm audit
       - run: pnpm exec eslint src
       - run: pnpm exec tsc
+      - run: pnpm test
       - run: pnpm docs:build
       # Authenticates via OIDC trusted publishing; no token needed
       - uses: JS-DevTools/npm-publish@0fd2f4369c5d6bcfcde6091a7c527d810b9b5c3f # v4.1.5
@@ -39,6 +41,7 @@ jobs:
   deploy-docs:
     needs: check
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
