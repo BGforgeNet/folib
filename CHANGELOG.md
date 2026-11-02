@@ -1,7 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.5.0
 
+- **Breaking:** `set_shader_mode` now takes a leading `ID` argument, matching its siblings `set_shader_float`,
+  `set_shader_int` and `set_shader_texture`, all of which already took one.
+- **Breaking:** `intface_redraw` now takes the required `winType` argument the engine always needed, instead of
+  none.
 - Add missing base engine declarations: `goto_xy`, `map_known`, `mark_area_known`, `reaction_influence`, the six
   `sfx_build_*` functions, `tile_in_tile_rect`, `violence_level_setting`, `world_map_x_pos`, `world_map_y_pos`.
 - Add missing sfall declarations: `encounter_detection`, `hide_win`, `hide_window`, `opcode_exists`,
@@ -10,10 +14,9 @@
 - Fix return types: `number`, not `void` (`critter_heal`); `void`, not a value (`destroy_object`,
   `critter_stop_attacking`, `critter_mod_skill`, `critter_injure`, `gdialog_mod_barter`, `jam_lock`,
   `use_obj_on_obj`).
-- Fix sfall signatures: `set_shader_mode` was missing its `ID` argument; `interface_art_draw` and `interface_print`
-  were missing their optional trailing arguments and returning `void` instead of `number`; `intface_redraw` now
-  takes the required `winType` argument instead of none; `set_unique_id`, `create_win` and `get_window_attribute`
-  gained their optional trailing argument; `message_box`'s `flags`, `color1` and `color2` are now optional.
+- Fix sfall signatures: `interface_art_draw` and `interface_print` were missing their optional trailing arguments
+  and returning `void` instead of `number`; `set_unique_id`, `create_win` and `get_window_attribute` gained their
+  optional trailing argument; `message_box`'s `flags`, `color1` and `color2` are now optional.
 - Add the vanilla key (`AddKey`, `DeleteKey`), raw movie player (`MovieFlags`, `PlayMovie`, `PlayMovieRect`,
   `StopMovie`), legacy `Say*` dialogue, handle-based sound (`SoundPlay`, `SoundPause`, `SoundResume`, `SoundStop`,
   `SoundRewind`, `SoundDelete`) and low-level window (`CreateWin`, `AddButton*`, `AddRegion*`, `FillRect`, `print`,
