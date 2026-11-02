@@ -1648,11 +1648,18 @@ export function intface_show(): void {
 
 /**
  * Redraws main game interface. Useful after direct changes to current player weapons or stats.
+ * - Called with no argument, this performs the engine's own full interface redraw (active item, ammo/charge bar).
+ * - Called with a `winType`, this instead does a lighter "fake" redraw that only re-blits the specified window
+ *   (or all windows if -1) - not a substitute for the no-argument form.
  * @param winType - the type number of the interface window (see WINTYPE_* constants in sfall.h). Pass -1 to redraw all interface windows
  * @inline
  */
-export function intface_redraw(winType: number): void {
-    sfall_func1("intface_redraw", winType);
+export function intface_redraw(winType?: number): void {
+    if (winType === undefined) {
+        sfall_func0("intface_redraw");
+    } else {
+        sfall_func1("intface_redraw", winType);
+    }
 }
 
 /**

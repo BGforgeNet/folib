@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Fix `intface_redraw`: the 0.5.0 change requiring a `winType` argument was wrong. `winType` is optional again;
+  calling with no argument performs the engine's real interface redraw, as before, and is NOT equivalent to
+  passing a value (that does a lighter "fake" redraw of just one window). Reported against fo2tweaks, which
+  calls the no-argument form.
+
 ## 0.5.0
 
 - **Breaking:** `set_shader_mode` now takes a leading `ID` argument, matching its siblings `set_shader_float`,
