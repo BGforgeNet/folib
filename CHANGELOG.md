@@ -14,6 +14,10 @@
   were missing their optional trailing arguments and returning `void` instead of `number`; `intface_redraw` now
   takes the required `winType` argument instead of none; `set_unique_id`, `create_win` and `get_window_attribute`
   gained their optional trailing argument; `message_box`'s `flags`, `color1` and `color2` are now optional.
+- Add the vanilla key (`AddKey`, `DeleteKey`), raw movie player (`MovieFlags`, `PlayMovie`, `PlayMovieRect`,
+  `StopMovie`), legacy `Say*` dialogue, handle-based sound (`SoundPlay`, `SoundPause`, `SoundResume`, `SoundStop`,
+  `SoundRewind`, `SoundDelete`) and low-level window (`CreateWin`, `AddButton*`, `AddRegion*`, `FillRect`, `print`,
+  ...) declarations: a previously entirely-unchecked slice of the base engine function list.
 
 ## 0.4.4
 

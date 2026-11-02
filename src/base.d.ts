@@ -729,6 +729,84 @@ export declare function gdialog_set_barter_mod(modifier: number): void;
 export declare function reaction_influence(param1: number, param2: number, param3: number): number;
 
 // =============================================================================
+// Say Functions (legacy dialogue, predates the gdialog/gSay system)
+// =============================================================================
+
+/** Initiates a new dialog sequence from the beginning */
+export declare function SayStart(): void;
+
+/** Initiates a new dialog sequence starting at the specified position index */
+export declare function SayStartPos(position: number): void;
+
+/** Ends the current dialog sequence and enters a wait state for player input */
+export declare function SayEnd(): void;
+
+/** Immediately quits the dialog system, closing all dialog windows */
+export declare function SayQuit(): void;
+
+/** Restarts the dialog system from the beginning */
+export declare function SayRestart(): void;
+
+/** Returns the exit point (last position) of the most recent dialog interaction */
+export declare function SayGetLastPos(): number;
+
+/** Jumps to a labeled reply target within the dialog tree */
+export declare function SayGotoReply(label: string): void;
+
+/** Adds a reply entry to the dialog with the given label and text content */
+export declare function SayReply(label: string, text: string): void;
+
+/** Sets the title text displayed in the reply section of the dialog */
+export declare function SayReplyTitle(title: string): void;
+
+/** Sets the text color for dialog replies using RGB values */
+export declare function SayReplyColor(r: number, g: number, b: number): void;
+
+/** Sets formatting flags for dialog reply text */
+export declare function SayReplyFlags(flags: number): void;
+
+/**
+ * Configures the display window for dialog replies with position, size, and background image.
+ * @param filename Background image file, or 0 for none
+ */
+export declare function SayReplyWindow(x: number, y: number, width: number, height: number, filename: string | 0): void;
+
+/** Adds a selectable dialog option with the given text and callback procedure name */
+export declare function SayOption(text: string, proc: string): void;
+
+/** Sets the text color for dialog options using RGB values */
+export declare function SayOptionColor(r: number, g: number, b: number): void;
+
+/** Sets formatting flags for dialog option text */
+export declare function SayOptionFlags(flags: number): void;
+
+/**
+ * Configures the display window for dialog options with position, size, and background image.
+ * @param filename Background image file, or 0 for none
+ */
+export declare function SayOptionWindow(x: number, y: number, width: number, height: number, filename: string | 0): void;
+
+/**
+ * Displays a dialog message with two text fields. The message is shown with a timeout.
+ */
+export declare function SayMessage(text1: string, text2: string): void;
+
+/** Sets the display duration (in milliseconds) for dialog messages shown with `SayMessage` */
+export declare function SayMessageTimeout(timeout: number): void;
+
+/** Sets the border dimensions for the dialog window */
+export declare function SayBorder(x: number, y: number): void;
+
+/** Sets the vertical line spacing (in pixels) between dialog entries */
+export declare function SaySetSpacing(spacing: number): void;
+
+/** Configures the scroll-up button for the dialog window with position and graphics for each button state */
+export declare function SayScrollUp(x: number, y: number, normal: string, hover: string, pressed: string, disabled: string): void;
+
+/** Configures the scroll-down button for the dialog window with position and graphics for each button state */
+export declare function SayScrollDown(x: number, y: number, normal: string, hover: string, pressed: string, disabled: string): void;
+
+// =============================================================================
 // Message Functions
 // =============================================================================
 
@@ -856,6 +934,161 @@ export declare function set_light_level(level: number): void;
 export declare function set_map_music(mapID: number, soundPath: string): void;
 
 // =============================================================================
+// Window Functions (vanilla low-level window system, predates sfall's interface/create_win extensions)
+// =============================================================================
+
+/**
+ * Runs a named region's procedure as if the given mouse event happened on it.
+ * @param event Mouse event to simulate: `0` press, `1` release, `2` enter, `3` exit (the procedures set with
+ * `AddRegionProc`); `5` right press, `6` right release
+ */
+export declare function ActivateRegion(name: string, event: number): void;
+
+/** Creates a button with the given name at the specified position and size in the currently selected window */
+export declare function AddButton(name: string, x: number, y: number, width: number, height: number): void;
+
+/** Sets a flag attribute on the named button */
+export declare function AddButtonFlag(name: string, flag: number): void;
+
+/** Sets the graphics for button states: pressed, normal, and hover appearances */
+export declare function AddButtonGFX(name: string, pressed: string, normal: string, hover: string): void;
+
+/** Assigns callback procedures to a button for mouse enter, mouse exit, button press and button release */
+export declare function AddButtonProc(name: string, enter: Function, exit: Function, press: Function, release: Function): void;
+
+/** Assigns right-click callback procedures to a button for press and release events */
+export declare function AddButtonRightProc(name: string, press: Function, release: Function): void;
+
+/** Sets the text label displayed on the named button */
+export declare function AddButtonText(name: string, text: string): void;
+
+/** Creates a named polygon region in the current window from a variable number of coordinate points */
+export declare function AddRegion(name: string, ...coords: number[]): void;
+
+/** Sets a flag attribute on the named region */
+export declare function AddRegionFlag(name: string, flag: number): void;
+
+/** Assigns callback procedures to a region for mouse enter, mouse exit, button press and button release */
+export declare function AddRegionProc(name: string, enter: Function, exit: Function, press: Function, release: Function): void;
+
+/** Assigns right-click callback procedures to a region for press and release events */
+export declare function AddRegionRightProc(name: string, press: Function, release: Function): void;
+
+/** Returns whether a named region exists in the current window */
+export declare function CheckRegion(name: string): number;
+
+/** Creates a new window with the given name at the specified position and size (scaled to screen resolution) */
+export declare function CreateWin(name: string, x: number, y: number, width: number, height: number): void;
+
+/** Removes the named button from the current window */
+export declare function DeleteButton(name: string): void;
+
+/** Removes the named region from the current window */
+export declare function DeleteRegion(name: string): void;
+
+/** Deletes the named window (created with `CreateWin`) and frees its resources */
+export declare function DeleteWin(name: string): void;
+
+/** Displays an image file at the specified position and size within the current window */
+export declare function DisplayGFX(filename: string, x: number, y: number, width: number, height: number): void;
+
+/** Displays an image file in raw format in the currently selected window, without palette conversion */
+export declare function DisplayRaw(filename: string): void;
+
+/** Fades the screen in from black over the given duration */
+export declare function FadeIn(duration: number): void;
+
+/** Fades the screen out to black over the given duration */
+export declare function FadeOut(duration: number): void;
+
+/** Fills a rectangle at the specified position and size with the given RGB color in the current window */
+export declare function FillRect(x: number, y: number, width: number, height: number, r: number, g: number, b: number): void;
+
+/** Fills the entire current window with the specified RGB color */
+export declare function FillWin(r: number, g: number, b: number): void;
+
+/** Fills the current window using a 3x3 tile pattern loaded from the specified image file */
+export declare function FillWin3x3(filename: string): void;
+
+/** Sets the text cursor position within the current window */
+export declare function GotoXY(x: number, y: number): void;
+
+/** Hides the mouse cursor */
+export declare function HideMouse(): void;
+
+/** Loads a color palette table from the specified file path */
+export declare function LoadPaletteTable(path: string): void;
+
+/** Loads a custom mouse cursor graphic from the specified file and sets the hotspot offset */
+export declare function MouseShape(filename: string, x: number, y: number): void;
+
+/**
+ * Prints a value within a rectangle in the current window with the specified alignment.
+ * @param param Width in pixels at which the text wraps; scaled to the window
+ * @param alignment Text alignment: `0` left, `1` right, `2` center
+ */
+export declare function PrintRect(value: string, param: number, alignment: number): void;
+
+/** Updates screen regions and executes the given callback procedure */
+export declare function RefreshMouse(proc: Function): void;
+
+/** Resizes the named window (created with `CreateWin`) to the specified position and dimensions (scaled to screen resolution) */
+export declare function ResizeWin(name: string, x: number, y: number, width: number, height: number): void;
+
+/** Scales the named window (created with `CreateWin`) to the specified position and dimensions */
+export declare function ScaleWin(name: string, x: number, y: number, width: number, height: number): void;
+
+/** Opens a file picker dialog with the given file pattern and title */
+export declare function SelectFileList(pattern: string, title: string): void;
+
+/** Selects the named window (created with `CreateWin`) as the current target for subsequent drawing and widget operations */
+export declare function SelectWin(name: string): void;
+
+/** Sets the current text font for the active window */
+export declare function SetFont(fontId: number): void;
+
+/** Sets the text highlight (selection) color using RGB values for the active window */
+export declare function SetHighlightColor(r: number, g: number, b: number): void;
+
+/** Sets the text color using RGB values for the active window */
+export declare function SetTextColor(r: number, g: number, b: number): void;
+
+/** Sets text formatting flags (such as alignment and wrapping) for the active window */
+export declare function SetTextFlags(flags: number): void;
+
+/** Shows the mouse cursor */
+export declare function ShowMouse(): void;
+
+/** Redraws and displays the currently selected window */
+export declare function ShowWin(): void;
+
+/** Displays an image file in the currently selected window */
+export declare function display(filename: string): void;
+
+/**
+ * Formats and displays text within a specified rectangle in the current window, with the given alignment.
+ * @param alignment Text alignment: `0` left, `1` right, `2` center
+ */
+export declare function format(text: string, x: number, y: number, width: number, height: number, alignment: number): void;
+
+/** Prints a value to the current window at the text cursor position */
+export declare function print(value: string): void;
+
+// =============================================================================
+// Key Functions
+// =============================================================================
+
+/**
+ * Registers a keyboard handler procedure for a given key. When the key is pressed, the associated procedure is
+ * called.
+ * @param key Key to handle; -1 registers a handler for every key
+ */
+export declare function AddKey(key: number, proc: Function): void;
+
+/** Removes a previously registered keyboard handler for the given key */
+export declare function DeleteKey(key: number): void;
+
+// =============================================================================
 // Sound Functions
 // =============================================================================
 
@@ -885,6 +1118,29 @@ export declare function sfx_build_scenery_name(sceneryType: number, actionType: 
 /** Constructs and returns a sound effect filename for weapon fire and impact sounds */
 export declare function sfx_build_weapon_name(weaponType: number, actionType: number, range: number, hit: number): string;
 
+/**
+ * Plays a sound file and returns a handle for use with `SoundPause`, `SoundResume`, `SoundStop`, `SoundRewind` and
+ * `SoundDelete`.
+ * @param flags Bit flags: `0x01` loop (otherwise fire-and-forget), `0x02` 16-bit samples (otherwise 8-bit),
+ * `0x100` load into memory, `0x200` stream
+ */
+export declare function SoundPlay(filename: string, flags: number): number;
+
+/** Pauses playback of the sound identified by the given handle (returned by `SoundPlay`) */
+export declare function SoundPause(handle: number): void;
+
+/** Resumes playback of a previously paused sound identified by the given handle (returned by `SoundPlay`) */
+export declare function SoundResume(handle: number): void;
+
+/** Stops playback of the sound identified by the given handle (returned by `SoundPlay`) */
+export declare function SoundStop(handle: number): void;
+
+/** Rewinds the sound identified by the given handle (returned by `SoundPlay`) back to the beginning */
+export declare function SoundRewind(handle: number): void;
+
+/** Frees and releases a sound resource identified by the given handle (returned by `SoundPlay`) */
+export declare function SoundDelete(handle: number): void;
+
 // =============================================================================
 // Movie Functions
 // =============================================================================
@@ -899,6 +1155,18 @@ export declare function endgame_movie(): void;
 
 /** Plays the endgame slideshow */
 export declare function endgame_slideshow(): void;
+
+/** Sets playback flags for the next movie to be played with `PlayMovie` or `PlayMovieRect` */
+export declare function MovieFlags(flags: number): void;
+
+/** Plays a movie file full-screen and waits for completion */
+export declare function PlayMovie(filename: string): void;
+
+/** Plays a movie file within a specified rectangular area on screen */
+export declare function PlayMovieRect(filename: string, x: number, y: number, width: number, height: number): void;
+
+/** Stops the currently playing movie */
+export declare function StopMovie(): void;
 
 // =============================================================================
 // Lock Functions
