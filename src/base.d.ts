@@ -40,6 +40,12 @@ export declare const cur_map_index: number;
 /** Returns the number of days since this map was last visited, or -1 if never */
 export declare const days_since_visited: number;
 
+/** Returns the current X position of the party on the World Map */
+export declare const world_map_x_pos: number;
+
+/** Returns the current Y position of the party on the World Map */
+export declare const world_map_y_pos: number;
+
 // =============================================================================
 // Game Time Globals
 // =============================================================================
@@ -68,6 +74,9 @@ export declare const combat_difficulty: Difficulty;
 
 /** Returns the running-burning-guy setting */
 export declare const running_burning_guy: number;
+
+/** (Fallout 2 only) Returns the current setting of the violence level. See define.h for values */
+export declare const violence_level_setting: number;
 
 // =============================================================================
 // Object Functions
@@ -143,7 +152,7 @@ export declare function create_object_sid(pid: number, tile: number, elev: Eleva
  * Destroys an object, which will call its script in the destroy_proc section
  * if the object is NOT the calling object.
  */
-export declare function destroy_object(obj: ObjectPtr): number;
+export declare function destroy_object(obj: ObjectPtr): void;
 
 /** Destroys count instances of an item object */
 export declare function destroy_mult_objs(item: ItemPtr, count: number): number;
@@ -164,6 +173,9 @@ export declare function move_to(obj: ObjectPtr, tile: number, elev: Elevation): 
  * If it fails, it tries to find a nearby hex as near as possible to the start hex.
  */
 export declare function critter_attempt_placement(who: CritterPtr, hex: number, elev: Elevation): number;
+
+/** Moves the character to the specified map */
+export declare function goto_xy(map: number): void;
 
 // =============================================================================
 // Object Perception
@@ -209,7 +221,7 @@ export declare function critter_is_fleeing(who: CritterPtr): boolean;
 export declare function critter_set_flee_state(who: CritterPtr, flee: boolean): void;
 
 /** Flags the critter as no longer wishing to be active in combat */
-export declare function critter_stop_attacking(who: CritterPtr): number;
+export declare function critter_stop_attacking(who: CritterPtr): void;
 
 /**
  * Adds a particular trait of a given type to a critter.
@@ -234,7 +246,7 @@ export declare function has_trait(traitType: TraitType, who: ObjectPtr, trait: n
  * Note: Only works on dude_obj! Will not work on other critters.
  * For tagged skills, the amount will be rounded down to the closest even number.
  */
-export declare function critter_mod_skill(who: CritterPtr, skill: SKILL, amount: number): number;
+export declare function critter_mod_skill(who: CritterPtr, skill: SKILL, amount: number): void;
 
 /** Returns the critter's poison level */
 export declare function get_poison(who: CritterPtr): number;
@@ -263,13 +275,13 @@ export declare function critter_dmg(who: CritterPtr, amount: number, flags: numb
  * Note: can also input negative amounts, causing the critter to be hurt for that amount.
  * This is useful because it bypasses all resistances and thresholds.
  */
-export declare function critter_heal(who: CritterPtr, amount: number): void;
+export declare function critter_heal(who: CritterPtr, amount: number): number;
 
 /**
  * Injures a critter by crippling given limbs/body parts
  * (defined by DAM_CRIP_ARM_LEFT, DAM_BLIND, etc. in define.h).
  */
-export declare function critter_injure(who: CritterPtr, how: number): number;
+export declare function critter_injure(who: CritterPtr, how: number): void;
 
 /**
  * Kills a critter outright, placing it in the chosen death frame.
@@ -384,6 +396,13 @@ export declare function tile_contains_pid_obj(tile: number, elev: Elevation, pid
  * Returns the rotation (0-5) to face a particular tile (destTile) from srcTile.
  */
 export declare function rotation_to_tile(srcTile: number, destTile: number): Direction;
+
+/**
+ * Tests whether a tile falls within a rectangular region.
+ * tile1/tile2 define one corner (right edge/top edge), tile3/tile4 the opposite corner
+ * (left edge/bottom edge), and tile5 is the tile tested for being inside the rectangle.
+ */
+export declare function tile_in_tile_rect(tile1: number, tile2: number, tile3: number, tile4: number, tile5: number): number;
 
 // =============================================================================
 // Combat Functions
@@ -701,10 +720,13 @@ export declare function giQ_Option(iqTest: number, msgList: number, msgNum: numb
 export declare function dialogue_reaction(mood: number): void;
 
 /** Switch to barter screen with modifier */
-export declare function gdialog_mod_barter(modifier: number): number;
+export declare function gdialog_mod_barter(modifier: number): void;
 
 /** Set the barter modifier */
 export declare function gdialog_set_barter_mod(modifier: number): void;
+
+/** Influences NPC reaction level. Returns the result of the internal reaction influence calculation */
+export declare function reaction_influence(param1: number, param2: number, param3: number): number;
 
 // =============================================================================
 // Message Functions
@@ -792,6 +814,16 @@ export declare function override_map_start(x: number, y: number, elev: Elevation
  */
 export declare function set_exit_grids(markElev: Elevation, mapID: number, elev: Elevation, tile: number, rot: Direction): void;
 
+/** Returns True if a given map # is known, False otherwise */
+export declare function map_known(mapNum: number): boolean;
+
+/**
+ * Marks a town area or map location on the world map. areaType selects whether to mark
+ * by area (MARK_TYPE_TOWN) or by map index (MARK_TYPE_MAP). areaIndex identifies the area
+ * or map, and known sets the state (MARK_STATE_KNOWN or MARK_STATE_VISITED; ignored for maps).
+ */
+export declare function mark_area_known(areaType: number, areaIndex: number, known: number): void;
+
 // =============================================================================
 // UI Functions
 // =============================================================================
@@ -832,6 +864,27 @@ export declare function set_map_music(mapID: number, soundPath: string): void;
  */
 export declare function play_sfx(sfxFileName: string): void;
 
+/** Constructs and returns a sound effect filename for ambient sounds based on the type and subtype */
+export declare function sfx_build_ambient_name(ambientType: number, ambientSubtype: number): string;
+
+/** Constructs and returns a sound effect filename for character animations */
+export declare function sfx_build_char_name(charType: number, animType: number, animFrame: number): string;
+
+/** Constructs and returns a sound effect filename for interface interactions */
+export declare function sfx_build_interface_name(interfaceId: number, actionType: number): string;
+
+/** Constructs and returns a sound effect filename for item interactions */
+export declare function sfx_build_item_name(itemType: number, actionType: number, itemVariant: number): string;
+
+/** Constructs and returns a sound effect filename for opening/closing interactions */
+export declare function sfx_build_open_name(openType: number, actionType: number): string;
+
+/** Constructs and returns a sound effect filename for scenery interactions */
+export declare function sfx_build_scenery_name(sceneryType: number, actionType: number, sceneryVariant: number): string;
+
+/** Constructs and returns a sound effect filename for weapon fire and impact sounds */
+export declare function sfx_build_weapon_name(weaponType: number, actionType: number, range: number, hit: number): string;
+
 // =============================================================================
 // Movie Functions
 // =============================================================================
@@ -855,7 +908,7 @@ export declare function endgame_slideshow(): void;
  * Jams a lock, preventing the player from picking it for approximately 24 hours.
  * Meant to be used when a player critically fails to pick a lock.
  */
-export declare function jam_lock(obj: DoorPtr | ContainerPtr): number;
+export declare function jam_lock(obj: DoorPtr | ContainerPtr): void;
 
 // =============================================================================
 // Script Control
@@ -905,7 +958,7 @@ export declare function use_obj(obj: ObjectPtr): void;
  * Attempt to use an item object on a target object. This could be used to have a
  * critter use a Stimpack on the player, or to use a key on a door.
  */
-export declare function use_obj_on_obj(item: ObjectPtr, target: ObjectPtr): ObjectPtr;
+export declare function use_obj_on_obj(item: ObjectPtr, target: ObjectPtr): void;
 
 /** Returns true if an active skill is being used */
 export declare function using_skill(who: CritterPtr, skill: SKILL): boolean;

@@ -1563,6 +1563,15 @@ export function string_compare(str1: string, str2: string): number {
 }
 
 /**
+ * Compares two strings case-insensitive, and returns True if the two strings matched.
+ * @param codePage - code page number to properly compare national characters in range 128-255 (1250-1252, 866)
+ * @inline
+ */
+export function string_compare_locale(str1: string, str2: string, codePage: number): boolean {
+    return sfall_func3("string_compare", str1, str2, codePage);
+}
+
+/**
  * Find substring in string
  * @param haystack String to search in
  * @param needle String to find
@@ -1638,11 +1647,12 @@ export function intface_show(): void {
 }
 
 /**
- * Redraw the main interface bar
+ * Redraws main game interface. Useful after direct changes to current player weapons or stats.
+ * @param winType - the type number of the interface window (see WINTYPE_* constants in sfall.h). Pass -1 to redraw all interface windows
  * @inline
  */
-export function intface_redraw(): void {
-    sfall_func0("intface_redraw");
+export function intface_redraw(winType: number): void {
+    sfall_func1("intface_redraw", winType);
 }
 
 /**
@@ -1952,11 +1962,14 @@ export function draw_image_scaled(artFile: string, frame: number, x: number, y: 
 // ============================================================================
 
 /**
- * Creates a window with MoveOnTop flag. Works like vanilla CreateWin but allows the window to be placed on top of the game interface.
+ * Works like vanilla CreateWin, but creates a window with MoveOnTop flag if flags is not specified,
+ * and allows setting additional flags for the created window otherwise.
+ * MoveOnTop allows the created window to be placed on top of the game interface.
+ * @param flags - additional window flags (optional)
  * @inline
  */
-export function create_win(winName: string, x: number, y: number, w: number, h: number): number {
-    return sfall_func5("create_win", winName, x, y, w, h);
+export function create_win(winName: string, x: number, y: number, w: number, h: number, flags?: number): number {
+    return flags === undefined ? sfall_func5("create_win", winName, x, y, w, h) : sfall_func6("create_win", winName, x, y, w, h, flags);
 }
 
 /**
@@ -1977,29 +1990,61 @@ export function win_fill_color(x: number, y: number, width: number, height: numb
     sfall_func5("win_fill_color", x, y, width, height, color);
 }
 
+/** Hides currently active (selected) script window. @inline */
+export function hide_win(): void {
+    sfall_func0("hide_window");
+}
+
 /**
- * Draws the specified PCX or FRM art in the specified interface window.
- * @param winID - the type number of the interface window (see WINTYPE_* constants in sfall.h)
+ * Hides the specified script window.
+ * @param winName - the window name, assigned to the window by the CreateWin/create_win function
+ * @inline
+ */
+export function hide_window(winName: string): void {
+    sfall_func1("hide_window", winName);
+}
+
+/** Displays the script window previously hidden with hide_win. @inline */
+export function show_win(): void {
+    sfall_func0("show_window");
+}
+
+/**
+ * Displays the specified hidden script window.
+ * @param winName - the window name, assigned to the window by the CreateWin/create_win function
+ * @inline
+ */
+export function show_window(winName: string): void {
+    sfall_func1("show_window", winName);
+}
+
+/**
+ * Draws the specified PCX or FRM art in the specified interface window, returns -1 on any error.
+ * @param winID - the type number of the interface window (see WINTYPE_* constants in sfall.h). Also takes the flag (0x1000000) to prevent immediate redrawing of the interface window
  * @param artFile - path to the PCX/FRM file, or its FRM ID number
  * @param x - offset relative to the top-left corner of the window
  * @param y - offset relative to the top-left corner of the window
+ * @param frame - frame number, the first frame starts at zero (default: 0)
+ * @param param - an array specifying additional parameters: sprite direction (index 0), new width/height to scale to (index 1/2, -1 for original) (default: 0)
  * @inline
  */
-export function interface_art_draw(winID: number, artFile: string, x: number, y: number): void {
-    sfall_func4("interface_art_draw", winID, artFile, x, y);
+export function interface_art_draw(winID: number, artFile: string, x: number, y: number, frame: number = 0, param: SfallArray | number = 0): number {
+    return sfall_func6("interface_art_draw", winID, artFile, x, y, frame, param);
 }
 
 /**
  * Displays text in the specified interface window with the current font.
+ * Returns the count of lines printed, or -1 on any error.
  * @param text - the text to print. Use `\n` for new lines
  * @param winType - the type number of the interface window (see WINTYPE_* constants)
  * @param x - offset relative to the top-left corner of the window
  * @param y - offset relative to the top-left corner of the window
  * @param color - color index in the game palette. Can include flags: 0x10000 (shadow), 0x1000000 (no direct redraw), 0x2000000 (black background)
+ * @param width - the maximum width of the text, which is wrapped to fit within it (default: 0, fills the window width)
  * @inline
  */
-export function interface_print(text: string, winType: number, x: number, y: number, color: number): void {
-    sfall_func5("interface_print", text, winType, x, y, color);
+export function interface_print(text: string, winType: number, x: number, y: number, color: number, width: number = 0): number {
+    return sfall_func6("interface_print", text, winType, x, y, color, width);
 }
 
 /**
@@ -2187,6 +2232,24 @@ export function set_terrain_name(x: number, y: number, name: string): void {
 }
 
 /**
+ * Enables/disables the engine's random encounter detection process (grants XP and displays a dialog box).
+ * If disabled, the player will always be forced into random encounters when they occur.
+ * @inline
+ */
+export function encounter_detection(toggle: boolean): void {
+    sfall_func1("encounter_detection", toggle);
+}
+
+/**
+ * Enables/disables drawing town names under green circles on the world map.
+ * @param toggle - True hides town names (Fallout 1 behavior); False shows them (default)
+ * @inline
+ */
+export function remove_wm_town_names(toggle: boolean): void {
+    sfall_func1("remove_wm_town_names", toggle);
+}
+
+/**
  * Overrides the player's entry position when entering via exit grids. Works only in map_enter_p_proc.
  * @param tile - tile number, or 0 for start hex
  * @inline
@@ -2294,10 +2357,11 @@ export function item_make_explosive(pid: number, activePid: number, min: number,
 /**
  * Assigns a unique ID number to the object and returns it. Items with unique IDs won't stack.
  * If already assigned, returns existing ID. Use get_object_data(obj, OBJ_DATA_ID) to just get the ID.
+ * @param flag - pass -1 to assign a new ID number generated by the engine (i.e. unassign a unique ID)
  * @inline
  */
-export function set_unique_id(obj: ObjectPtr): number {
-    return sfall_func1("set_unique_id", obj);
+export function set_unique_id(obj: ObjectPtr, flag?: number): number {
+    return flag === undefined ? sfall_func1("set_unique_id", obj) : sfall_func2("set_unique_id", obj, flag);
 }
 
 /**
@@ -2337,6 +2401,15 @@ export function reg_anim_animate_and_move(obj: ObjectPtr, tile: number, animID: 
  */
 export function set_spray_settings(ctrMult: number, ctrDiv: number, tgtMult: number, tgtDiv: number): void {
     sfall_func4("set_spray_settings", ctrMult, ctrDiv, tgtMult, tgtDiv);
+}
+
+/**
+ * Enables/disables Fallout 1 behavior when calculating the player's hit chance.
+ * @param toggle - True removes the (PE - 2) distance penalty (Fallout 1 behavior); False keeps it (default)
+ * @inline
+ */
+export function set_fo1_hit_chance(toggle: boolean): void {
+    sfall_func1("set_fo1_hit_chance", toggle);
 }
 
 /**
@@ -2381,6 +2454,16 @@ export function set_town_title(areaID: number, title: string): void {
 }
 
 /**
+ * Sets the thresholds for "neutral" and "good" NPC reactions.
+ * @param neutral - reaction values above this are neutral. Valid range: -125..125 (default: -10)
+ * @param good - reaction values above this are good. Valid range: -125..125 (default: 10), must be >= neutral
+ * @inline
+ */
+export function set_reaction_thresholds(neutral: number, good: number): void {
+    sfall_func2("set_reaction_thresholds", neutral, good);
+}
+
+/**
  * Sets hours until jammed locks auto-unjam when player leaves map (up to 127).
  * Also disables midnight auto-unjam. Pass 0 to disable completely. Resets on reload.
  * @inline
@@ -2395,6 +2478,15 @@ export function set_unjam_locks_time(time: number): void {
  */
 export function metarule_exist(metaruleName: string): boolean {
     return sfall_func1("metarule_exist", metaruleName);
+}
+
+/**
+ * Returns True if an opcode with the specified number exists in the current version of sfall.
+ * @param opcodeNum - opcode number, starts at 0x8000
+ * @inline
+ */
+export function opcode_exists(opcodeNum: number): boolean {
+    return sfall_func1("opcode_exists", opcodeNum);
 }
 
 /**

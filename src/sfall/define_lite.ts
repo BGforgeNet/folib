@@ -3,8 +3,10 @@
 import {
     attack_complex,
     create_object_sid,
+    critter_dmg,
     critter_injure, critter_inven_obj,
     critter_state,
+    game_time,
     gdialog_mod_barter,
     gfade_in,
     gfade_out,
@@ -711,6 +713,11 @@ export function is_loading_game(): boolean {
   return metarule(METARULE_IS_LOADGAME, 0) != 0;
 }
 
+/** Returns the current game time in seconds. */
+export function game_time_in_seconds(): number {
+  return game_time / 10;
+}
+
 /**
  * Returns the index # of the current town.
  * @inline
@@ -787,8 +794,8 @@ export function map_get_load_area(): number {
  * Switch to barter screen (modifier = 0).
  * @inline
  */
-export function gdialog_barter(): number {
-  return gdialog_mod_barter(0);
+export function gdialog_barter(): void {
+  gdialog_mod_barter(0);
 }
 
 /**
@@ -845,8 +852,16 @@ export function is_critter_dead(who: CritterPtr): boolean {
  * Remove injuries from critter
  * @inline
  */
-export function critter_uninjure(who: CritterPtr, flags: number): number {
-  return critter_injure(who, flags | DAM_PERFORM_REVERSE);
+export function critter_uninjure(who: CritterPtr, flags: number): void {
+  critter_injure(who, flags | DAM_PERFORM_REVERSE);
+}
+
+/**
+ * Inflicts damage on a critter of a given amount, killing it if necessary.
+ * Normal damage, no animation.
+ */
+export function critter_damage(who: CritterPtr, amount: number): void {
+  critter_dmg(who, amount, DMG_normal_dam | DMG_NOANIMATE);
 }
 
 /** @inline */

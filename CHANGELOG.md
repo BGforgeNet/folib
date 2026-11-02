@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+- Add missing base engine declarations: `goto_xy`, `map_known`, `mark_area_known`, `reaction_influence`, the six
+  `sfx_build_*` functions, `tile_in_tile_rect`, `violence_level_setting`, `world_map_x_pos`, `world_map_y_pos`.
+- Add missing sfall declarations: `encounter_detection`, `hide_win`, `hide_window`, `opcode_exists`,
+  `remove_wm_town_names`, `set_fo1_hit_chance`, `set_reaction_thresholds`, `show_win`, `show_window`,
+  `string_compare_locale`.
+- Fix return types: `number`, not `void` (`critter_heal`); `void`, not a value (`destroy_object`,
+  `critter_stop_attacking`, `critter_mod_skill`, `critter_injure`, `gdialog_mod_barter`, `jam_lock`,
+  `use_obj_on_obj`).
+- Fix sfall signatures: `set_shader_mode` was missing its `ID` argument; `interface_art_draw` and `interface_print`
+  were missing their optional trailing arguments and returning `void` instead of `number`; `intface_redraw` now
+  takes the required `winType` argument instead of none; `set_unique_id`, `create_win` and `get_window_attribute`
+  gained their optional trailing argument; `message_box`'s `flags`, `color1` and `color2` are now optional.
+
 ## 0.4.4
 
 - Add `art_change_fid_num` and `weapon_is_unusable`.

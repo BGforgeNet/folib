@@ -535,7 +535,7 @@ export declare function set_shader_int(ID: number, param: string, value: number)
  * Tells sfall when to use a shader. The parameter is a set of 32 flags which specify the screens on which the shader will be disabled, unless bit 32 is set, in which case the shader will only be active on those screens. Remember that screens are displayed on top of each other; if the player opens the character menu which in combat, the game still considers the player to be in combat. See **sfall.h** for a list of defines.
  * The graphics functions are only available if the user is using graphics mode 4 or 5. Use `graphics_funcs_available` to check; it returns 1 if you can use them or 0 if you can't. Calling graphics functions when `graphics_funcs_available` returns 0 will do nothing.
  */
-export declare function set_shader_mode(mode: GameMode): void;
+export declare function set_shader_mode(ID: number, mode: GameMode): void;
 
 /**
  * The graphics functions are only available if the user is using graphics mode 4 or 5. Use `graphics_funcs_available` to check; it returns 1 if you can use them or 0 if you can't. Calling graphics functions when `graphics_funcs_available` returns 0 will do nothing.
@@ -756,7 +756,7 @@ export declare function message_str_game(fileId: number, messageId: number): str
  * ```
  * 
  */
-export declare function message_box(message: string, flags: number, color1: number, color2: number): number;
+export declare function message_box(message: string, flags?: number, color1?: number, color2?: number): number;
 
 // =============================================================================
 // Objects
@@ -1566,7 +1566,7 @@ export declare function fs_write_short(id: number, data: number): void;
  * - returns -1 if the specified attribute cannot be obtained
  * 
  */
-export declare function get_window_attribute(winType: number): number;
+export declare function get_window_attribute(winType: number, attrType?: number): number;
 
 /**
  * Returns the internal ID of the top-most window under mouse cursor.
