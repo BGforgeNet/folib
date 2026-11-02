@@ -17,25 +17,15 @@ const ROOT = join(import.meta.dirname, "..");
 
 // Pinned so a drift in tssl's own recognized-procedure table doesn't register as a folib regression (or mask
 // one); bump deliberately when adopting a new tssl release.
-const TSSL_VERSION = "0.5.0";
+const TSSL_VERSION = "0.5.1";
 
-// Correct folib declarations tssl@0.5.0 still can't compile, for reasons outside folib:
+// Correct folib declarations tssl@0.5.1 still can't compile, for reasons outside folib:
 // - town_map is Fallout 1 only; tssl has no way to target Fallout 1 (always compiles for Fallout 2).
 // - string_format_array is sfall.h's `sprintf_array(fmt, arr)`, which is not an opcode or a #define but a
 //   ~50-line hand-written SSL procedure (lib.strings.h) folib has never ported to TypeScript.
-// - floor, set_perk_skill1_mag, get_stat_max and get_stat_min were all reported to and FIXED on bgforge-mls
-//   master (92f17a32, 39b79228, 2026-11-02; confirmed by rebuilding compilers/tssl and compilers/ssl from
-//   that commit and re-running this fixture's exact shape against it - clean). Not yet in a published
-//   @bgforge/tssl release, so they stay listed here until TSSL_VERSION is bumped to one that includes them,
-//   at which point remove these four names.
-const KNOWN_UNCOMPILABLE = new Set([
-    "town_map",
-    "string_format_array",
-    "floor",
-    "set_perk_skill1_mag",
-    "get_stat_max",
-    "get_stat_min",
-]);
+// floor, set_perk_skill1_mag, get_stat_max and get_stat_min were reported and fixed on bgforge-mls master
+// (92f17a32, 39b79228); shipped in @bgforge/tssl 0.5.1 (2026-11-02), confirmed green here.
+const KNOWN_UNCOMPILABLE = new Set(["town_map", "string_format_array"]);
 
 function classifyType(checker: ts.TypeChecker, type: ts.Type): string {
     const text = checker.typeToString(type);
