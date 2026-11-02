@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.6.0
 
 - Fix `intface_redraw`: the 0.5.0 change requiring a `winType` argument was wrong, and TS-level optional
   parameters/ternaries on these sfall wrappers don't compile through tssl anyway. `intface_redraw()` is back to
@@ -16,24 +16,28 @@
   problem, via default parameter values this time); back to their original forms, with the longer forms as the
   separate `interface_art_draw_frame`/`interface_art_draw_ex`/`interface_print_width`, matching sfall.h's own
   macro names.
-- Fix `get_window_attribute`/`message_box`: both were bare declarations naming a dispatch key with no matching
-  callable symbol, so neither ever compiled through tssl. `get_window_attribute` is now the separate
-  `get_interface_rect`/`get_interface_x`/`get_interface_y`/`get_interface_width`/`get_interface_height`/
-  `get_interface_id`/`intface_is_shown`, matching sfall.h's own macro names; `message_box` is removed in favor
-  of the already-existing `message_box1`/`message_box2`/`message_box3`/`message_box4`.
+- **Breaking:** `get_window_attribute` and `message_box` are removed: both were bare declarations naming a
+  dispatch key with no matching callable symbol, so neither ever actually compiled through tssl.
+  `get_window_attribute` is replaced by the separate `get_interface_rect`/`get_interface_x`/`get_interface_y`/
+  `get_interface_width`/`get_interface_height`/`get_interface_id`/`intface_is_shown`, matching sfall.h's own
+  macro names; `message_box` by the already-existing `message_box1`/`message_box2`/`message_box3`/
+  `message_box4`.
+- **Breaking:** `div` is removed: it's an SSL infix operator (`x div y`), not a callable procedure - no function
+  declaration can represent it, and TSSL has no custom-operator mechanism either.
+- **Breaking:** `animate_stand`, `animate_stand_reverse`, `animate_run_to_tile` and `reg_anim_end` move from
+  `folib` to `folib/sfall`: each was a bare declaration with no backing opcode (a vanilla macro over `self_obj`),
+  so none of them ever actually compiled; fixed with a real composed body, which only belongs in the sfall
+  module.
+- **Breaking:** `animate_rotation`, `animate_set_frame`, `goto_xy`, `map_known`, `violence_level_setting`,
+  `world_map_x_pos`, `world_map_y_pos`, `add_g_timer_event`, `string_format`, `string_to_case` are removed: each
+  was either non-existent (no evidence in sfall's sources, confirmed against a real mod's vanilla headers), a
+  near-duplicate of an already-working function (`map_is_known`, `violence_filter_setting`,
+  `get_world_map_x_pos`/`_y_pos`, `add_global_timer_event`, `string_format1..7`, `string_tolower`/
+  `string_toupper`), or - for the two `animate_*` names - never a real function at all (`anim(obj,
+  ANIMATE_ROTATION, dir)`/`anim(obj, ANIMATE_SET_FRAME, frame)` is the real form).
 - Fix several more declarations that were likewise bare and never compiled: `get_map_enter_position`,
-  `get_metarule_table`, `get_inven_ap_cost`, `get_string_pointer`, `interface_overlay`, `seq_perk_freq`,
-  `string_replace`, and the vanilla `animate_stand`/`animate_stand_reverse`/`animate_run_to_tile`/`reg_anim_end`
-  (all four needed a real `self_obj`-composed body, not a bare declaration).
-- Remove `div`: it's an SSL infix operator (`x div y`), not a callable procedure - no function declaration can
-  represent it, and TSSL has no custom-operator mechanism either.
-- Remove `animate_rotation`, `animate_set_frame`, `goto_xy`, `map_known`, `violence_level_setting`,
-  `world_map_x_pos`, `world_map_y_pos`, `add_g_timer_event`, `string_format`, `string_to_case`: each was either
-  non-existent (no evidence in sfall's sources, confirmed against a real mod's vanilla headers), a near-duplicate
-  of an already-working function (`map_is_known`, `violence_filter_setting`, `get_world_map_x_pos`/`_y_pos`,
-  `add_global_timer_event`, `string_format1..7`, `string_tolower`/`string_toupper`), or - for the two `animate_*`
-  names - never a real function at all (`anim(obj, ANIMATE_ROTATION, dir)`/`anim(obj, ANIMATE_SET_FRAME, frame)`
-  is the real form).
+  `get_metarule_table`, `get_inven_ap_cost`, `get_string_pointer`, `interface_overlay`, `seq_perk_freq`, and
+  `string_replace` (added, composing the already-real `string_join`/`string_split`).
 - Add a compile-check test (`pnpm test`) that calls every exported function through the real `@bgforge/tssl`
   compiler (via `pnpm dlx`, not a dependency), to catch a declaration tsc/eslint accept but tssl cannot compile -
   the root cause of every fix above.
