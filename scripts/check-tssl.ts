@@ -21,22 +21,17 @@ const TSSL_VERSION = "0.5.0";
 
 // Correct folib declarations tssl@0.5.0 still can't compile, for reasons outside folib:
 // - town_map is Fallout 1 only; tssl has no way to target Fallout 1 (always compiles for Fallout 2).
-// - floor is a real vanilla function (used directly in Fallout2_Restoration_Project's own headers), but
-//   missing from tssl's own ENGINE_FUNCTIONS table - a tssl/bgforge-mls gap, not a folib one. It is also
-//   already @deprecated in folib in favor of floor2, which does compile.
 // - string_format_array is sfall.h's `sprintf_array(fmt, arr)`, which is not an opcode or a #define but a
 //   ~50-line hand-written SSL procedure (lib.strings.h) folib has never ported to TypeScript.
-// - set_perk_skill1_mag has a real opcode in sfall's own functions.yml (33150), but bgforge-mls's generated
-//   ENGINE_FUNCTIONS table is simply missing it - its siblings set_perk_skill1/set_perk_skill2/
-//   set_perk_skill2_mag are all present, so this looks like a one-off omission there, not a folib bug.
-// - get_stat_max/get_stat_min each compile cleanly alone (verified: standalone .tssl, both --ssl and .int) and
-//   when called from this very fixture in isolation, but fail with "ConditionalExpression is not lowered
-//   yet" only when their chunk also contains ~30+ other @inline macros - a tssl-side interaction this
-//   fixture isn't equipped to isolate further. Worth a bgforge-mls report; not a folib regression.
+// - floor, set_perk_skill1_mag, get_stat_max and get_stat_min were all reported to and FIXED on bgforge-mls
+//   master (92f17a32, 39b79228, 2026-11-02; confirmed by rebuilding compilers/tssl and compilers/ssl from
+//   that commit and re-running this fixture's exact shape against it - clean). Not yet in a published
+//   @bgforge/tssl release, so they stay listed here until TSSL_VERSION is bumped to one that includes them,
+//   at which point remove these four names.
 const KNOWN_UNCOMPILABLE = new Set([
     "town_map",
-    "floor",
     "string_format_array",
+    "floor",
     "set_perk_skill1_mag",
     "get_stat_max",
     "get_stat_min",
