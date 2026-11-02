@@ -1647,19 +1647,29 @@ export function intface_show(): void {
 }
 
 /**
- * Redraws main game interface. Useful after direct changes to current player weapons or stats.
- * - Called with no argument, this performs the engine's own full interface redraw (active item, ammo/charge bar).
- * - Called with a `winType`, this instead does a lighter "fake" redraw that only re-blits the specified window
- *   (or all windows if -1) - not a substitute for the no-argument form.
- * @param winType - the type number of the interface window (see WINTYPE_* constants in sfall.h). Pass -1 to redraw all interface windows
+ * Performs the engine's own full interface redraw (active item, ammo/charge bar).
  * @inline
  */
-export function intface_redraw(winType?: number): void {
-    if (winType === undefined) {
-        sfall_func0("intface_redraw");
-    } else {
-        sfall_func1("intface_redraw", winType);
-    }
+export function intface_redraw(): void {
+    sfall_func0("intface_redraw");
+}
+
+/**
+ * Does a lighter "fake" redraw that only re-blits the specified interface window. Not a substitute for
+ * `intface_redraw()`.
+ * @param winType - the type number of the interface window (see WINTYPE_* constants in sfall.h)
+ * @inline
+ */
+export function interface_redraw_win(winType: number): void {
+    sfall_func1("intface_redraw", winType);
+}
+
+/**
+ * Does a lighter "fake" redraw of all interface windows. Not a substitute for `intface_redraw()`.
+ * @inline
+ */
+export function interface_redraw_all(): void {
+    sfall_func1("intface_redraw", -1);
 }
 
 /**
@@ -1969,14 +1979,11 @@ export function draw_image_scaled(artFile: string, frame: number, x: number, y: 
 // ============================================================================
 
 /**
- * Works like vanilla CreateWin, but creates a window with MoveOnTop flag if flags is not specified,
- * and allows setting additional flags for the created window otherwise.
- * MoveOnTop allows the created window to be placed on top of the game interface.
- * @param flags - additional window flags (optional)
+ * Creates a window with MoveOnTop flag. Works like vanilla CreateWin but allows the window to be placed on top of the game interface.
  * @inline
  */
-export function create_win(winName: string, x: number, y: number, w: number, h: number, flags?: number): number {
-    return flags === undefined ? sfall_func5("create_win", winName, x, y, w, h) : sfall_func6("create_win", winName, x, y, w, h, flags);
+export function create_win(winName: string, x: number, y: number, w: number, h: number): number {
+    return sfall_func5("create_win", winName, x, y, w, h);
 }
 
 /**
@@ -2031,11 +2038,27 @@ export function show_window(winName: string): void {
  * @param artFile - path to the PCX/FRM file, or its FRM ID number
  * @param x - offset relative to the top-left corner of the window
  * @param y - offset relative to the top-left corner of the window
- * @param frame - frame number, the first frame starts at zero (default: 0)
- * @param param - an array specifying additional parameters: sprite direction (index 0), new width/height to scale to (index 1/2, -1 for original) (default: 0)
  * @inline
  */
-export function interface_art_draw(winID: number, artFile: string, x: number, y: number, frame: number = 0, param: SfallArray | number = 0): number {
+export function interface_art_draw(winID: number, artFile: string, x: number, y: number): number {
+    return sfall_func4("interface_art_draw", winID, artFile, x, y);
+}
+
+/**
+ * Like `interface_art_draw`, but with an explicit frame number.
+ * @param frame - frame number, the first frame starts at zero
+ * @inline
+ */
+export function interface_art_draw_frame(winID: number, artFile: string, x: number, y: number, frame: number): number {
+    return sfall_func5("interface_art_draw", winID, artFile, x, y, frame);
+}
+
+/**
+ * Like `interface_art_draw_frame`, but with additional scaling/direction parameters.
+ * @param param - an array specifying additional parameters: sprite direction (index 0), new width/height to scale to (index 1/2, -1 for original)
+ * @inline
+ */
+export function interface_art_draw_ex(winID: number, artFile: string, x: number, y: number, frame: number, param: SfallArray): number {
     return sfall_func6("interface_art_draw", winID, artFile, x, y, frame, param);
 }
 
@@ -2047,10 +2070,18 @@ export function interface_art_draw(winID: number, artFile: string, x: number, y:
  * @param x - offset relative to the top-left corner of the window
  * @param y - offset relative to the top-left corner of the window
  * @param color - color index in the game palette. Can include flags: 0x10000 (shadow), 0x1000000 (no direct redraw), 0x2000000 (black background)
- * @param width - the maximum width of the text, which is wrapped to fit within it (default: 0, fills the window width)
  * @inline
  */
-export function interface_print(text: string, winType: number, x: number, y: number, color: number, width: number = 0): number {
+export function interface_print(text: string, winType: number, x: number, y: number, color: number): number {
+    return sfall_func5("interface_print", text, winType, x, y, color);
+}
+
+/**
+ * Like `interface_print`, but with an explicit wrap width.
+ * @param width - the maximum width of the text, which is wrapped to fit within it
+ * @inline
+ */
+export function interface_print_width(text: string, winType: number, x: number, y: number, color: number, width: number): number {
     return sfall_func6("interface_print", text, winType, x, y, color, width);
 }
 
@@ -2364,11 +2395,19 @@ export function item_make_explosive(pid: number, activePid: number, min: number,
 /**
  * Assigns a unique ID number to the object and returns it. Items with unique IDs won't stack.
  * If already assigned, returns existing ID. Use get_object_data(obj, OBJ_DATA_ID) to just get the ID.
- * @param flag - pass -1 to assign a new ID number generated by the engine (i.e. unassign a unique ID)
  * @inline
  */
-export function set_unique_id(obj: ObjectPtr, flag?: number): number {
-    return flag === undefined ? sfall_func1("set_unique_id", obj) : sfall_func2("set_unique_id", obj, flag);
+export function set_unique_id(obj: ObjectPtr): number {
+    return sfall_func1("set_unique_id", obj);
+}
+
+/**
+ * Unassigns a unique ID number from the object (only if it currently has one), reassigning it one generated
+ * by the engine. Returns the resulting ID.
+ * @inline
+ */
+export function unset_unique_id(obj: ObjectPtr): number {
+    return sfall_func2("set_unique_id", obj, -1);
 }
 
 /**

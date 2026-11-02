@@ -2,10 +2,20 @@
 
 ## Unreleased
 
-- Fix `intface_redraw`: the 0.5.0 change requiring a `winType` argument was wrong. `winType` is optional again;
-  calling with no argument performs the engine's real interface redraw, as before, and is NOT equivalent to
-  passing a value (that does a lighter "fake" redraw of just one window). Reported against fo2tweaks, which
-  calls the no-argument form.
+- Fix `intface_redraw`: the 0.5.0 change requiring a `winType` argument was wrong, and TS-level optional
+  parameters/ternaries on these sfall wrappers don't compile through tssl anyway. `intface_redraw()` is back to
+  no arguments (the engine's real interface redraw, as before 0.5.0); the `winType` form is now the separate
+  `interface_redraw_win(winType)`/`interface_redraw_all()`, matching sfall.h's own macro names - they do a
+  lighter "fake" redraw, not a substitute for `intface_redraw()`. Reported against fo2tweaks, which calls the
+  no-argument form.
+- Fix `set_unique_id`: dropped the 0.5.0 optional second argument (same compile problem); the unassign case is
+  now the separate `unset_unique_id(obj)`, matching sfall.h's own `unset_unique_id` macro.
+- Fix `create_win`: dropped the 0.5.0 optional `flags` argument (same compile problem); back to its original
+  5-argument form, with `create_win_flag` (unchanged) for the 6-argument case.
+- Fix `interface_art_draw`/`interface_print`: dropped the 0.5.0 optional trailing arguments (same compile
+  problem, via default parameter values this time); back to their original forms, with the longer forms as the
+  separate `interface_art_draw_frame`/`interface_art_draw_ex`/`interface_print_width`, matching sfall.h's own
+  macro names.
 
 ## 0.5.0
 
